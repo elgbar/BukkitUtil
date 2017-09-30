@@ -22,11 +22,29 @@ import java.util.UUID;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class InventoryUtil {
 
+    /**
+     * Remove an ItemStack (from a inventory even if the items are spread out
+     * <p>
+     * Based on <a href="https://bukkit.org/threads/remove-items-from-an-inventory.27853/#post-1790751">this</a> bukkit
+     * thread
+     * <p>
+     * An item stack will be created based on {@code type}, {@code amount} and {@code data}
+     *
+     * @param inv
+     *     inventory to check
+     * @param type
+     *     The malarial to remove
+     * @param amount
+     *     The amount of {@code material} to remove
+     * @param data
+     *     The data, if you only want to remove material use {@link #removeInvMat(Inventory, Material, int)}
+     */
     @SuppressWarnings("deprecation")
-    public static void removeInventoryItems(final Inventory inv, final Material type, final int amount,
-                                            final MaterialData data) {
-        removeInventoryItems(inv, new ItemStack(type, amount, data.getData()));
+    public static void removeInvItem(final Inventory inv, final Material type, final int amount,
+                                     final MaterialData data) {
+        removeInvItem(inv, new ItemStack(type, amount, data.getData()), false);
     }
+
 
     /**
      * Remove an ItemStack (from a inventory even if the items are spread out
@@ -39,7 +57,25 @@ public class InventoryUtil {
      * @param item
      *     the item to remove
      */
-    public static void removeInventoryItems(final Inventory inv, final ItemStack item) {
+    public static void removeInvItem(final Inventory inv, final ItemStack item) {
+        removeInvItem(inv, item, false);
+    }
+
+
+    /**
+     * Remove an ItemStack (from a inventory even if the items are spread out
+     * <p>
+     * Based on <a href="https://bukkit.org/threads/remove-items-from-an-inventory.27853/#post-1790751">this</a> bukkit
+     * thread
+     *
+     * @param inv
+     *     inventory to check
+     * @param item
+     *     the item to remove
+     * @param matOnly
+     *     If only the material should be checked, if true {@link ItemStack#isSimilar(ItemStack)} will not be called
+     */
+    public static void removeInvItem(final Inventory inv, final ItemStack item, final boolean matOnly) {
         final ItemStack[] items = inv.getContents();
         int amount = item.getAmount();
 
@@ -47,7 +83,7 @@ public class InventoryUtil {
 
         for (int i = 0; i < items.length; i++) {
             final ItemStack is = items[i];
-            if (is != null && is.isSimilar(item)) {
+            if (is != null && (matOnly || is.isSimilar(item))) {
                 final int newAmount = is.getAmount() - amount;
 
                 if (newAmount > 0) {
@@ -66,6 +102,20 @@ public class InventoryUtil {
             }
         }
         inv.setContents(items);
+    }
+
+    /**
+     * Remove {@code amount} items of the type {@code material} in the {@code inv} inventory
+     *
+     * @param inv
+     *     The inventory to remove from
+     * @param material
+     *     The material to remove
+     * @param amount
+     *     The amount of {@code material} to remove
+     */
+    public static void removeInvMat(final Inventory inv, final Material material, final int amount) {
+        removeInvItem(inv, new ItemStack(material, amount), true);
     }
 
     /**

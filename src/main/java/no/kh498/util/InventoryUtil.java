@@ -211,7 +211,7 @@ public class InventoryUtil {
      *
      * @return The number of empty slots in an inventory
      */
-    public static int nrOfEmptySlots(final Inventory inv) {
+    public static int emptySlots(final Inventory inv) {
         int slots = 0;
         final int firstEmpty = inv.firstEmpty();
         if (firstEmpty == -1) {
@@ -241,7 +241,7 @@ public class InventoryUtil {
     public static boolean canHold(final Player player, final Material material, final byte data, final int quantity) {
         final PlayerInventory playerInv = player.getInventory();
 
-        final int emptySlots = nrOfEmptySlots(playerInv);
+        final int emptySlots = emptySlots(playerInv);
 
         // Reference item with one in quantity
         final ItemStack checkItem = new ItemStack(material, 1, data);

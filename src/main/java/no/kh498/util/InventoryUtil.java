@@ -83,7 +83,8 @@ public class InventoryUtil {
 
         for (int i = 0; i < items.length; i++) {
             final ItemStack is = items[i];
-            if (is != null && (matOnly || is.isSimilar(item))) {
+            //this will work as isSimilar is checking for the type
+            if (is != null && ((matOnly && item.getType() == is.getType()) || is.isSimilar(item))) {
                 final int newAmount = is.getAmount() - amount;
 
                 if (newAmount > 0) {

@@ -8,6 +8,8 @@ import org.bukkit.plugin.Plugin;
 import java.util.Collection;
 
 /**
+ * Let all the players in a list see the countdown
+ * <p>
  * {@inheritDoc}
  *
  * @author karl henrik

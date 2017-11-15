@@ -2,22 +2,22 @@ package no.kh498.util.countdown.api.type;
 
 import no.kh498.util.countdown.api.Countdown;
 import no.kh498.util.countdown.api.timeFormat.TimeFormat;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
- * Let all the players in a world see the countdown
+ * Let only a single player see the countdown
  * <p>
  * {@inheritDoc}
  *
  * @author karl henrik
  */
-public class CountdownWorld extends Countdown {
+public class CountdownSingle extends Countdown {
 
-    private final World world;
+    private final Collection<Player> player;
 
     /**
      * @param plugin
@@ -28,22 +28,17 @@ public class CountdownWorld extends Countdown {
      *     How long the countdown should be in milliseconds
      * @param delay
      *     How long to wait between each time run is called (in ms)
-     * @param world
-     *     The world to send the countdown to
+     * @param player
+     *     the player to see the countdown
      */
-    public CountdownWorld(final Plugin plugin, final String text, final long time, final long delay,
-                          final TimeFormat timeFormat, final World world) {
+    public CountdownSingle(final Plugin plugin, final String text, final long time, final long delay,
+                           final TimeFormat timeFormat, final Player player) {
         super(plugin, text, time, delay, timeFormat);
-        this.world = world;
-    }
-
-    public World getWorld() {
-        return this.world;
+        this.player = Collections.singletonList(player);
     }
 
     @Override
     public Collection<Player> getPlayers() {
-        //TODO maybe cache this and check less often?
-        return this.world.getPlayers();
+        return this.player;
     }
 }

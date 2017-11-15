@@ -42,22 +42,22 @@ public abstract class Countdown implements Runnable {
      *     The plugin that is using the countdown
      * @param text
      *     The text to display in the action bar. Must contain a {@code %s} where the time left is inserted
-     * @param time
+     * @param timeMS
      *     How long the countdown should be in milliseconds
      * @param timeFormat
      *     The way time is displayed
      */
-    public Countdown(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat) {
+    public Countdown(final Plugin plugin, final String text, final long timeMS, final TimeFormat timeFormat) {
         Preconditions.checkArgument(text != null, "The text cannot be null");
         Preconditions.checkArgument(plugin != null, "The plugin cannot be null");
         Preconditions.checkArgument(timeFormat != null, "The timeFormat cannot be null");
-        Preconditions.checkArgument(time > 0, "The time must be larger than 0");
+        Preconditions.checkArgument(timeMS > 0, "The time must be larger than 0");
         Preconditions.checkArgument(text.contains("%s"), "The text must contain a %s where the time left is inserted");
 
         this.timeFormat = timeFormat;
         this.plugin = plugin;
         this.text = text;
-        this.time = time;
+        this.time = timeMS;
     }
 
     /**

@@ -75,7 +75,7 @@ public abstract class Countdown implements Runnable {
 
     @Override
     public void run() {
-        if (!isRunning()) {
+        if (!this.running) {
             return;
         }
 
@@ -103,7 +103,7 @@ public abstract class Countdown implements Runnable {
             }
             AdvancedChat.sendActionbar(msgCpy, player);
         }
-        Bukkit.getScheduler().runTaskLater(getPlugin(), this, this.delay);
+        Bukkit.getScheduler().runTaskLater(this.plugin, this, this.delay);
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class Countdown implements Runnable {
      * @param force
      *     if this messages should be forced to replace another interrupt
      */
-    public void interrupt(final Player player, final String interruptText, final int time, final boolean force) {
+    public void interrupt(final Player player, final String interruptText, final long time, final boolean force) {
         final Interrupt interrupt = new Interrupt(interruptText, time);
         if (force) {
             this.lastInterrupt.put(player, interrupt);
@@ -176,8 +176,8 @@ public abstract class Countdown implements Runnable {
      * @param force
      *     if this messages should be forced to replace another interrupt
      */
-    public void tryInterrupt(final Player player, final String interruptText, final int time, final boolean force) {
-        if (isRunning()) {
+    public void tryInterrupt(final Player player, final String interruptText, final long time, final boolean force) {
+        if (this.running) {
             interrupt(player, interruptText, time, force);
         }
         else {
@@ -189,7 +189,7 @@ public abstract class Countdown implements Runnable {
         this.text = text;
     }
 
-    public void setTime(final int time) {
+    public void setTime(final long time) {
         this.time = time;
     }
 

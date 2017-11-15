@@ -13,6 +13,12 @@ import java.util.ArrayList;
  */
 public class FileUtils {
 
+    /**
+     * @param plugin
+     *     The plugin
+     *
+     * @return Get the absolute path of the plugins folder
+     */
     public static String getPluginsFolder(final Plugin plugin) {
         return plugin.getDataFolder().getAbsolutePath();
     }

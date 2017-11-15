@@ -21,7 +21,7 @@ public class CountdownHHMMSS implements TimeFormat {
             ensureDoubleDig(sb, hours);
             sb.append(hours).append(" hours ");
         }
-        if (minutes > 0) {
+        if (minutes > 0 && hours > 0) {
             ensureDoubleDig(sb, minutes);
             sb.append(minutes).append(" minutes ");
         }

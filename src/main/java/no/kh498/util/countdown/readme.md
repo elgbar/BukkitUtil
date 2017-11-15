@@ -24,7 +24,8 @@ Countdown c = new CountdownWorld(plugin, text, time, format, world);
 Countdown c = new CountdownList(plugin, text, time, format, list);
 
 //start the countdown
-c.start()
+c.reset(); //need to setup stuff before starting the countdown //TODO maybe change this?
+c.start();
 ```
 
 ### Listening to the end of a countdown

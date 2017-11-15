@@ -1,8 +1,8 @@
 package no.kh498.util.countdown.api;
 
+import no.kh498.util.chat.AdvancedChat;
 import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import no.kh498.util.countdown.events.CountdownFinishedEvent;
-import no.kh498.util.AdvancedChat;
 import no.kh498.util.log.Logger;
 import no.kh498.util.log.Severity;
 import org.bukkit.Bukkit;

@@ -1,24 +1,18 @@
-package no.kh498.util;
+package no.kh498.util.chat;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author kh498
  * @since 0.1.0
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class AdvancedChat {
-
-    private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
     /**
      * Send a message to a player using the action bar.
@@ -37,7 +31,7 @@ public class AdvancedChat {
      *     if ProtocolLib is not installed
      */
     public static void sendActionbar(final String msg, final Player... players) {
-        sendAltChat(msg, EnumWrappers.ChatType.GAME_INFO, players);
+        sendAltChat(msg, ChatType.GAME_INFO, players);
     }
 
     /**
@@ -52,7 +46,7 @@ public class AdvancedChat {
      *     if ProtocolLib is not installed
      */
     public static void sendSystemChat(final String msg, final Player... players) {
-        sendAltChat(msg, EnumWrappers.ChatType.SYSTEM, players);
+        sendAltChat(msg, ChatType.SYSTEM, players);
     }
 
     /**
@@ -69,20 +63,26 @@ public class AdvancedChat {
      * @throws IllegalStateException
      *     if ProtocolLib is not installed
      */
-    public static void sendAltChat(final String msg, final EnumWrappers.ChatType type, final Player... players) {
+    public static void sendAltChat(final String msg, final ChatType type, final Player... players) {
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
             throw new IllegalStateException("You must be using ProtocolLib!");
         }
-        final PacketContainer chatPacket =
-            new PacketContainer(PacketType.Play.Server.CHAT);//protocolManager.createPacket();
-        final WrappedChatComponent wcp = WrappedChatComponent.fromText(msg);
-        chatPacket.getChatComponents().write(0, wcp);
-        chatPacket.getBytes().write(0, type.getId());
         try {
+            //create a chat packet
+            final PacketContainer chatPacket =
+                new PacketContainer(PacketType.Play.Server.CHAT);//protocolManager.createPacket();
+
+            //create a wrapper for the text to send
+            final WrappedChatComponent wcp = WrappedChatComponent.fromText(msg);
+            chatPacket.getChatComponents().write(0, wcp);
+
+            //set the type of chat to send
+            chatPacket.getBytes().write(0, type.getId());
+
             for (final Player p : players) {
-                protocolManager.sendServerPacket(p, chatPacket);
+                ProtocolLibrary.getProtocolManager().sendServerPacket(p, chatPacket);
             }
-        } catch (final InvocationTargetException e) {
+        } catch (final Exception e) {
             Bukkit.getLogger().severe("AdvancedChat cannot be used after a reload!");
         }
     }

@@ -5,7 +5,7 @@ package no.kh498.util.countdown.api.timeFormat;
  *
  * @author karl henrik
  */
-public class CountdownSeconds implements TimeFormat {
+public class FormatSeconds implements TimeFormat {
 
     @Override
     public String formatTime(final long timeLeft) {

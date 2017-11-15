@@ -5,7 +5,7 @@ package no.kh498.util.countdown.api.timeFormat;
  *
  * @author karl henrik
  */
-public class CountdownHHMMSS implements TimeFormat {
+public class FormatHHMMSS implements TimeFormat {
 
     private static void ensureDoubleDig(final StringBuilder sb, final long toCheck) {
         if (toCheck < 10) {

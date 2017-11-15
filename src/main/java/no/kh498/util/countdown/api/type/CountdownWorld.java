@@ -26,14 +26,12 @@ public class CountdownWorld extends Countdown {
      *     The text to display in the action bar. Must contain a {@code %s} where the time left is inserted
      * @param time
      *     How long the countdown should be in milliseconds
-     * @param delay
-     *     How long to wait between each time run is called (in ms)
      * @param world
      *     The world to send the countdown to
      */
-    public CountdownWorld(final Plugin plugin, final String text, final long time, final long delay,
-                          final TimeFormat timeFormat, final World world) {
-        super(plugin, text, time, delay, timeFormat);
+    public CountdownWorld(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat,
+                          final World world) {
+        super(plugin, text, time, timeFormat);
         this.world = world;
     }
 

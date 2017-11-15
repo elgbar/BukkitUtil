@@ -17,12 +17,11 @@ To change the way the time is viewed implement `TimeFormat` and call a new Count
 Plugin plugin = ... //your plugin instance
 String text = ChatColor.GRAY+"%s left"; // must contain a %s
 long time = 10000L; // time in ms
-long delay = 10L // time between each actionbar update
 TimeFormat format = new CountdownHHMMSS(); //or new CountdownSeconds();
 
-Countdown c = new CountdownWorld(plugin, text, time, delay, format, world);
+Countdown c = new CountdownWorld(plugin, text, time, format, world);
 //or 
-Countdown c = new CountdownList(plugin, text, time, delay, format, list);
+Countdown c = new CountdownList(plugin, text, time, format, list);
 
 //start the countdown
 c.start()

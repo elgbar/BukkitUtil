@@ -1,5 +1,6 @@
 package no.kh498.util.countdown.api;
 
+import com.google.common.base.Preconditions;
 import no.kh498.util.chat.AdvancedChat;
 import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import no.kh498.util.countdown.events.CountdownFinishedEvent;
@@ -34,7 +35,6 @@ public abstract class Countdown implements Runnable {
     private boolean running;
     private long startTime;
     private HashMap<Player, Interrupt> lastInterrupt;
-    private final long delay;
     private final TimeFormat timeFormat;
 
     /**
@@ -44,28 +44,20 @@ public abstract class Countdown implements Runnable {
      *     The text to display in the action bar. Must contain a {@code %s} where the time left is inserted
      * @param time
      *     How long the countdown should be in milliseconds
-     * @param delay
-     *     How long to wait between each time run is called (in ms)
      * @param timeFormat
      *     The way time is displayed
      */
-    public Countdown(final Plugin plugin, final String text, final long time, final long delay,
-                     final TimeFormat timeFormat) {
+    public Countdown(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat) {
+        Preconditions.checkArgument(text != null, "The text cannot be null");
+        Preconditions.checkArgument(plugin != null, "The plugin cannot be null");
+        Preconditions.checkArgument(timeFormat != null, "The timeFormat cannot be null");
+        Preconditions.checkArgument(time > 0, "The time must be larger than 0");
+        Preconditions.checkArgument(text.contains("%s"), "The text must contain a %s where the time left is inserted");
 
-        if (text == null || !text.contains("%s")) {
-            throw new IllegalArgumentException("The text must contain a %s where the time left is inserted");
-        }
-        if (plugin == null || timeFormat == null) {
-            throw new IllegalArgumentException("Neither the plugin nor the timeFormat can be null");
-        }
-        if (time < 0 || delay < 0) {
-            throw new IllegalArgumentException("Neither the time nor the delay can be less than 0");
-        }
         this.timeFormat = timeFormat;
         this.plugin = plugin;
         this.text = text;
         this.time = time;
-        this.delay = delay;
     }
 
     /**
@@ -103,7 +95,7 @@ public abstract class Countdown implements Runnable {
             }
             AdvancedChat.sendActionbar(msgCpy, player);
         }
-        Bukkit.getScheduler().runTaskLater(this.plugin, this, this.delay);
+        Bukkit.getScheduler().runTaskLater(this.plugin, this, this.timeFormat.delay());
     }
 
     /**

@@ -7,6 +7,12 @@ package no.kh498.util.countdown.api.timeFormat;
  */
 public class CountdownHHMMSS implements TimeFormat {
 
+    private static void ensureDoubleDig(final StringBuilder sb, final long toCheck) {
+        if (toCheck < 10) {
+            sb.append("0");
+        }
+    }
+
     @Override
     public String formatTime(final long timeLeft) {
         final long time = timeLeft / 1000L;
@@ -30,9 +36,8 @@ public class CountdownHHMMSS implements TimeFormat {
         return sb.toString();
     }
 
-    private void ensureDoubleDig(final StringBuilder sb, final long toCheck) {
-        if (toCheck < 10) {
-            sb.append("0");
-        }
+    @Override
+    public long delay() {
+        return 10L;
     }
 }

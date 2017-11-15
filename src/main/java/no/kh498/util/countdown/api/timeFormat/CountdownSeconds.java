@@ -11,4 +11,9 @@ public class CountdownSeconds implements TimeFormat {
     public String formatTime(final long timeLeft) {
         return timeLeft / 1000L + " seconds";
     }
+
+    @Override
+    public long delay() {
+        return 10L;
+    }
 }

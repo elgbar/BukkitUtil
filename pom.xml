@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>no.kh498.util</groupId>
-    <artifactId>bukkitUtil</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>BukkitUtil</artifactId>
+    <version>2.0.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

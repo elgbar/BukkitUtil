@@ -2,6 +2,13 @@
 
 This api gives you an easy way of making a countdown. 
 
+The api is made so users can easily customize who sees the countdown and how it is viewed.
+
+
+To change the players who sees the count simply extend the Countdown class and make your own interpretation of `getPlayers()`
+
+To change the way the time is viewed implement `TimeFormat` and call a new Countdown with it
+
 ## Examples
 
 ### Creating a countdown
@@ -48,4 +55,14 @@ c.interrupt(player, interruptText, time, force);
 
 //Or if you always want to send an action bar, but you dont care if the countdown is running
 c.tryInterrupt(player, interruptText, time, force);
+```
+
+### Restarting a countdown
+
+```java
+Countdown c = ... // any countdown
+
+c.stop(false); // may not be needed if the countdown has already been stopped
+c.reset();
+c.start();
 ```

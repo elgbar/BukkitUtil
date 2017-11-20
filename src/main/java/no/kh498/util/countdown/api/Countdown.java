@@ -167,10 +167,37 @@ public abstract class Countdown implements Runnable {
      *     The duration of the interrupt in milliseconds
      * @param force
      *     if this messages should be forced to replace another interrupt
+     *
+     * @deprecated Use the static method to support the countdown being null
      */
+    @Deprecated
     public void tryInterrupt(final Player player, final String interruptText, final long time, final boolean force) {
         if (this.running) {
             interrupt(player, interruptText, time, force);
+        }
+        else {
+            AdvancedChat.sendActionbar(interruptText, player);
+        }
+    }
+
+    /**
+     * Try to send a interrupt message, if no countdown is running send a actionbar message instead
+     *
+     * @param c
+     *     The countdown to use
+     * @param player
+     *     The player to send the interrupt to
+     * @param interruptText
+     *     The interruption text
+     * @param time
+     *     The duration of the interrupt in milliseconds
+     * @param force
+     *     if this messages should be forced to replace another interrupt
+     */
+    public static void tryInterrupt(final Countdown c, final Player player, final String interruptText, final long time,
+                                    final boolean force) {
+        if (c != null && c.running) {
+            c.interrupt(player, interruptText, time, force);
         }
         else {
             AdvancedChat.sendActionbar(interruptText, player);

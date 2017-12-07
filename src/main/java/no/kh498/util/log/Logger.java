@@ -14,8 +14,8 @@ import java.util.logging.Level;
 public class Logger {
 
     //let the variables be changed from everywhere
-    public static Level logLevel = Level.INFO;
-    public static String adminPerm;
+    private static Level logLevel = Level.INFO;
+    private static String adminPerm;
 
     private final static String DEFAULT_LOG_PREFIX = "[ ] ";
 
@@ -35,7 +35,7 @@ public class Logger {
     /**
      * @return If the Logger has been initiated by a plugin
      */
-    public static boolean hasInitiatedLogger() {
+    private static boolean hasInitiatedLogger() {
         return !DEFAULT_LOG_PREFIX.equals(LOG_PREFIX);
     }
 
@@ -50,7 +50,7 @@ public class Logger {
      * @param player
      *     The player to send the error to
      */
-    public static void log(final Severity level, final Object msg, final Player player) {
+    private static void log(final Severity level, final Object msg, final Player player) {
 
         //filter the messages
         if (logLevel.intValue() > level.level.intValue()) {
@@ -74,6 +74,22 @@ public class Logger {
         }
     }
 
+    public static Level getLogLevel() {
+        return logLevel;
+    }
+
+    public static void setLogLevel(final Level logLevel) {
+        Logger.logLevel = logLevel;
+    }
+
+    public static String getAdminPerm() {
+        return adminPerm;
+    }
+
+    public static void setAdminPerm(final String adminPerm) {
+        Logger.adminPerm = adminPerm;
+    }
+
     /**
      * Handle error logging for you, a colorized message will be dispatched to the console
      *
@@ -89,6 +105,7 @@ public class Logger {
     public static void log(final Severity level, final Player player, final String msg, final Object... args) {
         log(level, String.format(msg, args), player);
     }
+
 
     /**
      * Handle error logging for you, a colorized message will be dispatched to the console

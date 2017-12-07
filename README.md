@@ -17,7 +17,7 @@ For more general java utilities see [CommonUtilsJava](https://github.com/kh498/C
 <dependency>
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>2.1.1</version>
+    <version>2.2.0</version>
 </dependency>
 ```
 

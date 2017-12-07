@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -69,6 +70,9 @@ public class FileUtils {
         Preconditions.checkNotNull(subPath, "subPath cannot be null");
         Preconditions.checkNotNull(fileName, "fileName cannot be null");
         Logger.setPluginIfNotSet(plugin);
+
+        BufferedWriter wtr = null;
+
         try {
             final File file =
                 new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName + ".json");
@@ -84,14 +88,22 @@ public class FileUtils {
                     return;
                 }
             }
-            final FileWriter fileWriter = new FileWriter(file);
+            wtr = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
 
-            fileWriter.write(JsonString);
+            wtr.write(JsonString);
 
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (final Exception e) {
+            wtr.flush();
+
+        } catch (final IOException e) {
             Logger.severe("Failed to write the json");
+        } finally {
+            if (wtr != null) {
+                try {
+                    wtr.close();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

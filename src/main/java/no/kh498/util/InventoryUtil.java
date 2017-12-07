@@ -138,7 +138,6 @@ public class InventoryUtil {
         }
         else {
             final ItemStack[] invContent = inv.getContents();
-            final int length = invContent.length;
 
             for (final ItemStack is : invContent) {
                 if (item.isSimilar(is)) {

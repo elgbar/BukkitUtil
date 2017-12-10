@@ -30,9 +30,13 @@ public class LocationUtil {
      * @param location
      *     The location to beautify
      *
-     * @return A string in the format of "{@code x, y, z}" excluding the quotation marks
+     * @return A string in the format of "{@code x, y, z}" excluding the quotation marks. If location is null "null"
+     * is returned
      */
     public static String beautify(final Location location) {
+        if (location == null) {
+            return "null";
+        }
         return valueOf(location.getBlockX()) + ", " + location.getBlockY() + ", " + location.getBlockZ();
     }
 }

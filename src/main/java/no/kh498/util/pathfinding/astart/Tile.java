@@ -139,11 +139,11 @@ public class Tile implements Comparable<Tile> {
         switch (b.getType()) {
             case SOUL_SAND:
             case WEB:
-                return 2f;
+                return 20f;
             case WATER:
-                return 3f;
+                return 20f;
             case STATIONARY_WATER:
-                return 1.75f;
+                return 10f;
             case ICE:
             case PACKED_ICE:
                 return 1.25f;

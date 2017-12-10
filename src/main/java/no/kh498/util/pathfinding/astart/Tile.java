@@ -22,6 +22,8 @@ public class Tile implements Comparable<Tile> {
 
     Tile prev;
 
+    static int NO_ACCESS = 100000;
+
     public Tile(final int x, final int y, final int z, final Tile prev) {
         this.x = x;
         this.y = y;
@@ -86,7 +88,7 @@ public class Tile implements Comparable<Tile> {
         return this.loc;
     }
 
-    private float getWeight() {
+    float getWeight() {
         return this.h + this.g;
     }
 
@@ -131,16 +133,13 @@ public class Tile implements Comparable<Tile> {
         final Block b = toLocation(w).getBlock();
         if (!AStar.canBeWalkedThrough(b.getRelative(BlockFace.UP).getType()) ||
             !AStar.canBeWalkedThrough(b.getRelative(BlockFace.UP, 2).getType())) {
-            return 100000;
+            return NO_ACCESS;
         }
 
         switch (b.getType()) {
             case SOUL_SAND:
             case WEB:
                 return 2f;
-            case LAVA:
-            case STATIONARY_LAVA:
-                return 100000;
             case WATER:
                 return 3f;
             case STATIONARY_WATER:
@@ -148,8 +147,10 @@ public class Tile implements Comparable<Tile> {
             case ICE:
             case PACKED_ICE:
                 return 1.25f;
+            case LAVA:
+            case STATIONARY_LAVA:
             case AIR:
-                return 100000;
+                return NO_ACCESS;
             default:
                 return 1f;
         }

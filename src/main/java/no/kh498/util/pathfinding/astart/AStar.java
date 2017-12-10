@@ -68,6 +68,9 @@ public class AStar {
             if (curr.equals(this.goal)) {
                 return buildPath(curr);
             }
+            else if (this.closed.size() >= 5000 || curr.getWeight() > Tile.NO_ACCESS) { //no path
+                return null;
+            }
 
             this.closed.add(curr);
 

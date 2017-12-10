@@ -158,7 +158,7 @@ public class AStar {
         return canBeWalkedThrough(lower.getType()) && canBeWalkedThrough(higher.getType());
     }
 
-    private static boolean canBeWalkedThrough(final Material mat) {
+    static boolean canBeWalkedThrough(final Material mat) {
         //sign?
         //more redstone stuff? & rails
         //penalty for web & soulsand?

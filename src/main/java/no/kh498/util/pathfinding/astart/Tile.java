@@ -2,6 +2,8 @@ package no.kh498.util.pathfinding.astart;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 
 /**
  * @author karl henrik
@@ -126,18 +128,28 @@ public class Tile implements Comparable<Tile> {
             return this.multiplier;
         }
 
-        switch (toLocation(w).getBlock().getType()) {
+        final Block b = toLocation(w).getBlock();
+        if (!AStar.canBeWalkedThrough(b.getRelative(BlockFace.UP).getType()) ||
+            !AStar.canBeWalkedThrough(b.getRelative(BlockFace.UP, 2).getType())) {
+            return 100000;
+        }
+
+        switch (b.getType()) {
             case SOUL_SAND:
             case WEB:
                 return 2f;
             case LAVA:
             case STATIONARY_LAVA:
+                return 100000;
             case WATER:
+                return 3f;
             case STATIONARY_WATER:
                 return 1.75f;
             case ICE:
             case PACKED_ICE:
-                return 1.5f;
+                return 1.25f;
+            case AIR:
+                return 100000;
             default:
                 return 1f;
         }

@@ -150,6 +150,8 @@ public class Tile implements Comparable<Tile> {
             case LAVA:
             case STATIONARY_LAVA:
             case AIR:
+            case FENCE:
+            case SNOW:
                 return NO_ACCESS;
             default:
                 return 1f;

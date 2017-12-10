@@ -49,6 +49,9 @@ public class AStar {
             return null;
         }
         final List<Tile> tilePath = pathfindTile();
+        if (tilePath == null) {
+            return null;
+        }
         final ArrayList<Location> locPath = new ArrayList<>(tilePath.size());
 
         for (final Tile t : tilePath) {

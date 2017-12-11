@@ -5,8 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.Openable;
 
 import java.util.*;
 
@@ -145,21 +143,7 @@ public class AStar {
         final Block lower = b.getRelative(BlockFace.UP, 1);
         final Block higher = b.getRelative(BlockFace.UP, 2);
 
-        final MaterialData loDat = lower.getState().getData();
-        final MaterialData hiDat = higher.getState().getData();
 
-        //if either block can be opened check if one of them is closed, if so return false
-        if (loDat instanceof Openable || hiDat instanceof Openable) {
-            if (loDat instanceof Openable && !((Openable) loDat).isOpen()) {
-                return false;
-            }
-            else if (hiDat instanceof Openable && !((Openable) hiDat).isOpen()) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
         //if neither is openable, check if they can be walked through
         return canBeWalkedThrough(lower.getType()) && canBeWalkedThrough(higher.getType());
     }

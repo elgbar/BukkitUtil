@@ -163,11 +163,11 @@ public class Tile implements Comparable<Tile> {
             case BIRCH_FENCE_GATE:
                 return NO_ACCESS;
             default:
-                return canBeWalkedThrough(b.getType()) ? NO_ACCESS : matAbovePenalty(b);
+                return canBeWalkedThrough(b.getType()) ? NO_ACCESS : abovePenalty(b);
         }
     }
 
-    private static float matAbovePenalty(final Block b) {
+    private static float abovePenalty(final Block b) {
 
         final Block lo = b.getRelative(BlockFace.UP, 1);
         final Block hi = b.getRelative(BlockFace.UP, 2);

@@ -213,13 +213,8 @@ public class InventoryUtil {
      */
     public static int emptySlots(final Inventory inv) {
         int slots = 0;
-        final int firstEmpty = inv.firstEmpty();
-        if (firstEmpty == -1) {
-            return slots;
-        }
-
-        for (int i = firstEmpty; i < inv.getSize(); i++) {
-            if (inv.getItem(i) == null) {
+        for (final ItemStack i : inv) {
+            if (i == null) {
                 slots++;
             }
         }

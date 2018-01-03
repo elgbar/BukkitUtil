@@ -1,4 +1,4 @@
-package no.kh498.util.pathfinding.astart;
+package no.kh498.util.experimental.pathfinding.astart;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

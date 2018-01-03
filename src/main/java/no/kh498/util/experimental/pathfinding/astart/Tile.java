@@ -1,4 +1,4 @@
-package no.kh498.util.pathfinding.astart;
+package no.kh498.util.experimental.pathfinding.astart;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -7,8 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
-
-import static no.kh498.util.pathfinding.astart.AStar.canBeWalkedThrough;
 
 /**
  * @author karl henrik
@@ -163,7 +161,7 @@ public class Tile implements Comparable<Tile> {
             case BIRCH_FENCE_GATE:
                 return NO_ACCESS;
             default:
-                return canBeWalkedThrough(b.getType()) ? NO_ACCESS : abovePenalty(b);
+                return AStar.canBeWalkedThrough(b.getType()) ? NO_ACCESS : abovePenalty(b);
         }
     }
 
@@ -186,11 +184,11 @@ public class Tile implements Comparable<Tile> {
 
         if (loDat instanceof Openable) {
             if (!((Openable) loDat).isOpen()) {
-                System.out.println("Looked at openable of lower, was NOT open");
+//                System.out.println("Looked at openable of lower, was NOT open");
                 return NO_ACCESS;
             }
             else {
-                System.out.println("Looked at openable of lower, is OPEN");
+//                System.out.println("Looked at openable of lower, is OPEN");
                 loOpen = true;
             }
         }
@@ -208,7 +206,7 @@ public class Tile implements Comparable<Tile> {
         }
 
 
-        if ((!loOpen && !canBeWalkedThrough(loMat)) || (!hiOpen && !canBeWalkedThrough(hiMat))) {
+        if ((!loOpen && !AStar.canBeWalkedThrough(loMat)) || (!hiOpen && !AStar.canBeWalkedThrough(hiMat))) {
             return NO_ACCESS;
         }
         if (loMat == Material.WEB || hiMat == Material.WEB) {

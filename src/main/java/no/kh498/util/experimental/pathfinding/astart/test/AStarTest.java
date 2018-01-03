@@ -1,7 +1,7 @@
-package no.kh498.util.pathfinding.astart.test;
+package no.kh498.util.experimental.pathfinding.astart.test;
 
-import no.kh498.util.pathfinding.astart.AStar;
-import no.kh498.util.pathfinding.astart.Tile;
+import no.kh498.util.experimental.pathfinding.astart.AStar;
+import no.kh498.util.experimental.pathfinding.astart.Tile;
 
 import java.util.List;
 

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 /**
  * @since 0.1.0
  */
+@SuppressWarnings("WeakerAccess")
 public final class FileUtils {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
@@ -57,6 +58,7 @@ public final class FileUtils {
             }
         }
     }
+
 
     /**
      * @param plugin
@@ -117,9 +119,26 @@ public final class FileUtils {
      *     Path from /plugins/{$plugin_name}/
      * @param fileName
      *     File name of the file
+     */
+    public static String readFileToString(final Plugin plugin, final String subPath, final String fileName) {
+        //noinspection deprecation
+        return readJSON(plugin, subPath, fileName, false);
+    }
+
+    /**
+     * @param plugin
+     *     The plugin that reads the json
+     * @param subPath
+     *     Path from /plugins/{$plugin_name}/
+     * @param fileName
+     *     File name of the file
      * @param addEnding
      *     If the method should add an ending eg "file" becomes "file.json"
+     *
+     * @deprecated The name make it seem like it only reads json files. Instead use
+     * {@link #readFileToString(Plugin, String, String)}
      */
+    @Deprecated
     public static String readJSON(final Plugin plugin, final String subPath, final String fileName,
                                   final Boolean addEnding) {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");

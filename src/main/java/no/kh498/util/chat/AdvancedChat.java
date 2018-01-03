@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
  * @since 0.1.0
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class AdvancedChat {
+public final class AdvancedChat {
 
     /**
      * Send a message to a player using the action bar.

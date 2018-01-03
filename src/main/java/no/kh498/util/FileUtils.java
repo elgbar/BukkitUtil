@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * @since 0.1.0
  */
-public class FileUtils {
+public final class FileUtils {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
     private static final Logger LOG = LoggerFactory.getLogger(FileUtils.class);

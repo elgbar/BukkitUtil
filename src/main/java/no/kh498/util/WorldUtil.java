@@ -9,7 +9,7 @@ import org.bukkit.block.BlockFace;
  * @author kh498
  * @since 0.1.0
  */
-public class WorldUtil {
+public final class WorldUtil {
 
     public static final int INVALID_LOCATION = Integer.MIN_VALUE;
     public static final int LOCATION_ERR = -1;

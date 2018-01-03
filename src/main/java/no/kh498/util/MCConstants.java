@@ -5,7 +5,7 @@ package no.kh498.util;
  * @since 0.1.0
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class MCConstants {
+public final class MCConstants {
 
     /**
      * The factor to multiply with to convert ticks into milliseconds.

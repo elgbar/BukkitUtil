@@ -22,7 +22,7 @@ import java.util.UUID;
  * @author karl henrik
  * @since 0.1.0
  */
-public class OnJoinMessage implements Listener {
+public final class OnJoinMessage implements Listener {
 
     private static HashMap<UUID, ArrayList<String>> messageMap;
 

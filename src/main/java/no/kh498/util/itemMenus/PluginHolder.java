@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
  *
  * @author karl henrik
  */
-public class PluginHolder {
+public final class PluginHolder {
 
     private static Plugin plugin;
 

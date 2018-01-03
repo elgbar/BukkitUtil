@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 /**
  * @author karl henrik
  */
-public class ItemListFormat {
+public final class ItemListFormat {
 
     /**
      * Create a list of string that is easier to ready than a mono colored text. Each object is colored by the secondary

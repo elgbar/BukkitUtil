@@ -7,7 +7,7 @@ import static java.lang.String.valueOf;
 /**
  * @author kh498
  */
-public class LocationUtil {
+public final class LocationUtil {
 
     /**
      * Round the xyz values of a location

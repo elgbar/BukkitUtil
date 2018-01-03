@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 /**
  * @author karl henrik
  */
-public class CountdownFinishedEvent extends Event {
+public final class CountdownFinishedEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 

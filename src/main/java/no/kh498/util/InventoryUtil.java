@@ -20,7 +20,7 @@ import java.util.UUID;
  * @since 0.1.0
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class InventoryUtil {
+public final class InventoryUtil {
 
     /**
      * Remove an ItemStack (from a inventory even if the items are spread out

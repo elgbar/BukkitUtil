@@ -63,7 +63,7 @@ public abstract class Countdown implements Runnable {
     /**
      * @return The players who should see the countdown.
      */
-    public abstract Collection<Player> getPlayers();
+    public abstract Collection<? extends Player> getPlayers();
 
     @Override
     public void run() {

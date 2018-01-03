@@ -3,12 +3,10 @@ package no.kh498.util.countdown.api.type;
 import no.kh498.util.countdown.api.Countdown;
 import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * Let everyone on a server see the countdown
@@ -32,12 +30,7 @@ public class CountdownServer extends Countdown {
     }
 
     @Override
-    public Collection<Player> getPlayers() {
-        final Collection<Player> players = new HashSet<>();
-
-        for (final World world : Bukkit.getWorlds()) {
-            players.addAll(world.getPlayers());
-        }
-        return players;
+    public Collection<? extends Player> getPlayers() {
+        return Bukkit.getServer().getOnlinePlayers();
     }
 }

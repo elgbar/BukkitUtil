@@ -83,7 +83,7 @@ public final class AdvancedChat {
                 ProtocolLibrary.getProtocolManager().sendServerPacket(p, chatPacket);
             }
         } catch (final Exception e) {
-            Bukkit.getLogger().severe("AdvancedChat cannot be used after a reload!");
+            e.printStackTrace();
         }
     }
 }

@@ -108,6 +108,7 @@
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.4.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Apache Commons IO -->

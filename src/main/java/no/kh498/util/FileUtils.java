@@ -1,8 +1,9 @@
 package no.kh498.util;
 
 import com.google.common.base.Preconditions;
-import no.kh498.util.log.Logger;
 import org.bukkit.plugin.Plugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -13,6 +14,9 @@ import java.util.ArrayList;
  * @since 0.1.0
  */
 public class FileUtils {
+
+    // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
+    private static final Logger LOG = LoggerFactory.getLogger(FileUtils.class);
 
     /**
      * @param plugin
@@ -34,9 +38,9 @@ public class FileUtils {
      */
     public static void save(final Plugin plugin, final InputStream in, final File file) throws IOException {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
-        Logger.setPluginIfNotSet(plugin);
+
         if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
-            Logger.severe("Failed to create the parent folder '" + file.getParentFile().toString() + "'");
+            LOG.error("Failed to create the parent folder '" + file.getParentFile().toString() + "'");
             return;
         }
         FileOutputStream out = null;
@@ -69,7 +73,6 @@ public class FileUtils {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
         Preconditions.checkNotNull(subPath, "subPath cannot be null");
         Preconditions.checkNotNull(fileName, "fileName cannot be null");
-        Logger.setPluginIfNotSet(plugin);
 
         BufferedWriter wtr = null;
 
@@ -78,13 +81,13 @@ public class FileUtils {
                 new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName + ".json");
             final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
             if (!filePath.isDirectory() && !filePath.mkdirs()) {
-                Logger.severe("Failed to create folder for '" + filePath.toString() + "'");
+                LOG.error("Failed to create folder for '" + filePath.toString() + "'");
                 return;
             }
 
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    Logger.severe("Failed to create files in '" + filePath.toString() + "'");
+                    LOG.error("Failed to create files in '" + filePath.toString() + "'");
                     return;
                 }
             }
@@ -95,7 +98,7 @@ public class FileUtils {
             wtr.flush();
 
         } catch (final IOException e) {
-            Logger.severe("Failed to write the json");
+            LOG.error("Failed to write the json");
         } finally {
             if (wtr != null) {
                 try {
@@ -122,19 +125,18 @@ public class FileUtils {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
         Preconditions.checkNotNull(subPath, "subPath cannot be null");
         Preconditions.checkNotNull(fileName, "fileName cannot be null");
-        Logger.setPluginIfNotSet(plugin);
         try {
             final File file = new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName +
                                        (addEnding ? ".json" : ""));
             final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
 
             if (!filePath.isDirectory() && !filePath.mkdirs()) {
-                Logger.severe("Failed to create folder for '" + filePath.toString() + "'");
+                LOG.error("Failed to create folder for '" + filePath.toString() + "'");
                 return null;
             }
 
             if (!file.exists()) {
-                Logger.info("Could not find the files to read, is this the first time you load this plugin?");
+                LOG.warn("Could not find the files to read, is this the first time you load this plugin?");
                 return null;
             }
             return org.apache.commons.io.FileUtils.readFileToString(file, Charset.defaultCharset());

@@ -4,11 +4,11 @@ import com.google.common.base.Preconditions;
 import no.kh498.util.chat.AdvancedChat;
 import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import no.kh498.util.countdown.events.CountdownFinishedEvent;
-import no.kh498.util.log.Logger;
-import no.kh498.util.log.Severity;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,6 +36,9 @@ public abstract class Countdown implements Runnable {
     private long startTime;
     private HashMap<Player, Interrupt> lastInterrupt;
     private final TimeFormat timeFormat;
+
+    // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
+    private static final Logger LOG = LoggerFactory.getLogger(Countdown.class);
 
     /**
      * @param plugin
@@ -102,7 +105,7 @@ public abstract class Countdown implements Runnable {
      * Start the countdown
      */
     public void start() {
-        Logger.log(Severity.FINER, "Countdown started");
+        LOG.debug("Countdown started");
         this.running = true;
         run();
     }
@@ -114,10 +117,10 @@ public abstract class Countdown implements Runnable {
      *     If the {@link CountdownFinishedEvent} event should be called
      */
     public void stop(final boolean callEvent) {
-        Logger.log(Severity.FINER, "Stop called for countdown");
+        LOG.debug("Stop called for countdown");
         this.running = false;
         if (callEvent) {
-            Logger.log(Severity.FINER, "Calling event on stop");
+            LOG.debug("Calling event on stop");
             Bukkit.getPluginManager().callEvent(new CountdownFinishedEvent(this));
         }
     }
@@ -126,7 +129,7 @@ public abstract class Countdown implements Runnable {
      * Reset the countdown to {@link #time}
      */
     public void reset() {
-        Logger.log(Severity.FINER, "Resetting countdown");
+        LOG.debug("Resetting countdown");
         this.startTime = System.currentTimeMillis();
         this.lastInterrupt = new HashMap<>();
     }

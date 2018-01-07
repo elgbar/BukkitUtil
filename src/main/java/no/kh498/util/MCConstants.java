@@ -15,14 +15,19 @@ public final class MCConstants {
      * {@code 20 (nr of ticks in a second) * 50 = 1000 (nr of millis in a second)}
      */
     public final static long TICK_TO_MILLIS_FACTOR = 50L;
-    public final static long ONE_SECOND_IN_TICKS = 20L;
 
     public final static long ONE_MINECRAFT_DAY_IN_TICKS = 24000L;
     public final static long ONE_MINECRAFT_DAY_IN_MILLIS = ONE_MINECRAFT_DAY_IN_TICKS * TICK_TO_MILLIS_FACTOR;
 
-    public static final long ONE_MINUTE_IN_MILLIS = ONE_SECOND_IN_TICKS * 60L * TICK_TO_MILLIS_FACTOR;
-    public static final long TEN_MINUTES_IN_MILLIS = ONE_MINUTE_IN_MILLIS * 10L;
-    public final static long TEN_SECONDS_IN_TICKS = ONE_SECOND_IN_TICKS * 10L;
+
+    public final static long ONE_SECOND_IN_TICKS = 20L;
+    public final static long ONE_MINUTE_IN_TICKS = ONE_SECOND_IN_TICKS * 60L;
+    public final static long ONE_HOUR_IN_TICKS = ONE_MINUTE_IN_TICKS * 60L;
+
+    public static final long ONE_SECOND_IN_MILLIS = 1000L;
+    public static final long ONE_MINUTE_IN_MILLIS = ONE_SECOND_IN_MILLIS * 60L;
+    public static final long ONE_HOUR_IN_MILLIS = ONE_MINUTE_IN_MILLIS * 60L;
+
 
     /**
      * Convert ticks to milliseconds

@@ -166,6 +166,24 @@ public final class FileUtils {
     }
 
     /**
+     * @param plugin
+     *     The plugin that reads the json
+     * @param subPath
+     *     Path from /plugins/{$plugin_name}/
+     * @param fileName
+     *     File name of the file
+     *
+     * @return if the file specified exists or not
+     */
+    public static boolean existFile(final Plugin plugin, final String subPath, final String fileName) {
+        Preconditions.checkNotNull(plugin, "Plugin cannot be null");
+        Preconditions.checkNotNull(subPath, "subPath cannot be null");
+        Preconditions.checkNotNull(fileName, "fileName cannot be null");
+        final File file = new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName);
+        return file.exists();
+    }
+
+    /**
      * @param subPath
      *     Path from /plugins/{$plugin_name}/
      *

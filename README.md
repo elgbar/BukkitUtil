@@ -6,18 +6,13 @@ For more general java utilities see [CommonUtilsJava](https://github.com/kh498/C
 
 ## Maven/Install
 
-```
-<repository>
-    <id>BukkitUtil</id>
-    <url>https://raw.githubusercontent.com/kh498/BukkitUtil/mvn-repo/</url>
-</repository>
-```
+Add [my repo](https://github.com/kh498/maven2)
 
 ```
 <dependency>
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>2.2.0</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 

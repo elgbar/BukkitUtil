@@ -1,6 +1,7 @@
 package no.kh498.util;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,7 +141,7 @@ public final class FileUtils {
      */
     @Deprecated
     public static String readJSON(final Plugin plugin, final String subPath, final String fileName,
-                                  final Boolean addEnding) {
+                                  final boolean addEnding) {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
         Preconditions.checkNotNull(subPath, "subPath cannot be null");
         Preconditions.checkNotNull(fileName, "fileName cannot be null");
@@ -204,5 +205,30 @@ public final class FileUtils {
             }
         }
         return listOfFileName;
+    }
+
+
+    public static String getInternalFileContent(final String internalPath) {
+        final InputStream is = getInternalFileStream(internalPath);
+        String content;
+        try {
+            content = IOUtils.toString(is, StandardCharsets.UTF_8);
+        } catch (final IOException e) {
+            content = null;
+        }
+        IOUtils.closeQuietly(is);
+        return content;
+    }
+
+    public static InputStream getInternalFileStream(final String internalPath) {
+        if (internalPath == null) {
+            LOG.error("The internal path cannot be null!");
+            return null;
+        }
+
+        final String prefix = internalPath.charAt(0) != '/' ? "/" : "";
+        final String absIntPath = prefix + internalPath;
+
+        return FileUtils.class.getResourceAsStream(absIntPath);
     }
 }

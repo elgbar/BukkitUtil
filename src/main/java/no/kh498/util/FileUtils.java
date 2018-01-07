@@ -71,7 +71,7 @@ public final class FileUtils {
      *     JsonString Valid Json string (Use Gson)
      */
     public static void writeJSON(final Plugin plugin, final String subPath, final String fileName,
-                                 final String JsonString) {
+                                 final String JsonString, final boolean addEnding) {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
         Preconditions.checkNotNull(subPath, "subPath cannot be null");
         Preconditions.checkNotNull(fileName, "fileName cannot be null");
@@ -79,8 +79,8 @@ public final class FileUtils {
         BufferedWriter wtr = null;
 
         try {
-            final File file =
-                new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName + ".json");
+            final File file = new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName +
+                                       (addEnding ? ".json" : ""));
             final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
             if (!filePath.isDirectory() && !filePath.mkdirs()) {
                 LOG.error("Failed to create folder for '" + filePath.toString() + "'");

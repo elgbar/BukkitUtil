@@ -113,7 +113,7 @@ public final class OnJoinMessage implements Listener {
 
     public static void save(final Plugin plugin) {
         final Type type = new TypeToken<HashMap<UUID, ArrayList<String>>>() { }.getType();
-        FileUtils.writeJSON(plugin, FILE_PATH, FILE_NAME, new Gson().toJson(messageMap, type));
+        FileUtils.writeJSON(plugin, FILE_PATH, FILE_NAME, new Gson().toJson(messageMap, type), true);
     }
 
     public static void load(final Plugin plugin) {

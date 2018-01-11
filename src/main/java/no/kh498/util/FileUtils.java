@@ -33,10 +33,15 @@ public final class FileUtils {
     /**
      * Saves the contents of an InputStream in a file.
      *
+     * @param plugin
+     *     The plugin that saves the InputStream
      * @param in
      *     The InputStream to read from. This stream will not be closed when this method returns.
      * @param file
      *     The file to save to. Will be replaced if it exists, or created if it doesn't.
+     *
+     * @throws IOException
+     *     For the same reasons as {@link FileOutputStream} does
      */
     public static void save(final Plugin plugin, final InputStream in, final File file) throws IOException {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
@@ -68,8 +73,25 @@ public final class FileUtils {
      *     Path from /plugins/{$plugin_name}/
      * @param fileName
      *     File name of the file (no ending)
+     * @param str
+     *     String to write to file
+     */
+    public static void writeStringToFile(final Plugin plugin, final String subPath, final String fileName,
+                                         final String str) {
+        writeJSON(plugin, subPath, fileName, str, false);
+    }
+
+    /**
+     * @param plugin
+     *     The plugin that writes the json
+     * @param subPath
+     *     Path from /plugins/{$plugin_name}/
+     * @param fileName
+     *     File name of the file (no ending)
      * @param JsonString
      *     JsonString Valid Json string (Use Gson)
+     * @param addEnding
+     *     if a '.json' ending should be appended to the filename
      */
     public static void writeJSON(final Plugin plugin, final String subPath, final String fileName,
                                  final String JsonString, final boolean addEnding) {
@@ -120,6 +142,8 @@ public final class FileUtils {
      *     Path from /plugins/{$plugin_name}/
      * @param fileName
      *     File name of the file
+     *
+     * @return The content of the file read as UTF-8 text
      */
     public static String readFileToString(final Plugin plugin, final String subPath, final String fileName) {
         //noinspection deprecation
@@ -135,6 +159,8 @@ public final class FileUtils {
      *     File name of the file
      * @param addEnding
      *     If the method should add an ending eg "file" becomes "file.json"
+     *
+     * @return The content of the file read as UTF-8 text
      *
      * @deprecated The name make it seem like it only reads json files. Instead use
      * {@link #readFileToString(Plugin, String, String)}
@@ -185,6 +211,8 @@ public final class FileUtils {
     }
 
     /**
+     * @param plugin
+     *     The plugin that has the files
      * @param subPath
      *     Path from /plugins/{$plugin_name}/
      *
@@ -210,6 +238,7 @@ public final class FileUtils {
 
     public static String getInternalFileContent(final String internalPath) {
         final InputStream is = getInternalFileStream(internalPath);
+        LOG.trace("is: " + is);
         String content;
         try {
             content = IOUtils.toString(is, StandardCharsets.UTF_8);
@@ -228,6 +257,8 @@ public final class FileUtils {
 
         final String prefix = internalPath.charAt(0) != '/' ? "/" : "";
         final String absIntPath = prefix + internalPath;
+
+        LOG.trace("absIntPath: " + absIntPath);
 
         return FileUtils.class.getResourceAsStream(absIntPath);
     }

@@ -16,7 +16,7 @@ public final class WorldUtil {
 
     /**
      * @param location
-     *     The locations (only x & z matters)
+     *     The locations (only {@code x} and {@code z} matters)
      *
      * @return The highest block that is "valid" or null if the location is null or no block can be found
      */

@@ -24,6 +24,8 @@ public class CountdownServer extends Countdown {
      *     The text to display in the action bar. Must contain a {@code %s} where the time left is inserted
      * @param time
      *     How long the countdown should be in milliseconds
+     * @param timeFormat
+     *     The way time is displayed
      */
     public CountdownServer(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat) {
         super(plugin, text, time, timeFormat);

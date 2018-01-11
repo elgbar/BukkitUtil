@@ -25,6 +25,8 @@ public class CountdownList extends Countdown {
      *     The text to display in the action bar. Must contain a {@code %s} where the time left is inserted
      * @param time
      *     How long the countdown should be in milliseconds
+     * @param timeFormat
+     *     The way time is displayed
      * @param players
      *     the players to see the countdown
      */

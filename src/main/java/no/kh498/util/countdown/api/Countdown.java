@@ -32,9 +32,9 @@ public abstract class Countdown implements Runnable {
     private String text;
     private long time;
     private final Plugin plugin;
-    private boolean running;
-    private long startTime;
-    private HashMap<Player, Interrupt> lastInterrupt;
+    private transient boolean running;
+    private transient long startTime;
+    private transient HashMap<Player, Interrupt> lastInterrupt;
     private final TimeFormat timeFormat;
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
@@ -74,8 +74,7 @@ public abstract class Countdown implements Runnable {
             return;
         }
 
-        //calculate the time left
-        final long timeLeft = (this.startTime + this.time) - System.currentTimeMillis();
+        final long timeLeft = getTimeLapsed();
         if (timeLeft < 0) {
             stop(true);
             return;
@@ -123,6 +122,25 @@ public abstract class Countdown implements Runnable {
             LOG.debug("Calling event on stop");
             Bukkit.getPluginManager().callEvent(new CountdownFinishedEvent(this));
         }
+    }
+
+    /**
+     * {@link #reset()} and set the start time to {@code timeLapsed}. This can be used when resuming a timer saved to
+     * disk.
+     *
+     * @param timeLapsed
+     *     How many milliseconds to skip
+     */
+    public void setTimeLapsed(final long timeLapsed) {
+        reset();
+        this.startTime -= timeLapsed;
+    }
+
+    /**
+     * @return calculate the time left in milliseconds
+     */
+    public long getTimeLapsed() {
+        return (this.startTime + this.time) - System.currentTimeMillis();
     }
 
     /**

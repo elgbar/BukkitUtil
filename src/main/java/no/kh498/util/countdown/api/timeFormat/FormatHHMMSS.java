@@ -15,19 +15,19 @@ public class FormatHHMMSS implements TimeFormat {
 
     @Override
     public String formatTime(final long timeLeft) {
-        final long time = timeLeft / 1000L;
+        final long time = timeLeft / 1000L; //time in seconds
 
         final long hours = time / 3600;
-        final long secondsLeft = time - hours * 3600;
+        final long secondsLeft = time - (hours * 3600);
         final long minutes = secondsLeft / 60;
-        final long seconds = secondsLeft - minutes * 60;
+        final long seconds = secondsLeft - (minutes * 60);
 
         final StringBuilder sb = new StringBuilder();
         if (hours > 0) {
             ensureDoubleDig(sb, hours);
             sb.append(hours).append(" hours ");
         }
-        if (minutes > 0 && hours > 0) {
+        if (minutes > 0) {
             ensureDoubleDig(sb, minutes);
             sb.append(minutes).append(" minutes ");
         }

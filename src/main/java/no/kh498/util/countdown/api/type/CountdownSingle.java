@@ -1,5 +1,6 @@
 package no.kh498.util.countdown.api.type;
 
+import com.google.common.base.Preconditions;
 import no.kh498.util.countdown.api.Countdown;
 import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import org.bukkit.entity.Player;
@@ -34,6 +35,7 @@ public class CountdownSingle extends Countdown {
     public CountdownSingle(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat,
                            final Player player) {
         super(plugin, text, time, timeFormat);
+        Preconditions.checkArgument(player != null);
         this.player = Collections.singletonList(player);
     }
 

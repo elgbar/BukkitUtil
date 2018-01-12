@@ -1,5 +1,6 @@
 package no.kh498.util.countdown.api.type;
 
+import com.google.common.base.Preconditions;
 import no.kh498.util.countdown.api.Countdown;
 import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import org.bukkit.World;
@@ -34,6 +35,7 @@ public class CountdownWorld extends Countdown {
     public CountdownWorld(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat,
                           final World world) {
         super(plugin, text, time, timeFormat);
+        Preconditions.checkArgument(world != null);
         this.world = world;
     }
 

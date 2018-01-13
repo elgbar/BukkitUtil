@@ -4,9 +4,9 @@ Various utilities for easier programming in bukkit. Some might require protocol 
 
 ### List of utilities
 
-* [Countdown](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/countdown) - Easy way of creating a countdown. (requires ProtocolLib)
+* [Countdown](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/countdown) - Easy way of creating a countdown. (requires ProtocolLib for lower than 1.9.2)
 * [ItemMenus](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/itemMenus) - Take an OOP approach to GUI based menus.
-* [AdvancedChat](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/chat) - Use System and Action Bar for minecraft versions that doesn't support them (1.8.x being one). (requires ProtocolLib)
+* [AdvancedChat](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/chat) - Use System and Action Bar for minecraft versions that doesn't support them (1.8.x being one). (requires ProtocolLib for lower than 1.9.2)
 * [FileUtils](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/FileUtils.java) - Easily read and write files for a plugin.
 * [InventoryUtil](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/InventoryUtil.java) - Get more controll over Bukkit's inventories.
 * [MCConstans](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/MCConstants.java) - Convert millisecond to tick and visaversa, also contains some time constants.

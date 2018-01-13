@@ -11,7 +11,7 @@ public enum ChatType {
 
     CHAT(0),
     SYSTEM(1),
-    GAME_INFO(2);
+    ACTION_BAR(2);
 
     private final byte id;
 

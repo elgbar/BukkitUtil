@@ -76,13 +76,36 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>false</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>info.ronjenkins:slf4bukkit</include>
+                                    <include>org.slf4j:slf4j-api</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
     <repositories>
         <repository>
             <id>spigot-repo</id>
-            <url>http://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
         </repository>
         <repository>
             <id>dmulloy2-repo</id>
@@ -90,18 +113,30 @@
         </repository>
         <repository>
             <id>CommonUtil</id>
-            <url>https://raw.githubusercontent.com/kh498/CommonUtilsJava/mvn-repo/</url>
+            <url>https://raw.githubusercontent.com/kh498/maven2/repo/</url>
+        </repository>
+        <repository>
+            <id>github-rjenkinsjr</id>
+            <url>https://raw.githubusercontent.com/rjenkinsjr/maven2/repo</url>
         </repository>
     </repositories>
 
     <dependencies>
-        <!--Bukkit 1.8.8 -->
+        <!-- Spigot api-->
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.9.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
 
         <!-- ProtocolLib -->
         <dependency>
@@ -129,6 +164,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.25</version>
+        </dependency>
+
+        <dependency>
+            <groupId>info.ronjenkins</groupId>
+            <artifactId>slf4bukkit</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>

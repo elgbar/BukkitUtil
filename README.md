@@ -23,7 +23,7 @@ Add [my repo](https://github.com/kh498/maven2)
 <dependency>
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>3.2.2</version>
+    <version>3.3.0</version>
 </dependency>
 ```
 

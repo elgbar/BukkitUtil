@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public final class FileUtils {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
-    private static final Logger LOG = LoggerFactory.getLogger(FileUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
 
     /**
      * @param plugin
@@ -47,7 +47,7 @@ public final class FileUtils {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
 
         if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
-            LOG.error("Failed to create the parent folder '" + file.getParentFile().toString() + "'");
+            log.error("Failed to create the parent folder '" + file.getParentFile().toString() + "'");
             return;
         }
         FileOutputStream out = null;
@@ -87,17 +87,18 @@ public final class FileUtils {
      * @param subPath
      *     Path from /plugins/{$plugin_name}/
      * @param fileName
-     *     File name of the file (no ending)
-     * @param JsonString
-     *     JsonString Valid Json string (Use Gson)
+     *     Filename of the file (no ending)
+     * @param jsonString
+     *     Json string
      * @param addEnding
      *     if a '.json' ending should be appended to the filename
      */
     public static void writeJSON(final Plugin plugin, final String subPath, final String fileName,
-                                 final String JsonString, final boolean addEnding) {
-        Preconditions.checkNotNull(plugin, "Plugin cannot be null");
-        Preconditions.checkNotNull(subPath, "subPath cannot be null");
-        Preconditions.checkNotNull(fileName, "fileName cannot be null");
+                                 final String jsonString, final boolean addEnding) {
+        Preconditions.checkArgument(plugin != null, "Plugin cannot be null");
+        Preconditions.checkArgument(subPath != null, "subPath cannot be null");
+        Preconditions.checkArgument(fileName != null, "fileName cannot be null");
+        Preconditions.checkArgument(jsonString != null, "Cannot write a null message to file!");
 
         BufferedWriter wtr = null;
 
@@ -106,24 +107,24 @@ public final class FileUtils {
                                        (addEnding ? ".json" : ""));
             final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
             if (!filePath.isDirectory() && !filePath.mkdirs()) {
-                LOG.error("Failed to create folder for '" + filePath.toString() + "'");
+                log.error("Failed to create folder for '" + filePath.toString() + "'");
                 return;
             }
 
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    LOG.error("Failed to create files in '" + filePath.toString() + "'");
+                    log.error("Failed to create files in '" + filePath.toString() + "'");
                     return;
                 }
             }
             wtr = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
 
-            wtr.write(JsonString);
+            wtr.write(jsonString);
 
             wtr.flush();
 
         } catch (final IOException e) {
-            LOG.error("Failed to write the json");
+            log.error("Failed to write the json");
         } finally {
             if (wtr != null) {
                 try {
@@ -177,12 +178,12 @@ public final class FileUtils {
             final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
 
             if (!filePath.isDirectory() && !filePath.mkdirs()) {
-                LOG.error("Failed to create folder for '" + filePath.toString() + "'");
+                log.error("Failed to create folder for '" + filePath.toString() + "'");
                 return null;
             }
 
             if (!file.exists()) {
-                LOG.warn("Could not find the files to read, is this the first time you load this plugin?");
+                log.warn("Could not find the files to read, is this the first time you load this plugin?");
                 return null;
             }
             return org.apache.commons.io.FileUtils.readFileToString(file, Charset.defaultCharset());
@@ -236,29 +237,41 @@ public final class FileUtils {
     }
 
 
+    /**
+     * @param internalPath
+     *     The path to the file within the jar
+     *
+     * @return The file at {@code internalPath} or {@code null} if the file cannot be read or not found
+     */
     public static String getInternalFileContent(final String internalPath) {
+        Preconditions.checkArgument(internalPath != null, "The internal path cannot be null!");
+
         final InputStream is = getInternalFileStream(internalPath);
-        LOG.trace("is: " + is);
+        log.trace("is: " + is);
         String content;
         try {
             content = IOUtils.toString(is, StandardCharsets.UTF_8);
-        } catch (final IOException e) {
+        } catch (final IOException | NullPointerException e) {
             content = null;
         }
         IOUtils.closeQuietly(is);
         return content;
     }
 
+    /**
+     * @param internalPath
+     *     The path to the file within the jar
+     *
+     * @return The file at {@code internalPath} as an InputStream or {@code null} if the file is not found
+     */
     public static InputStream getInternalFileStream(final String internalPath) {
-        if (internalPath == null) {
-            LOG.error("The internal path cannot be null!");
-            return null;
-        }
+        Preconditions.checkArgument(internalPath != null, "The internal path cannot be null!");
 
+        //a '/' marks the path as absolute, must be present to search for files from the root of the jar
         final String prefix = internalPath.charAt(0) != '/' ? "/" : "";
         final String absIntPath = prefix + internalPath;
 
-        LOG.trace("absIntPath: " + absIntPath);
+        log.trace("absIntPath: " + absIntPath);
 
         return FileUtils.class.getResourceAsStream(absIntPath);
     }

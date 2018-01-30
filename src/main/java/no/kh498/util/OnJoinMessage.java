@@ -107,7 +107,7 @@ public final class OnJoinMessage implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    private void onDisable(final PluginDisableEvent event) {
+    private static void onDisable(final PluginDisableEvent event) {
         save(event.getPlugin());
     }
 
@@ -121,11 +121,7 @@ public final class OnJoinMessage implements Listener {
         final Type type = new TypeToken<HashMap<UUID, ArrayList<String>>>() { }.getType();
 
         final HashMap<UUID, ArrayList<String>> msgMap = new Gson().fromJson(json, type);
-        if (msgMap == null) {
-            messageMap = new HashMap<>();
-        }
-        else {
-            messageMap = msgMap;
-        }
+
+        messageMap = (msgMap != null) ? msgMap : new HashMap<>();
     }
 }

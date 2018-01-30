@@ -47,7 +47,7 @@ public class MultiPage {
     public void viewPage(int page, final CommandSender sender) {
         final int pages = MathUtil.dividedRoundedUp(this.content.size(), this.maxPerPage);
         if (page > pages) {
-            chtUtil.sendFormattedMsg(sender, "&cThere is no page %d (max page is %d)", page, pages);
+            ChtUtil.sendFormattedMsg(sender, "&cThere is no page %d (max page is %d)", page, pages);
             return;
         }
 
@@ -57,7 +57,7 @@ public class MultiPage {
         }
 
         final ArrayList<String> msgList = new ArrayList<>();
-        msgList.add(chtUtil.createFormattedMsg(this.header, page, pages));
+        msgList.add(ChtUtil.createFormattedMsg(this.header, page, pages));
 
         for (int i = (page - 1) * this.maxPerPage; i < this.maxPerPage * page; i++) {
             try {
@@ -71,7 +71,7 @@ public class MultiPage {
         }
 
         if (page != pages) {
-            msgList.add(chtUtil.createFormattedMsg(this.footer, this.command, page + 1));
+            msgList.add(ChtUtil.createFormattedMsg(this.footer, this.command, page + 1));
         }
         sender.sendMessage(msgList.toArray(new String[msgList.size()]));
     }

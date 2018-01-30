@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 /**
  * @author karl henrik
  */
-public class chtUtil {
+public class ChtUtil {
 
     /**
      * @param sender

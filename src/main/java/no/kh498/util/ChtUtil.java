@@ -12,7 +12,7 @@ public class ChtUtil {
      * @param sender
      *     The receiver of the message
      * @param msg
-     *     The message to format, supports & as chat color prefix
+     *     The message to format, supports '&amp;' as chat color prefix
      * @param obj
      *     The objects to replace
      */
@@ -26,7 +26,7 @@ public class ChtUtil {
      * @param obj
      *     The objects to replace
      *
-     * @return A message that can use & as bukkit color and {@link String#format(String, Object...)}
+     * @return A message that can use '&amp;' as bukkit color and {@link String#format(String, Object...)}
      */
     public static String createFormattedMsg(final String msg, final Object... obj) {
         return toBukkitColor(String.format(msg, obj));
@@ -36,7 +36,7 @@ public class ChtUtil {
      * @param str
      *     The String to colorify
      *
-     * @return Add color to string that is using the color code '&'
+     * @return Add color to string that is using the color code '&amp;'
      */
     public static String toBukkitColor(final String str) {
         return ChatColor.translateAlternateColorCodes('&', sanitizeSpecialChars(str));

@@ -156,7 +156,7 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>CommonUtil</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.1</version>
         </dependency>
 
         <!-- SLF4J logging API -->

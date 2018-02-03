@@ -119,6 +119,10 @@
             <id>github-rjenkinsjr</id>
             <url>https://raw.githubusercontent.com/rjenkinsjr/maven2/repo</url>
         </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -170,6 +174,13 @@
             <groupId>info.ronjenkins</groupId>
             <artifactId>slf4bukkit</artifactId>
             <version>1.0.0</version>
+        </dependency>
+
+        <!-- WorldGuard -->
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-legacy</artifactId>
+            <version>6.2</version>
         </dependency>
     </dependencies>
 </project>

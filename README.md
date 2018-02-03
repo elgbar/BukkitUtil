@@ -6,14 +6,15 @@ Various utilities for easier programming in bukkit. Some might require protocol 
 
 * [Countdown](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/countdown) - Easy way of creating a countdown. (requires ProtocolLib for lower than 1.9.2)
 * [ItemMenus](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/itemMenus) - Take an OOP approach to GUI based menus.
-* [AdvancedChat](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/chat) - Use System and Action Bar for minecraft versions that doesn't support them (1.8.x being one). (requires ProtocolLib for lower than 1.9.2)
+* [AdvancedChat](https://github.com/kh498/BukkitUtil/tree/master/src/main/java/no/kh498/util/chat) - Use System and Action Bar for minecraft versions that doesn't support them, 1.8.x being one. (requires ProtocolLib for lower than 1.9.2)
 * [FileUtils](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/FileUtils.java) - Easily read and write files for a plugin.
 * [InventoryUtil](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/InventoryUtil.java) - Get more control over Bukkit's inventories.
 * [MCConstans](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/MCConstants.java) - Convert millisecond to tick and visa versa, also contains some time constants.
 * [OnJoinMessage](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/OnJoinMessage.java) - Let players get messages even if they're not on.
-* [WorldUtil](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/WorldUtil.java) - Get the highest valid block from a location
-* [MultiPage](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/MultiPage.java) - Create a help-ish menu but with any text
-* [ChtUtil](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/ChtUtil.java) - Easier chat usage, including newline and tab fixer
+* [WorldUtil](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/WorldUtil.java) - Get the highest valid block from a location.
+* [MultiPage](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/MultiPage.java) - Create a help-ish menu but with any text.
+* [ChtUtil](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/ChtUtil.java) - Easier chat usage, including newline and tab fixer.
+* [RegionEvents](https://github.com/kh498/BukkitUtil/blob/master/src/main/java/no/kh498/util/regionEvents) - Region exit/enter events for WorldGuard. (requires WorldGuard 6.x, tested on WorldGuard 6.2)
 
 For more general java utilities see [CommonUtilsJava](https://github.com/kh498/CommonUtilsJava) and for easier command creation you can use [BukkitCommandAPI](https://github.com/kh498/BukkitCommandAPI). Both can be used with maven.
 
@@ -25,7 +26,7 @@ Add [my repo](https://github.com/kh498/maven2)
 <dependency>
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>3.4.1</version>
+    <version>3.5.0</version>
 </dependency>
 ```
 

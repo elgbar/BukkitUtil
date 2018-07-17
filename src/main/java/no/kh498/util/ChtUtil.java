@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 /**
  * @author karl henrik
  */
+@SuppressWarnings("WeakerAccess")
 public class ChtUtil {
 
     /**

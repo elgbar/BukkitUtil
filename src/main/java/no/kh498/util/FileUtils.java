@@ -50,17 +50,11 @@ public final class FileUtils {
             log.error("Failed to create the parent folder '" + file.getParentFile().toString() + "'");
             return;
         }
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(file);
+        try (final FileOutputStream out = new FileOutputStream(file)) {
             final byte[] buffer = new byte[16 * 1024];
             int read;
             while ((read = in.read(buffer)) > 0) {
                 out.write(buffer, 0, read);
-            }
-        } finally {
-            if (out != null) {
-                out.close();
             }
         }
     }
@@ -252,6 +246,10 @@ public final class FileUtils {
         try {
             content = IOUtils.toString(is, StandardCharsets.UTF_8);
         } catch (final IOException | NullPointerException e) {
+            log.debug("Failed to get internal file due to a " + e.getClass().getSimpleName());
+            if (log.isTraceEnabled()) {
+                e.printStackTrace();
+            }
             content = null;
         }
         IOUtils.closeQuietly(is);

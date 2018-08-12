@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
 
@@ -34,6 +35,7 @@ public class ItemMenu {
      */
     @SuppressWarnings("deprecation") private static final MenuItem EMPTY_SLOT_ITEM =
         new StaticMenuItem(" ", new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getDyeData()));
+    private final Plugin plugin;
     private String name;
     private Size size;
     private MenuItem[] items;
@@ -50,8 +52,28 @@ public class ItemMenu {
      *     The ItemMenu's parent.
      * @param items
      *     The items that this menu contains
+     *
+     * @deprecated Use constructor with plugin reference
      */
+    @Deprecated
     public ItemMenu(final String name, final Size size, final ItemMenu parent, final MenuItem[] items) {
+        this(PluginHolder.getPlugin(), name, size, parent, items);
+    }
+
+    /**
+     * Creates an ItemMenu.
+     *
+     * @param name
+     *     The name of the inventory.
+     * @param size
+     *     The {@link Size} of the inventory.
+     * @param parent
+     *     The ItemMenu's parent.
+     * @param items
+     *     The items that this menu contains
+     */
+    public ItemMenu(Plugin plugin, final String name, final Size size, final ItemMenu parent, final MenuItem[] items) {
+        this.plugin = plugin;
         this.name = name;
         this.size = size;
         this.parent = parent;
@@ -96,7 +118,7 @@ public class ItemMenu {
      * @return A copy of the original ItemMenu
      */
     private static ItemMenu copy(final ItemMenu orgMenu) {
-        return new ItemMenu(orgMenu.name, orgMenu.size, orgMenu.parent, orgMenu.items);
+        return new ItemMenu(orgMenu.plugin, orgMenu.name, orgMenu.size, orgMenu.parent, orgMenu.items);
     }
 
     /**
@@ -305,8 +327,8 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     public ItemMenu open(final Player player) {
-        if (!ItemMenuListener.getInstance().isRegistered(PluginHolder.getPlugin())) {
-            ItemMenuListener.getInstance().register(PluginHolder.getPlugin());
+        if (!ItemMenuListener.getInstance().isRegistered(plugin)) {
+            ItemMenuListener.getInstance().register(plugin);
         }
 
         final Inventory inventory = Bukkit
@@ -377,7 +399,7 @@ public class ItemMenu {
                     player.updateInventory();
                     if (itemClickEvent.willClose()) {
                         final UUID playerUUID = player.getUniqueId();
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(PluginHolder.getPlugin(), () -> {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                             final Player p = Bukkit.getPlayer(playerUUID);
                             if (p != null) {
                                 p.closeInventory();
@@ -386,7 +408,7 @@ public class ItemMenu {
                     }
                     if (itemClickEvent.willGoBack() && hasParent()) {
                         final UUID playerUUID = player.getUniqueId();
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(PluginHolder.getPlugin(), () -> {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                             final Player p = Bukkit.getPlayer(playerUUID);
                             if (p != null) {
                                 p.closeInventory();

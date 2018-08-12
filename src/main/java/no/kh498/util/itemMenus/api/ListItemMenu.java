@@ -6,6 +6,8 @@ import no.kh498.util.itemMenus.PluginHolder;
 import no.kh498.util.itemMenus.api.constants.CommonPos;
 import no.kh498.util.itemMenus.api.constants.Size;
 import no.kh498.util.itemMenus.api.items.ActionMenuItem;
+import no.kh498.util.itemMenus.api.items.StaticMenuItem;
+import no.kh498.util.itemMenus.events.ItemClickEvent;
 import no.kh498.util.itemMenus.items.ColoredPaneItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,8 +15,10 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * View a {@link ArrayList ArrayList}{@code <}{@link MenuItem MenuItem}{@code
@@ -34,8 +38,9 @@ public class ListItemMenu {
     /* constants */
     private static final int FIVE_LINES_SIZE = Size.FIVE.getSize();
     /* set by the user */
-    private final ArrayList<MenuItem> menuItemList;
+    private final List<MenuItem> menuItemList;
     private final String title;
+    private final Plugin plugin;
 
     /* generated */
     private final int pages;
@@ -46,10 +51,26 @@ public class ListItemMenu {
      *     The list of MenuItems to include
      * @param title
      *     The title of the menu, <b>can maximum be 22 characters long</b>
+     *
+     * @deprecated Use constructor with plugin reference
      */
-    public ListItemMenu(final ArrayList<MenuItem> menuItemList, final String title) {
-        Preconditions.checkArgument(title.length() <= 22, "Title cannot be longer than 22 characters");
+    @Deprecated
+    public ListItemMenu(final List<MenuItem> menuItemList, final String title) {
+        this(PluginHolder.getPlugin(), menuItemList, title);
+    }
 
+    /**
+     * @param menuItemList
+     *     The list of MenuItems to include
+     * @param title
+     *     The title of the menu, <b>can maximum be 22 characters long</b>
+     */
+    public ListItemMenu(Plugin plugin, final List<MenuItem> menuItemList, final String title) {
+
+        Preconditions.checkArgument(title.length() <= 22, "Title cannot be longer than 22 characters");
+        Preconditions.checkNotNull(plugin);
+
+        this.plugin = plugin;
         this.menuItemList = menuItemList;
         this.title = title;
         this.pages = MathUtil.dividedRoundedUp(menuItemList.size(), FIVE_LINES_SIZE);

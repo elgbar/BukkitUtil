@@ -7,7 +7,9 @@ import org.bukkit.plugin.Plugin;
  * variable for the library to work as expected.
  *
  * @author karl henrik
+ * @deprecated Set a plugin reference in the constructor of the desired utility
  */
+@Deprecated
 public final class PluginHolder {
 
     private static Plugin plugin;

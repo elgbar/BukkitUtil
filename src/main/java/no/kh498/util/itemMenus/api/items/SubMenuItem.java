@@ -7,6 +7,7 @@ import no.kh498.util.itemMenus.events.ItemClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
 
@@ -15,10 +16,18 @@ import java.util.UUID;
  */
 public class SubMenuItem extends MenuItem {
 
+    private final Plugin plugin;
     private final ItemMenu menu;
 
+    @Deprecated
     public SubMenuItem(final String displayName, final ItemMenu menu, final ItemStack icon, final String... lore) {
+        this(PluginHolder.getPlugin(), displayName, menu, icon, lore);
+    }
+
+    public SubMenuItem(Plugin plugin, final String displayName, final ItemMenu menu, final ItemStack icon,
+                       final String... lore) {
         super(displayName, icon, lore);
+        this.plugin = plugin;
         this.menu = menu;
     }
 
@@ -26,11 +35,11 @@ public class SubMenuItem extends MenuItem {
     public void onItemClick(final ItemClickEvent event) {
         event.setWillClose(true);
         final UUID ID = event.getPlayer().getUniqueId();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(PluginHolder.getPlugin(), () -> {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             final Player p = Bukkit.getPlayer(ID);
             if (p != null && this.menu != null) {
                 this.menu.open(p);
             }
-        }, 1L);
+        }, 2L);
     }
 }

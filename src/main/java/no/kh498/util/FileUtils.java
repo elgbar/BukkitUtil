@@ -273,4 +273,11 @@ public final class FileUtils {
 
         return FileUtils.class.getResourceAsStream(absIntPath);
     }
+
+    /**
+     * @return A file in a plugin's data folder
+     */
+    public static File getDatafolderFile(Plugin plugin, String filename) {
+        return new File(plugin.getDataFolder(), filename);
+    }
 }

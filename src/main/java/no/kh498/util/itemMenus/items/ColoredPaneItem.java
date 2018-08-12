@@ -51,7 +51,7 @@ public final class ColoredPaneItem extends ActionMenuItem {
      *     Color of the item
      */
     public ColoredPaneItem(final String name, final DyeColor color) {
-        this(name, color, event -> {}, "");
+        this(name, color, event -> {});
     }
 
     /**
@@ -61,6 +61,6 @@ public final class ColoredPaneItem extends ActionMenuItem {
      *     Color of the item
      */
     public ColoredPaneItem(final DyeColor color) {
-        this(" ", color, "");
+        this(" ", color);
     }
 }

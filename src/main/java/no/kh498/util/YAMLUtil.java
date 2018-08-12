@@ -54,14 +54,14 @@ public class YAMLUtil {
      * @return A FileConfiguration from the relative plugin path
      */
     public static FileConfiguration getYaml(Plugin plugin, String filename) {
-        return YamlConfiguration.loadConfiguration(getDatafolderFile(plugin, filename));
+        return YamlConfiguration.loadConfiguration(FileUtils.getDatafolderFile(plugin, filename));
     }
 
     /**
      * Save a FileConfiguration to the datafolder of a plugin
      */
     public static void saveYaml(Plugin plugin, FileConfiguration conf, String savePath) {
-        File saveFile = getDatafolderFile(plugin, savePath);
+        File saveFile = FileUtils.getDatafolderFile(plugin, savePath);
         try {
             conf.save(saveFile);
         } catch (IOException e) {

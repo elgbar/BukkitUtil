@@ -18,7 +18,7 @@ public class ChtUtil {
      *     The objects to replace
      */
     public static void sendFormattedMsg(final CommandSender sender, final String msg, final Object... obj) {
-        sender.sendMessage(createFormattedMsg(msg, obj));
+        sender.sendMessage(createFormattedMsg(msg, obj).split("\n"));
     }
 
     /**

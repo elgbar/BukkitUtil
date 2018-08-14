@@ -139,11 +139,12 @@ public class Tile implements Comparable<Tile> {
         final Block b = toLocation(w).getBlock();
 
         switch (b.getType()) {
-            case SOUL_SAND:
             case WATER:
-                return 20f;
+                return 25f;
             case STATIONARY_WATER:
-                return 10f;
+                return 12f;
+            case SOUL_SAND:
+                return 8f;
             case ICE:
             case PACKED_ICE:
                 return 1.5f;

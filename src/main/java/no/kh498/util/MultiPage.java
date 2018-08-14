@@ -73,6 +73,6 @@ public class MultiPage {
         if (page != pages) {
             msgList.add(ChtUtil.createFormattedMsg(this.footer, this.command, page + 1));
         }
-        sender.sendMessage(msgList.toArray(new String[msgList.size()]));
+        sender.sendMessage(msgList.toArray(new String[0]));
     }
 }

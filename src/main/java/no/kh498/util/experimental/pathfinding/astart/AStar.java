@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -12,6 +14,8 @@ import java.util.*;
  * @author karl henrik
  */
 public class AStar {
+
+    private Logger logger = LoggerFactory.getLogger(AStar.class);
 
     private final PriorityQueue<Tile> open = new PriorityQueue<>();
     private final HashSet<Tile> openContains = new HashSet<>();
@@ -28,6 +32,7 @@ public class AStar {
         if (!start.getWorld().equals(goal.getWorld())) {
             throw new IllegalArgumentException("The start and the goal is not in the same world.");
         }
+
         this.w = start.getWorld();
     }
 
@@ -38,12 +43,12 @@ public class AStar {
         addOpen(this.start);
 
         this.start.calcAll(this.goal, this.w);
-        System.out.print("start: " + start);
+        logger.debug("start: " + start);
     }
 
     public List<Location> pathfind() {
         if (this.w == null) {
-            System.err.println("Cannot create a location path when the world has not been specified");
+            logger.error("Cannot create a location path when the world has not been specified");
             return null;
         }
         final List<Tile> tilePath = pathfindTile();
@@ -62,7 +67,7 @@ public class AStar {
     public List<Tile> pathfindTile() {
         while (!this.open.isEmpty()) {
             final Tile curr = pollOpen();
-//            System.out.println("curr = " + curr);
+            logger.trace("curr " + curr);
             if (curr.equals(this.goal)) {
                 return buildPath(curr);
             }
@@ -73,7 +78,7 @@ public class AStar {
             this.closed.add(curr);
 
             for (final Tile adj : getAdjacent(curr)) {
-                if (this.closed.contains(adj)) { //|| !isTileWalkable(adj)
+                if (this.closed.contains(adj)) {
                     continue;
                 }
 

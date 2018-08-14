@@ -34,7 +34,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ListItemMenu {
 
-    public static final int GOLD_INDEX = CommonPos.MIDDLE.getPos(Size.SIX);
     /* constants */
     private static final int FIVE_LINES_SIZE = Size.FIVE.getSize();
     /* set by the user */

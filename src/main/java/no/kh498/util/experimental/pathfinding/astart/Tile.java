@@ -7,11 +7,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author karl henrik
  */
 public class Tile implements Comparable<Tile> {
+
+    private static Logger logger = LoggerFactory.getLogger(Tile.class);
 
     int x;
     int y;
@@ -112,7 +116,6 @@ public class Tile implements Comparable<Tile> {
         return this.x * 31 + this.y * 11 + this.z * 7;
     }
 
-    @SuppressWarnings("NullableProblems")
     @Override
     public int compareTo(final Tile o) {
         return (int) Math.signum((this.h + this.g) - (o.h + o.g));
@@ -184,11 +187,11 @@ public class Tile implements Comparable<Tile> {
 
         if (loDat instanceof Openable) {
             if (!((Openable) loDat).isOpen()) {
-//                System.out.println("Looked at openable of lower, was NOT open");
+                logger.debug("Looked at openable of lower, was NOT open");
                 return NO_ACCESS;
             }
             else {
-//                System.out.println("Looked at openable of lower, is OPEN");
+                logger.debug("Looked at openable of lower, is OPEN");
                 loOpen = true;
             }
         }
@@ -196,11 +199,11 @@ public class Tile implements Comparable<Tile> {
 
         if (hiDat instanceof Openable) {
             if (!((Openable) hiDat).isOpen()) {
-                System.out.println("Looked at openable of upper, was NOT open");
+                logger.debug("Looked at openable of upper, was NOT open");
                 return NO_ACCESS;
             }
             else {
-                System.out.println("Looked at openable of upper, is OPEN");
+                logger.debug("Looked at openable of upper, is OPEN");
                 hiOpen = true;
             }
         }

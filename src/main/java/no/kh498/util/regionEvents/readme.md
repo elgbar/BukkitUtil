@@ -1,5 +1,7 @@
 # WorldGuard Events
 
+**NOTE THIS REQUIRE WORLDGUARD 6.2 AND UP**
+
 Add some events to WordGuard's region
 
 ## Initiate

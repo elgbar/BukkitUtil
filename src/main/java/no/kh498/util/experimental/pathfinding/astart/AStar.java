@@ -27,6 +27,9 @@ public class AStar {
     private final Tile start;
     private final Tile goal;
 
+    //how many blocks should be checked before no path found is declared?
+    private int timeoutSize = 5000;
+
     public AStar(final Location start, final Location goal) {
         this(new Tile(start), new Tile(goal));
         if (!start.getWorld().equals(goal.getWorld())) {
@@ -71,7 +74,7 @@ public class AStar {
             if (curr.equals(this.goal)) {
                 return buildPath(curr);
             }
-            else if (this.closed.size() >= 5000 || curr.getWeight() > Tile.NO_ACCESS) { //no path
+            else if (this.closed.size() >= timeoutSize || curr.getWeight() >= Tile.NO_ACCESS) { //no path
                 return null;
             }
 
@@ -202,4 +205,11 @@ public class AStar {
         return neighbor;
     }
 
+    public int getTimeoutSize() {
+        return timeoutSize;
+    }
+
+    public void setTimeoutSize(int timeoutSize) {
+        this.timeoutSize = timeoutSize;
+    }
 }

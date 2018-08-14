@@ -98,8 +98,23 @@ public class ItemMenu {
      * @param parent
      *     The ItemMenu's parent.
      */
+    @Deprecated
     public ItemMenu(final String name, final Size size, final ItemMenu parent) {
         this(name, size, parent, new MenuItem[size.getSize()]);
+    }
+
+    /**
+     * Creates an ItemMenu.
+     *
+     * @param name
+     *     The name of the inventory.
+     * @param size
+     *     The {@link Size} of the inventory.
+     * @param parent
+     *     The ItemMenu's parent.
+     */
+    public ItemMenu(Plugin plugin, final String name, final Size size, final ItemMenu parent) {
+        this(plugin, name, size, parent, new MenuItem[size.getSize()]);
     }
 
     /**
@@ -110,8 +125,21 @@ public class ItemMenu {
      * @param size
      *     The {@link Size Size} of the inventory.
      */
+    @Deprecated
     public ItemMenu(final String name, final Size size) {
         this(name, size, null);
+    }
+
+    /**
+     * Creates an ItemMenu with no parent.
+     *
+     * @param name
+     *     The name of the inventory.
+     * @param size
+     *     The {@link Size Size} of the inventory.
+     */
+    public ItemMenu(Plugin plugin, final String name, final Size size) {
+        this(plugin, name, size, null);
     }
 
     /**

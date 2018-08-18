@@ -10,6 +10,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @since 0.1.0
@@ -213,12 +214,12 @@ public final class FileUtils {
      *
      * @return Get a list of the names of all the files in the {@code subPath}
      */
-    public static ArrayList<String> getFileNames(final Plugin plugin, final String subPath) {
+    public static List<String> getFileNames(final Plugin plugin, final String subPath) {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
         Preconditions.checkNotNull(subPath, "subPath cannot be null");
-        final File folder = new File(getPluginsFolder(plugin) + File.separator + subPath);
+        final File folder = new File(getPluginsFolder(plugin), subPath);
         final File[] listOfFiles = folder.listFiles();
-        final ArrayList<String> listOfFileName = new ArrayList<>();
+        final List<String> listOfFileName = new ArrayList<>();
 
         if (listOfFiles != null) {
             for (final File file : listOfFiles) {

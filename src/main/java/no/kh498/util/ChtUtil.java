@@ -1,5 +1,6 @@
 package no.kh498.util;
 
+import info.ronjenkins.slf4bukkit.ColorString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -19,6 +20,10 @@ public class ChtUtil {
      */
     public static void sendFormattedMsg(final CommandSender sender, final String msg, final Object... obj) {
         sender.sendMessage(createFormattedMsg(msg, obj).split("\n"));
+    }
+
+    public static void sendFormattedMsg(CommandSender sender, ColorString msg, final Object... obj) {
+        sendFormattedMsg(sender, msg.toString(), obj);
     }
 
     /**

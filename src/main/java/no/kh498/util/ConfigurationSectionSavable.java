@@ -1,11 +1,11 @@
 package no.kh498.util;
 
-import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.ConfigurationSection;
 
 public interface ConfigurationSectionSavable {
 
 
-    public MemorySection toYaml();
+    ConfigurationSection toYaml();
 
-    void fromYaml(MemorySection conf);
+    void fromYaml(ConfigurationSection conf);
 }

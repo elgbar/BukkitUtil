@@ -39,18 +39,26 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
 
         //get the sub command to tab-complete
         for (String arg : args) {
-            logger.trace("currSubCommand is " + currSubCommand.getClass().getSimpleName());
-            logger.trace("next arg is '" + arg + "'");
-            SubCommand subCmd = currSubCommand.getSubCommands().get(arg);
-            if (currSubCommand.getSubCommands() == null || subCmd == null) {
+            if (logger.isTraceEnabled()) {
+                logger.trace("---");
+                logger.trace("currSubCommand is " + currSubCommand.getClass().getSimpleName());
+                logger.trace("next arg is '" + arg + "'");
+                logger.trace("currSubCommand.getSubCommands(): " + currSubCommand.getSubCommands());
+            }
+            if (currSubCommand.getSubCommands() == null) {
+                //there are no subcommands for this current subcommand
+                //the online players will be tabbed through
+                return null;
+            }
+            else if (!currSubCommand.getSubCommands().containsKey(arg)) {
+                //current arg is not in this subcommand, there will be no more final commands
                 break;
             }
-
             argsId++;
-            currSubCommand = subCmd;
+            currSubCommand = currSubCommand.getSubCommands().get(arg);
         }
 
-        logger.trace("final subcommand is " + currSubCommand.getClass().getSimpleName());
+        logger.trace("final sub command is " + currSubCommand.getClass().getSimpleName());
 
         if (args.length == argsId) {
             if (args.length == 0) {
@@ -59,7 +67,6 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
             else {
                 return new ArrayList<>(currSubCommand.getParent().getSubCommands().keySet());
             }
-
         }
 
         List<String> suggestions = new ArrayList<>();

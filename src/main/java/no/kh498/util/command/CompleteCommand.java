@@ -1,6 +1,7 @@
 package no.kh498.util.command;
 
 import com.google.common.base.Preconditions;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -20,14 +21,18 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
      *
      * @param plugin
      *     The plugin to register this command to
-     * @param command
-     *     The command to register
      */
-    public CompleteCommand(JavaPlugin plugin, String command) {
+    public CompleteCommand(JavaPlugin plugin) {
         super(null);
         Preconditions.checkNotNull(plugin, "A valid java plugin instance is needed to register this command");
+
+        String command = getAliases().iterator().next();
+
         plugin.getCommand(command).setExecutor(this);
         plugin.getCommand(command).setTabCompleter(this);
+
+        //verify all subcommands when they are all registered
+        Bukkit.getScheduler().runTaskLater(plugin, this::verifySubcommands, 2L);
     }
 
     @Override
@@ -45,35 +50,57 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
                 logger.trace("next arg is '" + arg + "'");
                 logger.trace("currSubCommand.getSubCommands(): " + currSubCommand.getSubCommands());
             }
-            if (currSubCommand.getSubCommands() == null) {
+            if (currSubCommand.getSubCommands() == null || currSubCommand.getSubCommands().size() == 0) {
                 //there are no subcommands for this current subcommand
                 //the online players will be tabbed through
                 return null;
             }
-            else if (!currSubCommand.getSubCommands().containsKey(arg)) {
+            else if (currSubCommand.getSubFromAlias(arg) == null) {
                 //current arg is not in this subcommand, there will be no more final commands
                 break;
             }
             argsId++;
-            currSubCommand = currSubCommand.getSubCommands().get(arg);
+            currSubCommand = currSubCommand.getSubFromAlias(arg);
         }
 
         logger.trace("final sub command is " + currSubCommand.getClass().getSimpleName());
 
+        String toComplete;
+
         if (args.length == argsId) {
             if (args.length == 0) {
-                return new ArrayList<>(getSubCommands().keySet());
+                return getListOfSubcommandAliases(this);
             }
             else {
-                return new ArrayList<>(currSubCommand.getParent().getSubCommands().keySet());
+                currSubCommand = currSubCommand.getParent();
             }
+            toComplete = args[args.length - 1];
+        }
+        else {
+            toComplete = args[argsId];
         }
 
         List<String> suggestions = new ArrayList<>();
-        for (String subCommand : currSubCommand.getSubCommands().keySet()) {
-            if (subCommand.startsWith(args[argsId])) {
-                suggestions.add(subCommand);
+        if (currSubCommand.getSubCommands() != null) {
+            for (SubCommand subCommand : currSubCommand.getSubCommands()) {
+                for (String subAlias : subCommand.getAliases()) {
+                    if (subAlias.startsWith(toComplete)) {
+                        suggestions.add(subAlias);
+                    }
+                }
             }
+        }
+        return suggestions;
+    }
+
+    private List<String> getListOfSubcommandAliases(SubCommand subCommand) {
+        if (subCommand == null || subCommand.getSubCommands() == null) {
+            return null;
+        }
+
+        List<String> suggestions = new ArrayList<>();
+        for (SubCommand subCmd : subCommand.getSubCommands()) {
+            suggestions.addAll(subCmd.getAliases());
         }
         return suggestions;
     }

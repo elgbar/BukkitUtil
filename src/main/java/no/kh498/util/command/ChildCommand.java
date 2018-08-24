@@ -1,6 +1,6 @@
 package no.kh498.util.command;
 
-import java.util.Map;
+import java.util.List;
 
 public abstract class ChildCommand extends SubCommand {
 
@@ -9,7 +9,7 @@ public abstract class ChildCommand extends SubCommand {
     }
 
     @Override
-    public Map<String, SubCommand> getSubCommands() {
+    public List<SubCommand> getSubCommands() {
         return null;
     }
 }

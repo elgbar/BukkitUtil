@@ -1,5 +1,7 @@
 package no.kh498.util;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -8,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class YAMLUtil {
 
@@ -67,6 +71,28 @@ public class YAMLUtil {
         } catch (IOException e) {
             logger.error("Failed to save file {} to {}", saveFile.getName(), saveFile.getPath());
             if (logger.isDebugEnabled()) { e.printStackTrace(); }
+        }
+    }
+
+    /**
+     * @param conf
+     *     The config to load the values from
+     * @param path
+     *     The path to section to get
+     *
+     * @return A map of all nodes at the given path, if an error occurred an empty map will be returned
+     */
+    public static Map<String, Object> getSection(ConfigurationSection conf, String path) {
+        try {
+            MemorySection memProp = (MemorySection) conf.get(path);
+            return memProp.getValues(false);
+        } catch (ClassCastException e1) {
+            try {
+                //noinspection unchecked
+                return (Map<String, Object>) conf.get(path);
+            } catch (ClassCastException e) {
+                return new HashMap<>();
+            }
         }
     }
 }

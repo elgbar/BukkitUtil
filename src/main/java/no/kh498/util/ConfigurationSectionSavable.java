@@ -5,7 +5,16 @@ import org.bukkit.configuration.ConfigurationSection;
 public interface ConfigurationSectionSavable {
 
 
-    ConfigurationSection toYaml();
+    /**
+     * @return this instance as a ConfigurationSection
+     */
+    ConfigurationSection toConfig();
 
-    void fromYaml(ConfigurationSection conf);
+    /**
+     * @param conf
+     *     The section to load from
+     *
+     * @return if the configuration was successfully loaded
+     */
+    boolean fromConfig(ConfigurationSection conf);
 }

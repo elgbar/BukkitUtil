@@ -53,7 +53,7 @@ public class YAMLUtil {
     /**
      * @return A FileConfiguration from the relative plugin path
      */
-    public static FileConfiguration getYaml(Plugin plugin, String filename) {
+    public static FileConfiguration getYaml(Plugin plugin, String... filename) {
         return YamlConfiguration.loadConfiguration(FileUtils.getDatafolderFile(plugin, filename));
     }
 

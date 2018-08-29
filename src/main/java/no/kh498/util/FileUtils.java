@@ -278,7 +278,13 @@ public final class FileUtils {
     /**
      * @return A file in a plugin's data folder
      */
-    public static File getDatafolderFile(Plugin plugin, String filename) {
-        return new File(plugin.getDataFolder(), filename);
+    public static File getDatafolderFile(Plugin plugin, String... children) {
+        StringBuilder childrenPath = new StringBuilder();
+        for (String child : children) {
+            Preconditions.checkNotNull(child, "None of the children can be null");
+            childrenPath.append(child).append(File.separatorChar);
+        }
+
+        return new File(plugin.getDataFolder(), childrenPath.toString());
     }
 }

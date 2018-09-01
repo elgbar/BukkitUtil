@@ -1,5 +1,8 @@
 package no.kh498.util;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,8 +15,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class YAMLUtil {
+
+    private static final String WORLD_UID = "WORLD_UID";
+    private static final String X = "X";
+    private static final String Y = "Y";
+    private static final String Z = "Z";
+    private static final String YAW = "YAW";
+    private static final String PITCH = "PITCH";
 
     private static final Logger logger = LoggerFactory.getLogger(YAMLUtil.class);
 
@@ -94,5 +105,66 @@ public class YAMLUtil {
                 return new HashMap<>();
             }
         }
+    }
+
+    /**
+     * Save the precise location with pitch and yaw
+     *
+     * @param location
+     *     The location to save
+     *
+     * @return A ConfigurationSection containing the serialized location
+     */
+    public static ConfigurationSection locationToConfig(Location location) {
+        ConfigurationSection conf = new YamlConfiguration();
+        conf.set(WORLD_UID, location.getWorld().getUID());
+        conf.set(X, location.getX());
+        conf.set(Y, location.getY());
+        conf.set(Z, location.getZ());
+        conf.set(YAW, location.getYaw());
+        conf.set(PITCH, location.getPitch());
+        return conf;
+    }
+
+    /**
+     * @return The location saved in {@code conf}
+     */
+    public static Location locationFromConfig(ConfigurationSection conf) {
+        World world = Bukkit.getWorld(UUID.fromString(conf.getString(WORLD_UID)));
+        double x = conf.getDouble(X);
+        double y = conf.getDouble(Y);
+        double z = conf.getDouble(Z);
+        float yaw = (float) conf.getDouble(YAW);
+        float pitch = (float) conf.getDouble(PITCH);
+        return new Location(world, x, y, z, yaw, pitch);
+    }
+
+
+    /**
+     * Save the location as precise to the nearest block, without yaw and pitch
+     *
+     * @param location
+     *     The location to save
+     *
+     * @return A ConfigurationSection containing the serialized location
+     */
+    public static ConfigurationSection blockLocationToConfig(Location location) {
+        ConfigurationSection conf = new YamlConfiguration();
+        conf.set(WORLD_UID, location.getWorld().getUID());
+        conf.set(X, location.getBlockX());
+        conf.set(Y, location.getBlockY());
+        conf.set(Z, location.getBlockZ());
+        return conf;
+    }
+
+    /**
+     * @return The location saved in {@code conf}
+     */
+    public static Location blockLocationFromConfig(ConfigurationSection conf) {
+        World world = Bukkit.getWorld(UUID.fromString(conf.getString(WORLD_UID)));
+        int x = conf.getInt(X);
+        int y = conf.getInt(Y);
+        int z = conf.getInt(Z);
+        return new Location(world, x, y, z);
     }
 }

@@ -2,8 +2,6 @@ package no.kh498.util;
 
 import org.bukkit.Location;
 
-import static java.lang.String.valueOf;
-
 /**
  * @author kh498
  */
@@ -30,13 +28,29 @@ public final class LocationUtil {
      * @param location
      *     The location to beautify
      *
-     * @return A string in the format of "{@code x, y, z}" excluding the quotation marks. If location is null "null"
-     * is returned
+     * @return A nicely formatted location, will not display world
      */
     public static String beautify(final Location location) {
+        return beautify(location, false);
+    }
+
+    /**
+     * @param location
+     *     The location to beautify
+     * @param displayWorld
+     *     if the world should be displayed
+     *
+     * @return A nicely formatted location, if world is not null it is displayed as well
+     */
+    public static String beautify(final Location location, boolean displayWorld) {
         if (location == null) {
             return "null";
         }
-        return valueOf(location.getBlockX()) + ", " + location.getBlockY() + ", " + location.getBlockZ();
+        String world =
+            displayWorld && location.getWorld() != null ? String.format(" in world '%s'", location.getWorld().getName())
+                                                        : "";
+        return String.format("%d, %d, %d%s", location.getBlockX(), location.getBlockY(), location.getBlockZ(), world);
     }
+
+
 }

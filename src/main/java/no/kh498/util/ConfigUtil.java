@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class YAMLUtil {
+public class ConfigUtil {
 
     private static final String WORLD_UID = "WORLD_UID";
     private static final String X = "X";
@@ -26,7 +26,7 @@ public class YAMLUtil {
     private static final String YAW = "YAW";
     private static final String PITCH = "PITCH";
 
-    private static final Logger logger = LoggerFactory.getLogger(YAMLUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
 
     /**
      * Load all default files from the plugin's jar and place them in the datafolder.

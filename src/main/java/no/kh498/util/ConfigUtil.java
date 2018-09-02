@@ -94,18 +94,48 @@ public class ConfigUtil {
      *
      * @return A map of all nodes at the given path, if an error occurred an empty map will be returned
      */
-    public static Map<String, Object> getSection(ConfigurationSection conf, String path) {
+    public static Map<String, Object> getMapSection(ConfigurationSection conf, String path) {
+        return getMapSection(conf.get(path));
+    }
+
+    public static Map<String, Object> getMapSection(Object obj) {
         try {
-            MemorySection memProp = (MemorySection) conf.get(path);
+            MemorySection memProp = (MemorySection) obj;
             return memProp.getValues(false);
         } catch (ClassCastException e1) {
             try {
                 //noinspection unchecked
-                return (Map<String, Object>) conf.get(path);
+                return (Map<String, Object>) obj;
             } catch (ClassCastException e) {
                 return new HashMap<>();
             }
         }
+    }
+
+    public static ConfigurationSection getSection(ConfigurationSection conf, String path) {
+        return mapToSection(getMapSection(conf, path));
+    }
+
+    public static ConfigurationSection getSection(Object obj) {
+        return mapToSection(getMapSection(obj));
+    }
+
+    /**
+     * Convert a map into a configuration section
+     */
+    public static ConfigurationSection mapToSection(Map<String, Object> map) {
+        ConfigurationSection conf = new YamlConfiguration();
+
+        map.forEach((path, obj) -> {
+            if (obj instanceof Map) {
+                //recursively find sections
+                conf.set(path, mapToSection(getMapSection(obj)));
+            }
+            else {
+                conf.set(path, obj);
+            }
+        });
+        return conf;
     }
 
     /**
@@ -161,12 +191,17 @@ public class ConfigUtil {
             return null;
         }
 
-        double x = conf.getDouble(X);
-        double y = conf.getDouble(Y);
-        double z = conf.getDouble(Z);
-        float yaw = (float) conf.getDouble(YAW);
-        float pitch = (float) conf.getDouble(PITCH);
-        return new Location(world, x, y, z, yaw, pitch);
+        try {
+            double x = Double.valueOf(conf.getString(X));
+            double y = Double.valueOf(conf.getString(Y));
+            double z = Double.valueOf(conf.getString(Z));
+            float yaw = Float.valueOf(conf.getString(YAW));
+            float pitch = Float.valueOf(conf.getString(PITCH));
+
+            return new Location(world, x, y, z, yaw, pitch);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
     }
 
 
@@ -219,9 +254,15 @@ public class ConfigUtil {
         if (world == null && !useUUID) {
             return null;
         }
-        int x = conf.getInt(X);
-        int y = conf.getInt(Y);
-        int z = conf.getInt(Z);
-        return new Location(world, x, y, z);
+
+        try {
+            int x = Integer.valueOf(conf.getString(X));
+            int y = Integer.valueOf(conf.getString(Y));
+            int z = Integer.valueOf(conf.getString(Z));
+            
+            return new Location(world, x, y, z);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
     }
 }

@@ -99,6 +99,7 @@ public class ConfigUtil {
     }
 
     public static Map<String, Object> getMapSection(Object obj) {
+        if (obj == null) { return new HashMap<>(); }
         try {
             MemorySection memProp = (MemorySection) obj;
             return memProp.getValues(false);
@@ -259,7 +260,7 @@ public class ConfigUtil {
             int x = Integer.valueOf(conf.getString(X));
             int y = Integer.valueOf(conf.getString(Y));
             int z = Integer.valueOf(conf.getString(Z));
-            
+
             return new Location(world, x, y, z);
         } catch (NumberFormatException ex) {
             return null;

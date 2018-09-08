@@ -60,7 +60,9 @@ public abstract class Countdown implements Runnable {
         this.timeFormat = timeFormat;
         this.plugin = plugin;
         this.text = text;
-        this.time = timeMS;
+        time = timeMS;
+
+        reset();
     }
 
     /**
@@ -70,34 +72,36 @@ public abstract class Countdown implements Runnable {
 
     @Override
     public void run() {
-        if (!this.running) {
+        if (!running) {
+            LOG.trace("called run while not running");
             return;
         }
 
         final long timeLeft = getTimeLapsed();
         if (timeLeft < 0) {
+            LOG.trace("no more time left, calling event");
             stop(true);
             return;
         }
 
-        final String message = String.format(this.text, this.timeFormat.formatTime(timeLeft));
+        final String message = String.format(text, timeFormat.formatTime(timeLeft));
 
         for (final Player player : getPlayers()) {
             String msgCpy = message;
 
             //display the interrupt message if there is one, delete old interrupt messages
-            final Interrupt interrupt = this.lastInterrupt.get(player);
+            final Interrupt interrupt = lastInterrupt.get(player);
             if (interrupt != null) {
                 if (interrupt.shouldInterrupt()) {
                     msgCpy = interrupt.getMessage();
                 }
                 else {
-                    this.lastInterrupt.remove(player);
+                    lastInterrupt.remove(player);
                 }
             }
             AdvancedChat.sendActionbar(msgCpy, player);
         }
-        Bukkit.getScheduler().runTaskLater(this.plugin, this, this.timeFormat.delay());
+        Bukkit.getScheduler().runTaskLater(plugin, this, timeFormat.delay());
     }
 
     /**
@@ -105,7 +109,7 @@ public abstract class Countdown implements Runnable {
      */
     public void start() {
         LOG.debug("Countdown started");
-        this.running = true;
+        running = true;
         run();
     }
 
@@ -117,7 +121,7 @@ public abstract class Countdown implements Runnable {
      */
     public void stop(final boolean callEvent) {
         LOG.debug("Stop called for countdown");
-        this.running = false;
+        running = false;
         if (callEvent) {
             LOG.debug("Calling event on stop");
             Bukkit.getPluginManager().callEvent(new CountdownFinishedEvent(this));
@@ -133,14 +137,14 @@ public abstract class Countdown implements Runnable {
      */
     public void setTimeLapsed(final long timeLapsed) {
         reset();
-        this.startTime -= timeLapsed;
+        startTime -= timeLapsed;
     }
 
     /**
      * @return calculate the time left in milliseconds
      */
     public long getTimeLapsed() {
-        return (this.startTime + this.time) - System.currentTimeMillis();
+        return (startTime + time) - System.currentTimeMillis();
     }
 
     /**
@@ -148,8 +152,8 @@ public abstract class Countdown implements Runnable {
      */
     public void reset() {
         LOG.debug("Resetting countdown");
-        this.startTime = System.currentTimeMillis();
-        this.lastInterrupt = new HashMap<>();
+        startTime = System.currentTimeMillis();
+        lastInterrupt = new HashMap<>();
     }
 
     /**
@@ -165,16 +169,16 @@ public abstract class Countdown implements Runnable {
     public void interrupt(final Player player, final String interruptText, final long time, final boolean force) {
         final Interrupt interrupt = new Interrupt(interruptText, time);
         if (force) {
-            this.lastInterrupt.put(player, interrupt);
+            lastInterrupt.put(player, interrupt);
         }
-        this.lastInterrupt.putIfAbsent(player, interrupt);
+        lastInterrupt.putIfAbsent(player, interrupt);
     }
 
     /**
      * @return If the countdown is running or not
      */
     public boolean isRunning() {
-        return this.running;
+        return running;
     }
 
     /**
@@ -193,7 +197,7 @@ public abstract class Countdown implements Runnable {
      */
     @Deprecated
     public void tryInterrupt(final Player player, final String interruptText, final long time, final boolean force) {
-        if (this.running) {
+        if (running) {
             interrupt(player, interruptText, time, force);
         }
         else {
@@ -233,15 +237,22 @@ public abstract class Countdown implements Runnable {
         this.time = time;
     }
 
+    /**
+     * @return The text displayed in the actionbar chat
+     */
     public String getText() {
-        return this.text;
+        return text;
     }
 
+    /**
+     * @return How long each countdown will be
+     */
     public long getTime() {
-        return this.time;
+        return time;
     }
+
 
     private Plugin getPlugin() {
-        return this.plugin;
+        return plugin;
     }
 }

@@ -35,6 +35,7 @@ public class ChtUtil {
      * @return A message that can use '&amp;' as bukkit color and {@link String#format(String, Object...)}
      */
     public static String createFormattedMsg(final String msg, final Object... obj) {
+        if (msg == null) { return null; }
         return toBukkitColor(String.format(msg, obj));
     }
 
@@ -45,6 +46,7 @@ public class ChtUtil {
      * @return Add color to string that is using the color code '&amp;'
      */
     public static String toBukkitColor(final String str) {
+        if (str == null) { return null; }
         return ChatColor.translateAlternateColorCodes('&', sanitizeSpecialChars(str));
     }
 
@@ -57,6 +59,7 @@ public class ChtUtil {
      * @return convert windows and mac os new line to linux newline, and replace tab char with four spaces
      */
     public static String sanitizeSpecialChars(final String str) {
+        if (str == null) { return null; }
         return str.replace("\n\r", "\n").replace('\r', '\n').replace("\t", "    ");
     }
 }

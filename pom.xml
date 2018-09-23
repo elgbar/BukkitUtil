@@ -108,6 +108,7 @@
                                 <includes>
                                     <include>info.ronjenkins:slf4bukkit</include>
                                     <include>org.slf4j:slf4j-api</include>
+                                    <include>io.github.classgraph:classgraph</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -196,6 +197,13 @@
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-legacy</artifactId>
             <version>6.2</version>
+        </dependency>
+
+        <!-- Static class analyser -->
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 </project>

@@ -25,6 +25,7 @@ public final class ColoredPaneItem extends ActionMenuItem {
      */
     public ColoredPaneItem(final String name, final DyeColor color, final ItemClickHandler handler,
                            final String... lore) {
+        //noinspection deprecation
         super(name, handler, new ItemStack(Material.STAINED_GLASS_PANE, 1, color.getDyeData()), lore);
     }
 

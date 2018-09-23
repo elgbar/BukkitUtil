@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class CompleteCommand extends HostCommand implements TabCompleter {
 
-    private static final Logger logger = LoggerFactory.getLogger(CompleteCommand.class);
+    protected static final Logger logger = LoggerFactory.getLogger(CompleteCommand.class);
 
     /**
      * Register this command to the plugin

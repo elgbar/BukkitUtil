@@ -101,7 +101,7 @@ public class ListItemMenu {
         this.plugin = plugin;
         this.menuItemList = menuItemList;
         this.title = title;
-        this.pages = MathUtil.dividedRoundedUp(menuItemList.size(), FIVE_LINES_SIZE);
+        pages = MathUtil.dividedRoundedUp(menuItemList.size(), FIVE_LINES_SIZE);
         this.smoothUpdate = smoothUpdate;
         bottomPane = new ColoredPaneItem(DyeColor.BLACK);
 
@@ -114,7 +114,7 @@ public class ListItemMenu {
     }
 
     private ItemMenu generateMenu() {
-        ItemMenu menu = new ItemMenu(plugin, this.title, Size.SIX);
+        ItemMenu menu = new ItemMenu(plugin, title, Size.SIX);
 
         for (int m = 0; m < 9; m++) {
             menu.setItem(FIVE_LINES_SIZE + m, bottomPane);
@@ -124,14 +124,13 @@ public class ListItemMenu {
 
     private void changePage(final Player player, final int page, ItemMenu menu) {
         if (!useSmoothUpdate()) {
-            menu.setName(this.title + " - " + (page + 1) + "/" + this.pages);
+            menu.setName(title + " - " + (page + 1) + "/" + pages);
         }
 
         int index = FIVE_LINES_SIZE * page;
-        for (int l = 0; l < FIVE_LINES_SIZE; l++, index++) {
-            if (this.menuItemList.size() > index) {
-                menu.setItem(l, this.menuItemList.get(index));
-            }
+        menu.clearAllItems();
+        for (int i = 0; i < FIVE_LINES_SIZE; i++, index++) {
+            if (menuItemList.size() > index) { menu.setItem(i, menuItemList.get(index)); }
         }
         menu.setItem(CommonPos.LEFT, Size.SIX, page != 0 ? prevItem(player, page, menu) : bottomPane);
         menu.setItem(CommonPos.RIGHT, Size.SIX, (page != pages - 1) ? nextItem(player, page, menu) : bottomPane);
@@ -167,21 +166,21 @@ public class ListItemMenu {
      * @return the List of menuItem that will be displayed
      */
     public final List<MenuItem> getMenuItemList() {
-        return this.menuItemList;
+        return menuItemList;
     }
 
     /**
      * @return the title
      */
     public final String getTitle() {
-        return this.title;
+        return title;
     }
 
     /**
      * @return the pages
      */
     public final int getPages() {
-        return this.pages;
+        return pages;
     }
 
     public boolean useSmoothUpdate() {
@@ -208,6 +207,6 @@ public class ListItemMenu {
 
     @Override
     public String toString() {
-        return "ListItemMenu{" + ", title='" + this.title + '\'' + ", pages=" + this.pages + '}';
+        return "ListItemMenu{" + ", title='" + title + '\'' + ", pages=" + pages + '}';
     }
 }

@@ -7,6 +7,7 @@ import no.kh498.util.countdown.events.CountdownFinishedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,7 @@ public abstract class Countdown implements Runnable {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
     private static final Logger LOG = LoggerFactory.getLogger(Countdown.class);
+    private BukkitTask bt;
 
     /**
      * @param plugin
@@ -101,7 +103,7 @@ public abstract class Countdown implements Runnable {
             }
             AdvancedChat.sendActionbar(msgCpy, player);
         }
-        Bukkit.getScheduler().runTaskLater(plugin, this, timeFormat.delay());
+        bt = Bukkit.getScheduler().runTaskLater(plugin, this, timeFormat.delay());
     }
 
     /**
@@ -122,6 +124,7 @@ public abstract class Countdown implements Runnable {
     public void stop(final boolean callEvent) {
         LOG.debug("Stop called for countdown");
         running = false;
+        bt.cancel();
         if (callEvent) {
             LOG.debug("Calling event on stop");
             Bukkit.getPluginManager().callEvent(new CountdownFinishedEvent(this));

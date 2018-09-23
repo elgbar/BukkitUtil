@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -67,10 +68,21 @@ public class ConfigUtil {
     }
 
     /**
-     * @return A FileConfiguration from the relative plugin path
+     * @return A FileConfiguration from the relative plugin path or {@code null} if invalid yaml or no file found found
      */
     public static FileConfiguration getYaml(Plugin plugin, String... filename) {
-        return YamlConfiguration.loadConfiguration(FileUtils.getDatafolderFile(plugin, filename));
+        YamlConfiguration conf = new YamlConfiguration();
+        File file = FileUtils.getDatafolderFile(plugin, filename);
+        try {
+            conf.load(file);
+        } catch (InvalidConfigurationException e) {
+            logger.warn("YAML in file {} is invalid.\n{}", file, e.getMessage());
+            return null;
+        } catch (IOException e) {
+            logger.error("Failed to find the file", file);
+            return null;
+        }
+        return conf;
     }
 
     /**
@@ -249,9 +261,11 @@ public class ConfigUtil {
      * @return The location saved in {@code conf}
      */
     public static Location blockLocationFromConfig(ConfigurationSection conf, boolean useUUID) {
-        World world;
-        if (useUUID) { world = Bukkit.getWorld(UUID.fromString(conf.getString(WORLD_UID))); }
-        else { world = Bukkit.getWorld(conf.getString(WORLD_NAME)); }
+        World world = null;
+        if (useUUID && conf.contains(WORLD_UID)) {
+            world = Bukkit.getWorld(UUID.fromString(conf.getString(WORLD_UID)));
+        }
+        else if (conf.contains(WORLD_NAME)) { world = Bukkit.getWorld(conf.getString(WORLD_NAME)); }
         if (world == null && !useUUID) {
             return null;
         }

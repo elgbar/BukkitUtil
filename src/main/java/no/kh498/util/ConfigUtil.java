@@ -67,12 +67,19 @@ public class ConfigUtil {
         }
     }
 
+
     /**
      * @return A FileConfiguration from the relative plugin path or {@code null} if invalid yaml or no file found found
      */
     public static FileConfiguration getYaml(Plugin plugin, String... filename) {
+        return getYaml(FileUtils.getDatafolderFile(plugin, filename));
+    }
+
+    /**
+     * @return A FileConfiguration from the given file or {@code null} if invalid yaml or no file found found
+     */
+    public static FileConfiguration getYaml(File file) {
         YamlConfiguration conf = new YamlConfiguration();
-        File file = FileUtils.getDatafolderFile(plugin, filename);
         try {
             conf.load(file);
         } catch (InvalidConfigurationException e) {

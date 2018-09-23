@@ -10,6 +10,8 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,7 +21,7 @@ import java.util.List;
 public final class FileUtils {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
-    private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     /**
      * @param plugin
@@ -48,7 +50,7 @@ public final class FileUtils {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
 
         if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
-            log.error("Failed to create the parent folder '" + file.getParentFile().toString() + "'");
+            logger.error("Failed to create the parent folder '" + file.getParentFile().toString() + "'");
             return;
         }
         try (final FileOutputStream out = new FileOutputStream(file)) {
@@ -102,13 +104,13 @@ public final class FileUtils {
                                        (addEnding ? ".json" : ""));
             final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
             if (!filePath.isDirectory() && !filePath.mkdirs()) {
-                log.error("Failed to create folder for '" + filePath.toString() + "'");
+                logger.error("Failed to create folder for '" + filePath.toString() + "'");
                 return;
             }
 
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    log.error("Failed to create files in '" + filePath.toString() + "'");
+                    logger.error("Failed to create files in '" + filePath.toString() + "'");
                     return;
                 }
             }
@@ -119,7 +121,7 @@ public final class FileUtils {
             wtr.flush();
 
         } catch (final IOException e) {
-            log.error("Failed to write the json");
+            logger.error("Failed to write the json");
         } finally {
             if (wtr != null) {
                 try {
@@ -173,12 +175,12 @@ public final class FileUtils {
             final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
 
             if (!filePath.isDirectory() && !filePath.mkdirs()) {
-                log.error("Failed to create folder for '" + filePath.toString() + "'");
+                logger.error("Failed to create folder for '" + filePath.toString() + "'");
                 return null;
             }
 
             if (!file.exists()) {
-                log.warn("Could not find the files to read, is this the first time you load this plugin?");
+                logger.warn("Could not find the files to read, is this the first time you load this plugin?");
                 return null;
             }
             return org.apache.commons.io.FileUtils.readFileToString(file, Charset.defaultCharset());
@@ -231,6 +233,77 @@ public final class FileUtils {
         return listOfFileName;
     }
 
+    /**
+     * @param plugin
+     *     The plugin that has the files
+     * @param subPath
+     *     Path from /plugins/{$plugin_name}/
+     *
+     * @return Get a list of the names of all the files in the {@code subPath}
+     */
+    public static List<File> getFiles(final Plugin plugin, final String subPath) {
+        Preconditions.checkNotNull(plugin, "Plugin cannot be null");
+        Preconditions.checkNotNull(subPath, "subPath cannot be null");
+        final File folder = new File(getPluginsFolder(plugin), subPath);
+        File[] files = folder.listFiles();
+        if (files == null || files.length == 0) { return new ArrayList<>(0); }
+        return Arrays.asList(files);
+    }
+
+    /**
+     * A more user friendly version of {@link #getRecursiveFiles(File, List, boolean)} as you do not  need to create
+     * your own list
+     * <p>
+     * This method uses a {@link LinkedList} as its list as it provides constant time adding. If random access is needed
+     * for the files, it is recommended to use the method {@link #getRecursiveFiles(File, List, boolean)} with an {@link
+     * ArrayList}
+     *
+     * @param file
+     *     The file to start at, if this is not a directory it will be the only element
+     * @param excludeHyphenPrefix
+     *     If any files with the hyphen (-) should be excluded from the list
+     *
+     * @return A list of all non-directory files in the given file.
+     */
+    public static List<File> getRecursiveFiles(File file, boolean excludeHyphenPrefix) {
+        List<File> files = new LinkedList<>();
+        getRecursiveFiles(file, files, excludeHyphenPrefix);
+        return files;
+    }
+
+    /**
+     * @param file
+     *     The file to start at, if this is not a directory it will be the only element
+     * @param excludeHyphenPrefix
+     *     If any files with the hyphen (-) should be excluded from the list
+     *
+     * @return A list of all non-directory files in the given file.
+     */
+    public static void getRecursiveFiles(File file, List<File> files, boolean excludeHyphenPrefix) {
+        if (!file.canRead()) {
+            logger.info("Did not read '{}', as we have no reading permission", file.getPath());
+            return;
+        }
+        else if (excludeHyphenPrefix && file.getName().startsWith("-")) {
+            return;
+        }
+        if (file.isDirectory()) {
+            logger.trace("file is a directory '{}'", file.getPath());
+            File[] subFiles = file.listFiles();
+            if (subFiles == null) {
+                logger.error("Failed to get a list of files in directory '{}'", file.getPath());
+                return;
+            }
+            for (File subFile : subFiles) {
+                getRecursiveFiles(subFile, files, excludeHyphenPrefix);
+            }
+        }
+        else if (file.isFile()) {
+            logger.trace("adding file '{}' to list", file.getPath());
+            files.add(file);
+        }
+    }
+
 
     /**
      * @param internalPath
@@ -242,13 +315,13 @@ public final class FileUtils {
         Preconditions.checkArgument(internalPath != null, "The internal path cannot be null!");
 
         final InputStream is = getInternalFileStream(internalPath);
-        log.trace("is: " + is);
+        logger.trace("is: " + is);
         String content;
         try {
             content = IOUtils.toString(is, StandardCharsets.UTF_8);
         } catch (final IOException | NullPointerException e) {
-            log.debug("Failed to get internal file due to a " + e.getClass().getSimpleName());
-            if (log.isTraceEnabled()) {
+            logger.debug("Failed to get internal file due to a " + e.getClass().getSimpleName());
+            if (logger.isTraceEnabled()) {
                 e.printStackTrace();
             }
             content = null;
@@ -270,7 +343,7 @@ public final class FileUtils {
         final String prefix = internalPath.charAt(0) != '/' ? "/" : "";
         final String absIntPath = prefix + internalPath;
 
-        log.trace("absIntPath: " + absIntPath);
+        logger.trace("absIntPath: " + absIntPath);
 
         return FileUtils.class.getResourceAsStream(absIntPath);
     }

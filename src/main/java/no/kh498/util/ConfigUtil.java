@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ConfigUtil {
 
     public static final String WORLD_UID = "world_uid";
-    public static final String WORLD_NAME = "world_name";
+    public static final String WORLD_NAME = "world";
     public static final String X = "x";
     public static final String Y = "y";
     public static final String Z = "z";

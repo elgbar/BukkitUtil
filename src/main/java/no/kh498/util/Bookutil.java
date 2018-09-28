@@ -1,41 +1,56 @@
 package no.kh498.util;
 
-import com.google.common.base.Preconditions;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.server.v1_8_R3.PacketDataSerializer;
-import org.bukkit.Material;
+import no.kh498.util.nms.IBookBuilder;
+import no.kh498.util.nms.v1_8_R3.BookBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Bookutil {
 
-    public static void openBook18(Player player, ItemStack book) {
-        Preconditions.checkNotNull(player);
-        Preconditions.checkNotNull(book);
-        Preconditions.checkArgument(book.getType() == Material.WRITTEN_BOOK);
+    private static final Logger logger = LoggerFactory.getLogger(Bookutil.class);
 
-        org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer craftPlayer =
-            (org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer) player;
+    public static final int MAX_BOOK_LINES = 14;
 
-        int slot = player.getInventory().getHeldItemSlot();
-        ItemStack old = player.getInventory().getItem(slot);
-        player.getInventory().setItem(slot, book);
-
-        ByteBuf buf = Unpooled.buffer(256);
-        buf.setByte(0, (byte) 0);
-        buf.writerIndex(1);
-
-        PacketDataSerializer pds = new net.minecraft.server.v1_8_R3.PacketDataSerializer(buf);
-        net.minecraft.server.v1_8_R3.PacketPlayOutCustomPayload packet =
-            new net.minecraft.server.v1_8_R3.PacketPlayOutCustomPayload("MC|BOpen", pds);
-
-        craftPlayer.getHandle().playerConnection.sendPacket(packet);
-
-        player.getInventory().setItem(slot, old);
+    /**
+     * Open a book for a player
+     *
+     * <strong>Note:</strong> This is using NMS code, not all versions are supported
+     *
+     * @param player
+     *     The player to open the book to
+     * @param book
+     *     Tge book to open. Must have the material {@link org.bukkit.Material#WRITTEN_BOOK}
+     *
+     * @throws NotImplementedException
+     *     if the NMS version is not supported
+     */
+    //TODO make it work with more versions
+    @SuppressWarnings("deprecation")
+    public static void openBook(Player player, ItemStack book) {
+        switch (VersionUtil.getNmsVersion()) {
+            case "v1_8_R3":
+                no.kh498.util.nms.v1_8_R3.Bookutil.openBook(player, book);
+                break;
+            default:
+                throw new NotImplementedException();
+        }
     }
 
-    public static void openBook(Player player, ItemStack book) {
-        openBook18(player, book);
+    /**
+     * @return A book build compatible with current bukkit version
+     *
+     * @throws NotImplementedException
+     *     if the NMS version is not supported
+     */
+    public static IBookBuilder createBookBuilder() {
+        switch (VersionUtil.getNmsVersion()) {
+            case "v1_8_R3":
+                return new BookBuilder();
+            default:
+                throw new NotImplementedException();
+        }
     }
 }

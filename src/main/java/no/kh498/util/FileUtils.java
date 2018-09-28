@@ -360,4 +360,21 @@ public final class FileUtils {
 
         return new File(plugin.getDataFolder(), childrenPath.toString());
     }
+
+    /**
+     * Create a folder with in a plugin's data folder.
+     *
+     * @return If there were any errors when creating the folder(s)
+     */
+    public static boolean makeFolder(Plugin plugin, String... children) {
+        File convFolder = FileUtils.getDatafolderFile(plugin, children);
+        if (!convFolder.exists()) {
+            return convFolder.mkdirs();
+        }
+        else if (!convFolder.isDirectory()) {
+            logger.error("File at '{}' is not a directory! No conversations will be loaded.", convFolder.getPath());
+            return false;
+        }
+        return true;
+    }
 }

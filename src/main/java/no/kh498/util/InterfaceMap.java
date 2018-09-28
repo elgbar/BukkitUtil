@@ -3,6 +3,7 @@ package no.kh498.util;
 import com.google.common.base.Preconditions;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
+import org.bukkit.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,7 @@ import java.util.TreeMap;
  * it's class. This is the utility that converts a string to the given class.
  * <p>
  * To register more classes you can do so either directly with {@link #registerClass(Class)} or by scanning a package
- * with {@link #registerFromPackage(String)}
+ * with {@link #registerFromPackage(Plugin, String)}
  *
  * @param <I>
  *     The interface that this class will hold a static reference to
@@ -48,8 +49,9 @@ public class InterfaceMap<I> {
     /**
      * Scan classes in this path and look for classes implementing {@link I}
      */
-    public void registerFromPackage(String packagePath) {
-        try (ScanResult scanResult = new ClassGraph().whitelistPackages(packagePath).scan()) {
+    public void registerFromPackage(Plugin plugin, String packagePath) {
+        try (ScanResult scanResult = new ClassGraph().addClassLoader(plugin.getClass().getClassLoader())
+                                                     .whitelistPackages(packagePath).scan()) {
             List<Class<I>> subTypes =
                 scanResult.getClassesImplementing(interfaceClass.getCanonicalName()).loadClasses(interfaceClass, true);
             if (subTypes.isEmpty()) {

@@ -2,7 +2,7 @@ package no.kh498.util.nms.v1_8_R3;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.server.v1_8_R3.*;
-import no.kh498.util.nms.IBookBuilder;
+import no.kh498.util.book.bookbuilder.IBookBuilder;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package no.kh498.util.nms;
+package no.kh498.util.book.bookbuilder;
 
 public enum ClickAction {
     RUN_COMMAND("run_command"),

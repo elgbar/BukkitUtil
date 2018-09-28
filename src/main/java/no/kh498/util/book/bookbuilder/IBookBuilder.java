@@ -1,4 +1,4 @@
-package no.kh498.util.nms;
+package no.kh498.util.book.bookbuilder;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;

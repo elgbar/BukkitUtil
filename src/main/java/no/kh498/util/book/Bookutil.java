@@ -1,6 +1,7 @@
-package no.kh498.util;
+package no.kh498.util.book;
 
-import no.kh498.util.nms.IBookBuilder;
+import no.kh498.util.VersionUtil;
+import no.kh498.util.book.bookbuilder.IBookBuilder;
 import no.kh498.util.nms.v1_8_R3.BookBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 public class Bookutil {
 
     /**
-     * @deprecated Use {@link no.kh498.util.Bookutil#openBook(Player, ItemStack)}
+     * @deprecated Use {@link no.kh498.util.book.Bookutil#openBook(Player, ItemStack)}
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated

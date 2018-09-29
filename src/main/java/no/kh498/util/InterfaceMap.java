@@ -55,7 +55,10 @@ public class InterfaceMap<I> {
             List<Class<I>> subTypes =
                 scanResult.getClassesImplementing(interfaceClass.getCanonicalName()).loadClasses(interfaceClass, true);
             if (subTypes.isEmpty()) {
-                logger.error("Failed to find any suitable classes in the package {}", packagePath);
+                logger.error(
+                    "Failed to find any classes that are implementing '{}' in the package '{}'. If you are extending " +
+                    "a class that implements {}, you might want to implement the interface directly.",
+                    interfaceClass.getSimpleName(), packagePath, interfaceClass.getSimpleName());
                 return;
             }
 

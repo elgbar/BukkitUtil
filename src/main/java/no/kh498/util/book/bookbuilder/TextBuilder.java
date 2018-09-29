@@ -28,6 +28,10 @@ public class TextBuilder {
         return this;
     }
 
+    public void clearHoverLines() {
+        hoverLines.setLength(0);
+    }
+
     public TextBuilder clickEvent(ClickAction action, String value) {
         click = action;
         clickValue = value;

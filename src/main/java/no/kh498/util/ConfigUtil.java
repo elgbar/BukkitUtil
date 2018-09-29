@@ -133,23 +133,23 @@ public class ConfigUtil {
     }
 
     public static ConfigurationSection getSection(ConfigurationSection conf, String path) {
-        return mapToSection(getMapSection(conf, path));
+        return getSectionFromMap(getMapSection(conf, path));
     }
 
     public static ConfigurationSection getSection(Object obj) {
-        return mapToSection(getMapSection(obj));
+        return getSectionFromMap(getMapSection(obj));
     }
 
     /**
      * Convert a map into a configuration section
      */
-    public static ConfigurationSection mapToSection(Map<String, Object> map) {
+    public static ConfigurationSection getSectionFromMap(Map<String, Object> map) {
         ConfigurationSection conf = new YamlConfiguration();
 
         map.forEach((path, obj) -> {
             if (obj instanceof Map) {
                 //recursively find sections
-                conf.set(path, mapToSection(getMapSection(obj)));
+                conf.set(path, getSectionFromMap(getMapSection(obj)));
             }
             else {
                 conf.set(path, obj);

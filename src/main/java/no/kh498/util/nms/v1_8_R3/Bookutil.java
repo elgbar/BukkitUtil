@@ -20,10 +20,6 @@ public class Bookutil {
         Preconditions.checkNotNull(book);
         Preconditions.checkArgument(book.getType() == Material.WRITTEN_BOOK);
 
-        int slot = player.getInventory().getHeldItemSlot();
-        ItemStack old = player.getInventory().getItem(slot);
-        player.getInventory().setItem(slot, book);
-
         ByteBuf buf = Unpooled.buffer(256);
         buf.setByte(0, (byte) 0);
         buf.writerIndex(1);
@@ -31,6 +27,10 @@ public class Bookutil {
         PacketDataSerializer pds = new PacketDataSerializer(buf);
         net.minecraft.server.v1_8_R3.PacketPlayOutCustomPayload packet =
             new net.minecraft.server.v1_8_R3.PacketPlayOutCustomPayload("MC|BOpen", pds);
+
+        int slot = player.getInventory().getHeldItemSlot();
+        ItemStack old = player.getInventory().getItem(slot);
+        player.getInventory().setItem(slot, book);
 
         ((org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 

@@ -241,10 +241,10 @@ public final class FileUtils {
      *
      * @return Get a list of the names of all the files in the {@code subPath}
      */
-    public static List<File> getFiles(final Plugin plugin, final String subPath) {
+    public static List<File> getFiles(final Plugin plugin, final String... subPath) {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
         Preconditions.checkNotNull(subPath, "subPath cannot be null");
-        final File folder = new File(getPluginsFolder(plugin), subPath);
+        final File folder = getDatafolderFile(plugin, subPath);
         File[] files = folder.listFiles();
         if (files == null || files.length == 0) { return new ArrayList<>(0); }
         return Arrays.asList(files);
@@ -271,15 +271,18 @@ public final class FileUtils {
         return files;
     }
 
+
+    public static List<File> getRecursiveFiles(boolean excludeHyphenPrefix, Plugin plugin, String... children) {
+        return getRecursiveFiles(getDatafolderFile(plugin, children), excludeHyphenPrefix);
+    }
+
     /**
      * @param file
      *     The file to start at, if this is not a directory it will be the only element
      * @param excludeHyphenPrefix
      *     If any files with the hyphen (-) should be excluded from the list
-     *
-     * @return A list of all non-directory files in the given file.
      */
-    public static void getRecursiveFiles(File file, List<File> files, boolean excludeHyphenPrefix) {
+    private static void getRecursiveFiles(File file, List<File> files, boolean excludeHyphenPrefix) {
         if (!file.canRead()) {
             logger.info("Did not read '{}', as we have no reading permission", file.getPath());
             return;
@@ -348,17 +351,21 @@ public final class FileUtils {
         return FileUtils.class.getResourceAsStream(absIntPath);
     }
 
+
+    public static File getDatafolderFile(Plugin plugin, List<String> children) {
+        StringBuilder childrenPath = new StringBuilder();
+        for (String child : children) {
+            if (child == null) { return null; }
+            childrenPath.append(child).append(File.separatorChar);
+        }
+        return new File(plugin.getDataFolder(), childrenPath.toString());
+    }
+
     /**
      * @return A file in a plugin's data folder
      */
     public static File getDatafolderFile(Plugin plugin, String... children) {
-        StringBuilder childrenPath = new StringBuilder();
-        for (String child : children) {
-            Preconditions.checkNotNull(child, "None of the children can be null");
-            childrenPath.append(child).append(File.separatorChar);
-        }
-
-        return new File(plugin.getDataFolder(), childrenPath.toString());
+        return getDatafolderFile(plugin, Arrays.asList(children));
     }
 
     /**

@@ -92,17 +92,21 @@ public class ConfigUtil {
         return conf;
     }
 
+
+    public static void saveYaml(FileConfiguration conf, File file) {
+        try {
+            conf.save(file);
+        } catch (IOException e) {
+            logger.error("Failed to save file {} to {}", file.getName(), file.getPath());
+            if (logger.isDebugEnabled()) { e.printStackTrace(); }
+        }
+    }
+
     /**
      * Save a FileConfiguration to the datafolder of a plugin
      */
-    public static void saveYaml(Plugin plugin, FileConfiguration conf, String savePath) {
-        File saveFile = FileUtils.getDatafolderFile(plugin, savePath);
-        try {
-            conf.save(saveFile);
-        } catch (IOException e) {
-            logger.error("Failed to save file {} to {}", saveFile.getName(), saveFile.getPath());
-            if (logger.isDebugEnabled()) { e.printStackTrace(); }
-        }
+    public static void saveYaml(Plugin plugin, FileConfiguration conf, String... savePath) {
+        saveYaml(conf, FileUtils.getDatafolderFile(plugin, savePath));
     }
 
     /**

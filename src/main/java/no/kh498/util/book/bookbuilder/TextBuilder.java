@@ -6,8 +6,14 @@ public class TextBuilder {
     private ClickAction click = null;
     private HoverAction hover = null;
 
-    StringBuilder hoverLines = new StringBuilder();
-    String clickValue;
+    private boolean underlined;
+    private boolean bold;
+    private boolean italic;
+    private boolean strikethrough;
+    private boolean obfuscated;
+
+    private StringBuilder hoverLines = new StringBuilder();
+    private String clickValue;
 
     private PageBuilder builder;
 
@@ -53,6 +59,22 @@ public class TextBuilder {
             extra += ", hoverEvent:{action:" + hover.getString() + ", value:[\"\"" + hoverLines.toString() + "]}";
         }
 
+        if (bold) {
+            extra += ",bold:true";
+        }
+        if (underlined) {
+            extra += ",underlined:true";
+        }
+        if (italic) {
+            extra += ",italic:true";
+        }
+        if (strikethrough) {
+            extra += ",strikethrough:true";
+        }
+        if (obfuscated) {
+            extra += ",obfuscated:true";
+        }
+
         extra += "}";
 
         if (builder.first) { builder.first = false; }
@@ -60,6 +82,51 @@ public class TextBuilder {
 
         builder.page += extra;
         return builder;
+    }
+
+    public boolean isUnderlined() {
+        return underlined;
+    }
+
+    public TextBuilder setUnderlined(boolean underlined) {
+        this.underlined = underlined;
+        return this;
+    }
+
+    public boolean isBold() {
+        return bold;
+    }
+
+    public TextBuilder setBold(boolean bold) {
+        this.bold = bold;
+        return this;
+    }
+
+    public boolean isItalic() {
+        return italic;
+    }
+
+    public TextBuilder setItalic(boolean italic) {
+        this.italic = italic;
+        return this;
+    }
+
+    public boolean isStrikethrough() {
+        return strikethrough;
+    }
+
+    public TextBuilder setStrikethrough(boolean strikethrough) {
+        this.strikethrough = strikethrough;
+        return this;
+    }
+
+    public boolean isObfuscated() {
+        return obfuscated;
+    }
+
+    public TextBuilder setObfuscated(boolean obfuscated) {
+        this.obfuscated = obfuscated;
+        return this;
     }
 }
 

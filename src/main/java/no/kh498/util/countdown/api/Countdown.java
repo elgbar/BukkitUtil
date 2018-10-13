@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * The countdown classes are a way to easily make a countdown by using the actionbar. There is also a interrupter where
@@ -257,5 +258,21 @@ public abstract class Countdown implements Runnable {
 
     private Plugin getPlugin() {
         return plugin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
+        Countdown countdown = (Countdown) o;
+        return time == countdown.time && startTime == countdown.startTime && Objects.equals(text, countdown.text) &&
+               Objects.equals(plugin, countdown.plugin) && Objects.equals(timeFormat, countdown.timeFormat) &&
+               Objects.equals(bt, countdown.bt);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(text, time, plugin, startTime, timeFormat);
     }
 }

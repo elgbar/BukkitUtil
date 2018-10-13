@@ -287,4 +287,9 @@ public class ConfigUtil {
             return null;
         }
     }
+
+
+    public static boolean isEmpty(ConfigurationSection conf) {
+        return conf == null || conf.getKeys(false).isEmpty();
+    }
 }

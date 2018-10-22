@@ -24,34 +24,7 @@ public final class ColoredPaneItem extends ActionMenuItem {
      */
     public ColoredPaneItem(final String name, final DyeColor color, final ItemClickHandler handler,
                            final String... lore) {
-        //noinspection deprecation
-        super(name, handler, new ItemStack(Material.STAINED_GLASS_PANE, 1, color.getDyeData()), lore);
-    }
-
-    /**
-     * Get a colored pane MenuItem
-     *
-     * @param name
-     *     Name of the item
-     * @param color
-     *     Color of the item
-     * @param lore
-     *     Lore of the item
-     */
-    public ColoredPaneItem(final String name, final DyeColor color, final String... lore) {
-        this(name, color, event -> {}, lore);
-    }
-
-    /**
-     * Get a colored pane MenuItem
-     *
-     * @param name
-     *     Name of the item
-     * @param color
-     *     Color of the item
-     */
-    public ColoredPaneItem(final String name, final DyeColor color) {
-        this(name, color, event -> {});
+        super(name, handler, new ItemStack(Material.STAINED_GLASS_PANE, 1, color.getWoolData()), lore);
     }
 
     /**
@@ -60,7 +33,7 @@ public final class ColoredPaneItem extends ActionMenuItem {
      * @param color
      *     Color of the item
      */
-    public ColoredPaneItem(final DyeColor color) {
-        this(" ", color);
+    public ColoredPaneItem(final DyeColor color, final ItemClickHandler handler) {
+        this(" ", color, handler);
     }
 }

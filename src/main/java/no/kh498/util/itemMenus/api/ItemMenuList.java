@@ -2,13 +2,12 @@ package no.kh498.util.itemMenus.api;
 
 import com.google.common.base.Preconditions;
 import no.kh498.util.itemMenus.MathUtil;
-import no.kh498.util.itemMenus.PluginHolder;
 import no.kh498.util.itemMenus.api.constants.CommonPos;
 import no.kh498.util.itemMenus.api.constants.Size;
 import no.kh498.util.itemMenus.api.items.ActionMenuItem;
 import no.kh498.util.itemMenus.api.items.StaticMenuItem;
 import no.kh498.util.itemMenus.events.ItemClickEvent;
-import no.kh498.util.itemMenus.items.ColoredPaneItem;
+import no.kh498.util.itemMenus.items.StaticColoredPaneItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -28,41 +27,23 @@ import java.util.List;
  * <p>
  * <b>Note:</b> You need JVM 1.8 or higher to run this due to lambda expressions.
  *
- * @author kh498
+ * @author Elg
  * @since 0.1.0
  */
 @SuppressWarnings("unused")
-public class ListItemMenu {
+public class ItemMenuList {
 
+    public static final MenuItem DEFAULT_BOTTOM_PANE = new StaticColoredPaneItem(DyeColor.BLACK);
     /* constants */
     private static final int FIVE_LINES_SIZE = Size.FIVE.getSize();
     /* set by the user */
     private final List<MenuItem> menuItemList;
     private final String title;
     private final Plugin plugin;
-
-    private boolean smoothUpdate;
-    private MenuItem bottomPane;
-
     /* generated */
     private final int pages;
-
-    /**
-     * @param menuItemList
-     *     The list of MenuItems to include
-     * @param title
-     *     The title of the menu, <b>can maximum be 22 characters long</b>
-     *
-     * @throws IllegalArgumentException
-     *     if the title is longer than 22 characters
-     * @throws NullPointerException
-     *     if {@code plugin} or {@code menuItemList} is {@code null}
-     * @deprecated Use constructor with plugin reference
-     */
-    @Deprecated
-    public ListItemMenu(final List<MenuItem> menuItemList, final String title) {
-        this(PluginHolder.getPlugin(), menuItemList, title);
-    }
+    private boolean smoothUpdate;
+    private MenuItem bottomPane = DEFAULT_BOTTOM_PANE;
 
     /**
      * @param menuItemList
@@ -75,7 +56,7 @@ public class ListItemMenu {
      * @throws NullPointerException
      *     if {@code plugin} or {@code menuItemList} is {@code null}
      */
-    public ListItemMenu(Plugin plugin, final List<MenuItem> menuItemList, final String title) {
+    public ItemMenuList(Plugin plugin, final List<MenuItem> menuItemList, final String title) {
         this(plugin, menuItemList, title, true);
     }
 
@@ -92,9 +73,10 @@ public class ListItemMenu {
      * @throws NullPointerException
      *     if {@code plugin} or {@code menuItemList} is {@code null}
      */
-    public ListItemMenu(Plugin plugin, final List<MenuItem> menuItemList, final String title, boolean smoothUpdate) {
+    public ItemMenuList(Plugin plugin, final List<MenuItem> menuItemList, final String title, boolean smoothUpdate) {
 
-        Preconditions.checkArgument(title.length() <= 22, "Title cannot be longer than 22 characters");
+        Preconditions.checkArgument(smoothUpdate || title.length() <= 24,
+                                    "Title must be shorter than 24 characters when displaying page number");
         Preconditions.checkNotNull(plugin);
         Preconditions.checkNotNull(menuItemList);
 
@@ -103,7 +85,6 @@ public class ListItemMenu {
         this.title = title;
         pages = MathUtil.dividedRoundedUp(menuItemList.size(), FIVE_LINES_SIZE);
         this.smoothUpdate = smoothUpdate;
-        bottomPane = new ColoredPaneItem(DyeColor.BLACK);
 
     }
 
@@ -117,14 +98,14 @@ public class ListItemMenu {
         ItemMenu menu = new ItemMenu(plugin, title, Size.SIX);
 
         for (int m = 0; m < 9; m++) {
-            menu.setItem(FIVE_LINES_SIZE + m, bottomPane);
+            menu.setItem(Size.FOUR.getSize() + m, bottomPane);
         }
         return menu;
     }
 
     private void changePage(final Player player, final int page, ItemMenu menu) {
         if (!useSmoothUpdate()) {
-            menu.setName(title + " - " + (page + 1) + "/" + pages);
+            menu.setName(title + " " + (page + 1) + "/" + pages);
         }
 
         int index = FIVE_LINES_SIZE * page;
@@ -187,7 +168,7 @@ public class ListItemMenu {
         return smoothUpdate;
     }
 
-    public ListItemMenu setSmoothUpdate(boolean smoothUpdate) {
+    public ItemMenuList setSmoothUpdate(boolean smoothUpdate) {
         this.smoothUpdate = smoothUpdate;
         return this;
     }
@@ -199,7 +180,7 @@ public class ListItemMenu {
     /**
      * The filler items at the bottom of tha page.
      * <p>
-     * default is a black {@link ColoredPaneItem}
+     * default is a black {@link StaticColoredPaneItem}
      */
     public void setBottomPane(StaticMenuItem bottomPane) {
         this.bottomPane = bottomPane;

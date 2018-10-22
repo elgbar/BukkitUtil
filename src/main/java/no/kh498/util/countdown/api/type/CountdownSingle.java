@@ -14,7 +14,7 @@ import java.util.Collections;
  * <p>
  * {@inheritDoc}
  *
- * @author karl henrik
+ * @author Elg
  */
 public class CountdownSingle extends Countdown {
 
@@ -41,6 +41,6 @@ public class CountdownSingle extends Countdown {
 
     @Override
     public Collection<Player> getPlayers() {
-        return this.player;
+        return player;
     }
 }

@@ -9,6 +9,10 @@ import java.util.Collections;
 
 public interface Debuggable {
 
+    default String showDebugInfo() {
+        return appendDebugInfo(new ColorString()).toString();
+    }
+
     /**
      * @param sb
      *     The StringBuilding to addend to, will be on an empty line
@@ -29,30 +33,25 @@ public interface Debuggable {
      */
     ColorString appendDebugInfo(@NotNull ColorString sb, @NotNull String prefix);
 
-    default String showDebugInfo() {
-        return appendDebugInfo(new ColorString()).toString();
-    }
-
-
     default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
                               boolean bool) {
         sb.none(prefix).yellow(getClass().getSimpleName() + ": " + objectName + " ? ");
-        
+
         if (bool) { sb.green("true"); }
         else { sb.red("false"); }
 
         sb.none("\n");
     }
 
-    default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
-                              @Nullable Object object) {
-        sb.none(prefix).yellow(getClass().getSimpleName() + ": " + objectName + " = ").aqua(object + "").none("\n");
-    }
-
     default void appendDebuggable(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
                                   @Nullable Debuggable object) {
         if (object == null) { appendSingle(sb, prefix, objectName, null); }
         else { appendDebuggableList(sb, prefix, objectName, Collections.singleton(object));}
+    }
+
+    default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
+                              @Nullable Object object) {
+        sb.none(prefix).yellow(getClass().getSimpleName() + ": " + objectName + " = ").aqua(object + "").none("\n");
     }
 
     default void appendDebuggableList(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,

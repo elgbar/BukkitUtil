@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public final class CountdownFinishedEvent extends Event {
 
@@ -17,15 +17,15 @@ public final class CountdownFinishedEvent extends Event {
         this.countdown = countdown;
     }
 
-    public Countdown getCountdown() {return this.countdown;}
-
-    @Override
-    public HandlerList getHandlers() {
+    @SuppressWarnings("unused")
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
-    @SuppressWarnings("unused")
-    public static HandlerList getHandlerList() {
+    public Countdown getCountdown() {return countdown;}
+
+    @Override
+    public HandlerList getHandlers() {
         return handlers;
     }
 }

@@ -29,6 +29,13 @@ public class MenuItem {
         this.lore = lore;
     }
 
+    public void updateItem(final MenuItem menuItem) {
+        icon = menuItem.icon;
+        displayName = menuItem.displayName;
+        lore = menuItem.lore;
+        setNameAndLore(icon, displayName, lore);
+    }
+
     /**
      * Sets the display name and lore of an ItemStack.
      *
@@ -52,52 +59,6 @@ public class MenuItem {
         return itemStack;
     }
 
-    public void updateItem(final MenuItem menuItem) {
-        this.icon = menuItem.icon;
-        this.displayName = menuItem.displayName;
-        this.lore = menuItem.lore;
-        setNameAndLore(this.icon, this.displayName, this.lore);
-    }
-
-    /**
-     * Gets the display name of the MenuItem.
-     *
-     * @return The display name.
-     */
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    public void setDisplayName(final String name) {
-        this.displayName = name;
-    }
-
-    /**
-     * Gets the icon of the MenuItem.
-     *
-     * @return The icon.
-     */
-    public ItemStack getIcon() {
-        return this.icon;
-    }
-
-    public void setIcon(final ItemStack newIcon) {
-        this.icon = newIcon;
-    }
-
-    /**
-     * Gets the lore of the MenuItem.
-     *
-     * @return The lore.
-     */
-    public List<String> getLore() {
-        return this.lore;
-    }
-
-    public void setLore(final List<String> lore) {
-        this.lore = lore;
-    }
-
     /**
      * Gets the ItemStack to be shown to the player.
      *
@@ -108,6 +69,45 @@ public class MenuItem {
      */
     public ItemStack getFinalIcon(final Player player) {
         return setNameAndLore(getIcon().clone(), getDisplayName(), getLore());
+    }
+
+    /**
+     * Gets the icon of the MenuItem.
+     *
+     * @return The icon.
+     */
+    public ItemStack getIcon() {
+        return icon;
+    }
+
+    /**
+     * Gets the display name of the MenuItem.
+     *
+     * @return The display name.
+     */
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(final String name) {
+        displayName = name;
+    }
+
+    /**
+     * Gets the lore of the MenuItem.
+     *
+     * @return The lore.
+     */
+    public List<String> getLore() {
+        return lore;
+    }
+
+    public void setLore(final List<String> lore) {
+        this.lore = lore;
+    }
+
+    public void setIcon(final ItemStack newIcon) {
+        icon = newIcon;
     }
 
     /**

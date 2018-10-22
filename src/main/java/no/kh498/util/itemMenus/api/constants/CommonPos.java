@@ -1,7 +1,7 @@
 package no.kh498.util.itemMenus.api.constants;
 
 /**
- * @author kh498
+ * @author Elg
  * @since 0.1.0
  */
 public enum CommonPos {
@@ -33,7 +33,7 @@ public enum CommonPos {
     }
 
     public int getPos() {
-        return this.position;
+        return position;
     }
 
     /**
@@ -44,8 +44,8 @@ public enum CommonPos {
      */
     public int getPos(final Size row) {
         if (row == Size.ONE) {
-            return this.position;
+            return position;
         }
-        return this.position + Size.fit(row.getSize() - Size.ONE.getSize()).getSize();
+        return position + Size.fit(row.getSize() - Size.ONE.getSize()).getSize();
     }
 }

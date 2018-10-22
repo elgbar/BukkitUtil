@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.Set;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public class RegionExitEvent extends RegionMoveEvent {
 

@@ -1,5 +1,8 @@
 package no.kh498.util.book.bookbuilder;
 
+/**
+ * @author Elg
+ */
 public class TextBuilder {
 
     private String text = null;

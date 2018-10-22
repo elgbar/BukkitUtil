@@ -5,7 +5,7 @@ import no.kh498.util.regionEvents.flags.EntryEventFlag;
 import no.kh498.util.regionEvents.flags.ExitEventFlag;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public class RegionEvents {
 

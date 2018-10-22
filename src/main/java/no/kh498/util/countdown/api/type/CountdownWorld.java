@@ -14,7 +14,7 @@ import java.util.Collection;
  * <p>
  * {@inheritDoc}
  *
- * @author karl henrik
+ * @author Elg
  */
 public class CountdownWorld extends Countdown {
 

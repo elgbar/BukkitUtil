@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 /**
- * @author kh498
+ * @author Elg
  * @since 0.1.0
  */
 public final class WorldUtil {
@@ -44,13 +44,6 @@ public final class WorldUtil {
 
         //validate the block
         return getValidHeight(vanillaHighestBlock);
-    }
-
-    /**
-     * @return The block below {@code block}
-     */
-    private static Block blockBelow(final Block block) {
-        return block.getRelative(BlockFace.DOWN);
     }
 
     /**
@@ -95,6 +88,12 @@ public final class WorldUtil {
         return y;
     }
 
+    /**
+     * @return The block below {@code block}
+     */
+    private static Block blockBelow(final Block block) {
+        return block.getRelative(BlockFace.DOWN);
+    }
 
     /**
      * @param material

@@ -26,21 +26,20 @@ import java.util.Objects;
  * <p>
  * To change the way the time is viewed implement {@link TimeFormat} in your own class
  *
- * @author karl henrik
+ * @author Elg
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class Countdown implements Runnable {
 
+    // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
+    private static final Logger LOG = LoggerFactory.getLogger(Countdown.class);
+    private final Plugin plugin;
+    private final TimeFormat timeFormat;
     private String text;
     private long time;
-    private final Plugin plugin;
     private transient boolean running;
     private transient long startTime;
     private transient HashMap<Player, Interrupt> lastInterrupt;
-    private final TimeFormat timeFormat;
-
-    // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
-    private static final Logger LOG = LoggerFactory.getLogger(Countdown.class);
     private BukkitTask bt;
 
     /**
@@ -69,9 +68,46 @@ public abstract class Countdown implements Runnable {
     }
 
     /**
-     * @return The players who should see the countdown.
+     * Reset the countdown to {@link #time}
      */
-    public abstract Collection<? extends Player> getPlayers();
+    public void reset() {
+        LOG.debug("Resetting countdown");
+        startTime = System.currentTimeMillis();
+        lastInterrupt = new HashMap<>();
+    }
+
+    /**
+     * Try to send a interrupt message, if no countdown is running send a actionbar message instead
+     *
+     * @param c
+     *     The countdown to use
+     * @param player
+     *     The player to send the interrupt to
+     * @param interruptText
+     *     The interruption text
+     * @param time
+     *     The duration of the interrupt in milliseconds
+     * @param force
+     *     if this messages should be forced to replace another interrupt
+     */
+    public static void tryInterrupt(final Countdown c, final Player player, final String interruptText, final long time,
+                                    final boolean force) {
+        if (c != null && c.running) {
+            c.interrupt(player, interruptText, time, force);
+        }
+        else {
+            AdvancedChat.sendActionbar(interruptText, player);
+        }
+    }
+
+    /**
+     * Start the countdown
+     */
+    public void start() {
+        LOG.debug("Countdown started");
+        running = true;
+        run();
+    }
 
     @Override
     public void run() {
@@ -108,12 +144,10 @@ public abstract class Countdown implements Runnable {
     }
 
     /**
-     * Start the countdown
+     * @return calculate the time left in milliseconds
      */
-    public void start() {
-        LOG.debug("Countdown started");
-        running = true;
-        run();
+    public long getTimeLapsed() {
+        return (startTime + time) - System.currentTimeMillis();
     }
 
     /**
@@ -133,6 +167,11 @@ public abstract class Countdown implements Runnable {
     }
 
     /**
+     * @return The players who should see the countdown.
+     */
+    public abstract Collection<? extends Player> getPlayers();
+
+    /**
      * {@link #reset()} and set the start time to {@code timeLapsed}. This can be used when resuming a timer saved to
      * disk.
      *
@@ -142,40 +181,6 @@ public abstract class Countdown implements Runnable {
     public void setTimeLapsed(final long timeLapsed) {
         reset();
         startTime -= timeLapsed;
-    }
-
-    /**
-     * @return calculate the time left in milliseconds
-     */
-    public long getTimeLapsed() {
-        return (startTime + time) - System.currentTimeMillis();
-    }
-
-    /**
-     * Reset the countdown to {@link #time}
-     */
-    public void reset() {
-        LOG.debug("Resetting countdown");
-        startTime = System.currentTimeMillis();
-        lastInterrupt = new HashMap<>();
-    }
-
-    /**
-     * @param player
-     *     The player to send the interrupt to
-     * @param interruptText
-     *     The interruption text
-     * @param time
-     *     The duration of the interrupt in milliseconds
-     * @param force
-     *     if this messages should be forced to replace another interrupt
-     */
-    public void interrupt(final Player player, final String interruptText, final long time, final boolean force) {
-        final Interrupt interrupt = new Interrupt(interruptText, time);
-        if (force) {
-            lastInterrupt.put(player, interrupt);
-        }
-        lastInterrupt.putIfAbsent(player, interrupt);
     }
 
     /**
@@ -210,10 +215,6 @@ public abstract class Countdown implements Runnable {
     }
 
     /**
-     * Try to send a interrupt message, if no countdown is running send a actionbar message instead
-     *
-     * @param c
-     *     The countdown to use
      * @param player
      *     The player to send the interrupt to
      * @param interruptText
@@ -223,22 +224,12 @@ public abstract class Countdown implements Runnable {
      * @param force
      *     if this messages should be forced to replace another interrupt
      */
-    public static void tryInterrupt(final Countdown c, final Player player, final String interruptText, final long time,
-                                    final boolean force) {
-        if (c != null && c.running) {
-            c.interrupt(player, interruptText, time, force);
+    public void interrupt(final Player player, final String interruptText, final long time, final boolean force) {
+        final Interrupt interrupt = new Interrupt(interruptText, time);
+        if (force) {
+            lastInterrupt.put(player, interrupt);
         }
-        else {
-            AdvancedChat.sendActionbar(interruptText, player);
-        }
-    }
-
-    public void setText(final String text) {
-        this.text = text;
-    }
-
-    public void setTime(final long time) {
-        this.time = time;
+        lastInterrupt.putIfAbsent(player, interrupt);
     }
 
     /**
@@ -248,6 +239,10 @@ public abstract class Countdown implements Runnable {
         return text;
     }
 
+    public void setText(final String text) {
+        this.text = text;
+    }
+
     /**
      * @return How long each countdown will be
      */
@@ -255,9 +250,18 @@ public abstract class Countdown implements Runnable {
         return time;
     }
 
+    public void setTime(final long time) {
+        this.time = time;
+    }
 
     private Plugin getPlugin() {
         return plugin;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(text, time, plugin, startTime, timeFormat);
     }
 
     @Override
@@ -268,11 +272,5 @@ public abstract class Countdown implements Runnable {
         return time == countdown.time && startTime == countdown.startTime && Objects.equals(text, countdown.text) &&
                Objects.equals(plugin, countdown.plugin) && Objects.equals(timeFormat, countdown.timeFormat) &&
                Objects.equals(bt, countdown.bt);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(text, time, plugin, startTime, timeFormat);
     }
 }

@@ -15,7 +15,7 @@ import org.bukkit.material.MaterialData;
 import java.util.UUID;
 
 /**
- * @author kh498
+ * @author Elg
  * @author zachoooo
  * @since 0.1.0
  */
@@ -44,23 +44,6 @@ public final class InventoryUtil {
                                      final MaterialData data) {
         removeInvItem(inv, new ItemStack(type, amount, data.getData()), false);
     }
-
-
-    /**
-     * Remove an ItemStack (from a inventory even if the items are spread out
-     * <p>
-     * Based on <a href="https://bukkit.org/threads/remove-items-from-an-inventory.27853/#post-1790751">this</a> bukkit
-     * thread
-     *
-     * @param inv
-     *     inventory to check
-     * @param item
-     *     the item to remove
-     */
-    public static void removeInvItem(final Inventory inv, final ItemStack item) {
-        removeInvItem(inv, item, false);
-    }
-
 
     /**
      * Remove an ItemStack (from a inventory even if the items are spread out
@@ -103,6 +86,21 @@ public final class InventoryUtil {
             }
         }
         inv.setContents(items);
+    }
+
+    /**
+     * Remove an ItemStack (from a inventory even if the items are spread out
+     * <p>
+     * Based on <a href="https://bukkit.org/threads/remove-items-from-an-inventory.27853/#post-1790751">this</a> bukkit
+     * thread
+     *
+     * @param inv
+     *     inventory to check
+     * @param item
+     *     the item to remove
+     */
+    public static void removeInvItem(final Inventory inv, final ItemStack item) {
+        removeInvItem(inv, item, false);
     }
 
     /**
@@ -174,6 +172,18 @@ public final class InventoryUtil {
      *     The player's inventory to check
      * @param material
      *     What material to check
+     *
+     * @return The number of items that is a certain material
+     */
+    public static int countItems(final Player player, final Material material) {
+        return countItems(player, material, (short) -1);
+    }
+
+    /**
+     * @param player
+     *     The player's inventory to check
+     * @param material
+     *     What material to check
      * @param damageValue
      *     What damageValue of the material to check (-1 to ignore damage value)
      *
@@ -196,29 +206,14 @@ public final class InventoryUtil {
     /**
      * @param player
      *     The player's inventory to check
-     * @param material
-     *     What material to check
+     * @param item
+     *     item to check if the player can hold
      *
-     * @return The number of items that is a certain material
+     * @return true if the player can hold the item {@code new ItemStack(material, quantity, data)}
      */
-    public static int countItems(final Player player, final Material material) {
-        return countItems(player, material, (short) -1);
-    }
-
-    /**
-     * @param inv
-     *     The inventory to check
-     *
-     * @return The number of empty slots in an inventory
-     */
-    public static int emptySlots(final Inventory inv) {
-        int slots = 0;
-        for (final ItemStack i : inv) {
-            if (i == null) {
-                slots++;
-            }
-        }
-        return slots;
+    @SuppressWarnings("deprecation")
+    public static boolean canHold(final Player player, final ItemStack item) {
+        return canHold(player, item.getType(), item.getData().getData(), item.getAmount());
     }
 
     /**
@@ -263,16 +258,19 @@ public final class InventoryUtil {
     }
 
     /**
-     * @param player
-     *     The player's inventory to check
-     * @param item
-     *     item to check if the player can hold
+     * @param inv
+     *     The inventory to check
      *
-     * @return true if the player can hold the item {@code new ItemStack(material, quantity, data)}
+     * @return The number of empty slots in an inventory
      */
-    @SuppressWarnings("deprecation")
-    public static boolean canHold(final Player player, final ItemStack item) {
-        return canHold(player, item.getType(), item.getData().getData(), item.getAmount());
+    public static int emptySlots(final Inventory inv) {
+        int slots = 0;
+        for (final ItemStack i : inv) {
+            if (i == null) {
+                slots++;
+            }
+        }
+        return slots;
     }
 
     public static ItemStack getPlayerSkull(final UUID uuid) {

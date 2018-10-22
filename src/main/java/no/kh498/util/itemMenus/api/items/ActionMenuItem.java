@@ -7,6 +7,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+/**
+ * @author Elg
+ */
 public class ActionMenuItem extends MenuItem {
 
     private ItemClickHandler handler;
@@ -25,11 +28,11 @@ public class ActionMenuItem extends MenuItem {
 
     @Override
     public void onItemClick(final ItemClickEvent event) {
-        this.handler.onItemClick(event);
+        handler.onItemClick(event);
     }
 
     public ItemClickHandler getHandler() {
-        return this.handler;
+        return handler;
     }
 
     public void setHandler(final ItemClickHandler handler) {

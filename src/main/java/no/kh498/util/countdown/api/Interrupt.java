@@ -1,7 +1,7 @@
 package no.kh498.util.countdown.api;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 class Interrupt {
 

@@ -8,7 +8,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 abstract class RegionMoveEvent extends Event implements Cancellable {
 
@@ -30,32 +30,37 @@ abstract class RegionMoveEvent extends Event implements Cancellable {
         this.bypass = bypass;
     }
 
+    @SuppressWarnings("unused")
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * @return The player who walked through a region boundary
      */
     public Player getPlayer() {
-        return this.player;
+        return player;
     }
 
     /**
      * @return Location where the player was
      */
     public Location getFrom() {
-        return this.from;
+        return from;
     }
 
     /**
      * @return Location where the player is going to be
      */
     public Location getTo() {
-        return this.to;
+        return to;
     }
 
     /**
      * @return How the player traveled to the current location
      */
     public MoveType getMoveType() {
-        return this.moveType;
+        return moveType;
     }
 
     @Override
@@ -63,22 +68,17 @@ abstract class RegionMoveEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    @SuppressWarnings("unused")
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
     @Override
     public boolean isCancelled() {
-        return this.cancelled;
+        return cancelled;
     }
 
     @Override
     public void setCancelled(final boolean b) {
-        this.cancelled = b;
+        cancelled = b;
     }
 
     public boolean hasBypass() {
-        return this.bypass;
+        return bypass;
     }
 }

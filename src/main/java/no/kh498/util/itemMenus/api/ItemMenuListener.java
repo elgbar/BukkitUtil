@@ -31,20 +31,6 @@ public class ItemMenuListener implements Listener {
         return INSTANCE;
     }
 
-    /**
-     * Closes all {@link ItemMenu}s currently open.
-     */
-    public static void closeOpenMenus() {
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getOpenInventory() != null) {
-                final Inventory inventory = player.getOpenInventory().getTopInventory();
-                if (inventory.getHolder() instanceof ItemMenuHolder) {
-                    player.closeInventory();
-                }
-            }
-        }
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onInventoryClick(final InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof Player && event.getInventory().getHolder() != null &&
@@ -88,9 +74,23 @@ public class ItemMenuListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPluginDisable(final PluginDisableEvent event) {
-        if (event.getPlugin().equals(this.plugin)) {
+        if (event.getPlugin().equals(plugin)) {
             closeOpenMenus();
-            this.plugin = null;
+            plugin = null;
+        }
+    }
+
+    /**
+     * Closes all {@link ItemMenu}s currently open.
+     */
+    public static void closeOpenMenus() {
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getOpenInventory() != null) {
+                final Inventory inventory = player.getOpenInventory().getTopInventory();
+                if (inventory.getHolder() instanceof ItemMenuHolder) {
+                    player.closeInventory();
+                }
+            }
         }
     }
 }

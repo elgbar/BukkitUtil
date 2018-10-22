@@ -1,6 +1,5 @@
 package no.kh498.util.itemMenus.api.items;
 
-import no.kh498.util.itemMenus.PluginHolder;
 import no.kh498.util.itemMenus.api.ItemMenu;
 import no.kh498.util.itemMenus.api.MenuItem;
 import no.kh498.util.itemMenus.events.ItemClickEvent;
@@ -19,11 +18,6 @@ public class SubMenuItem extends MenuItem {
     private final Plugin plugin;
     private final ItemMenu menu;
 
-    @Deprecated
-    public SubMenuItem(final String displayName, final ItemMenu menu, final ItemStack icon, final String... lore) {
-        this(PluginHolder.getPlugin(), displayName, menu, icon, lore);
-    }
-
     public SubMenuItem(Plugin plugin, final String displayName, final ItemMenu menu, final ItemStack icon,
                        final String... lore) {
         super(displayName, icon, lore);
@@ -37,8 +31,8 @@ public class SubMenuItem extends MenuItem {
         final UUID ID = event.getPlayer().getUniqueId();
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             final Player p = Bukkit.getPlayer(ID);
-            if (p != null && this.menu != null) {
-                this.menu.open(p);
+            if (p != null && menu != null) {
+                menu.open(p);
             }
         }, 2L);
     }

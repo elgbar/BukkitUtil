@@ -12,6 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
+/**
+ * @author Elg
+ */
 public class EntryEventFlag extends RegionMoveEventFlag {
 
     public static final EntryEventFlag.Factory FACTORY = new Factory();

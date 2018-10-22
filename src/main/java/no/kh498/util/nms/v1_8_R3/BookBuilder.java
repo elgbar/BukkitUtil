@@ -8,6 +8,9 @@ import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Elg
+ */
 public class BookBuilder implements IBookBuilder {
 
     private String title;
@@ -18,19 +21,6 @@ public class BookBuilder implements IBookBuilder {
         title = "";
         author = "";
         pages = new ArrayList<>();
-    }
-
-    @Override
-    public org.bukkit.inventory.ItemStack build() {
-        ItemStack book = new ItemStack(Item.getById(387));
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("author", author);
-        tag.setString("title", title);
-        NBTTagList pages = new NBTTagList();
-        for (String page : this.pages) { pages.add(new NBTTagString(page)); }
-        tag.set("pages", pages);
-        book.setTag(tag);
-        return CraftItemStack.asBukkitCopy(book);
     }
 
     @Override
@@ -61,5 +51,18 @@ public class BookBuilder implements IBookBuilder {
     public IBookBuilder addPage(String page) {
         pages.add(page);
         return this;
+    }
+
+    @Override
+    public org.bukkit.inventory.ItemStack build() {
+        ItemStack book = new ItemStack(Item.getById(387));
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("author", author);
+        tag.setString("title", title);
+        NBTTagList pages = new NBTTagList();
+        for (String page : this.pages) { pages.add(new NBTTagString(page)); }
+        tag.set("pages", pages);
+        book.setTag(tag);
+        return CraftItemStack.asBukkitCopy(book);
     }
 }

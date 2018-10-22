@@ -3,7 +3,7 @@ package no.kh498.util.countdown.api.timeFormat;
 /**
  * {@inheritDoc}
  *
- * @author karl henrik
+ * @author Elg
  */
 public class FormatHHMMSS implements TimeFormat {
 
@@ -17,15 +17,9 @@ public class FormatHHMMSS implements TimeFormat {
 
     public FormatHHMMSS(final String hours, final String minutes, final String seconds) {
 
-        this.hoursStr = hours;
-        this.minutesStr = minutes;
-        this.secondsStr = seconds;
-    }
-
-    private static void ensureDoubleDig(final StringBuilder sb, final long toCheck) {
-        if (toCheck < 10) {
-            sb.append("0");
-        }
+        hoursStr = hours;
+        minutesStr = minutes;
+        secondsStr = seconds;
     }
 
     @Override
@@ -40,15 +34,21 @@ public class FormatHHMMSS implements TimeFormat {
         final StringBuilder sb = new StringBuilder();
         if (hours > 0) {
             ensureDoubleDig(sb, hours);
-            sb.append(hours).append(" ").append(this.hoursStr).append(" ");
+            sb.append(hours).append(" ").append(hoursStr).append(" ");
         }
         if (minutes > 0) {
             ensureDoubleDig(sb, minutes);
-            sb.append(minutes).append(" ").append(this.minutesStr).append(" ");
+            sb.append(minutes).append(" ").append(minutesStr).append(" ");
         }
         ensureDoubleDig(sb, seconds);
-        sb.append(seconds).append(" ").append(this.secondsStr).append(" ");
+        sb.append(seconds).append(" ").append(secondsStr).append(" ");
         return sb.toString();
+    }
+
+    private static void ensureDoubleDig(final StringBuilder sb, final long toCheck) {
+        if (toCheck < 10) {
+            sb.append("0");
+        }
     }
 
     @Override

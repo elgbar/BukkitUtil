@@ -19,21 +19,29 @@ import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * @author karl henrik
+ * @author Elg
  * @since 0.1.0
  */
 public final class OnJoinMessage implements Listener {
 
-    private static HashMap<UUID, ArrayList<String>> messageMap;
-
     private static final String FILE_PATH = "";
     private static final String FILE_NAME = "JoinMessages";
+    private static HashMap<UUID, ArrayList<String>> messageMap;
     private final Plugin plugin;
 
     public OnJoinMessage(final Plugin plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
         load(plugin);
+    }
+
+    public static void load(final Plugin plugin) {
+        final String json = FileUtils.readJSON(plugin, FILE_PATH, FILE_NAME, true);
+        final Type type = new TypeToken<HashMap<UUID, ArrayList<String>>>() { }.getType();
+
+        final HashMap<UUID, ArrayList<String>> msgMap = new Gson().fromJson(json, type);
+
+        messageMap = (msgMap != null) ? msgMap : new HashMap<>();
     }
 
     /**
@@ -92,21 +100,6 @@ public final class OnJoinMessage implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    private void onJoin(final PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-        final UUID uuid = player.getUniqueId();
-        if (messageMap.containsKey(uuid)) {
-            //wait for other messages to appear
-            Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                for (final String msg : messageMap.get(uuid)) {
-                    player.sendMessage(msg);
-                }
-                messageMap.remove(uuid);
-            }, MCConstants.ONE_SECOND_IN_TICKS / 2);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
     private static void onDisable(final PluginDisableEvent event) {
         save(event.getPlugin());
     }
@@ -116,12 +109,18 @@ public final class OnJoinMessage implements Listener {
         FileUtils.writeJSON(plugin, FILE_PATH, FILE_NAME, new Gson().toJson(messageMap, type), true);
     }
 
-    public static void load(final Plugin plugin) {
-        final String json = FileUtils.readJSON(plugin, FILE_PATH, FILE_NAME, true);
-        final Type type = new TypeToken<HashMap<UUID, ArrayList<String>>>() { }.getType();
-
-        final HashMap<UUID, ArrayList<String>> msgMap = new Gson().fromJson(json, type);
-
-        messageMap = (msgMap != null) ? msgMap : new HashMap<>();
+    @EventHandler(priority = EventPriority.MONITOR)
+    private void onJoin(final PlayerJoinEvent event) {
+        final Player player = event.getPlayer();
+        final UUID uuid = player.getUniqueId();
+        if (messageMap.containsKey(uuid)) {
+            //wait for other messages to appear
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                for (final String msg : messageMap.get(uuid)) {
+                    player.sendMessage(msg);
+                }
+                messageMap.remove(uuid);
+            }, MCConstants.ONE_SECOND_IN_TICKS / 2);
+        }
     }
 }

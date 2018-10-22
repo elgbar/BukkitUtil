@@ -5,10 +5,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 @SuppressWarnings("WeakerAccess")
 public class ChtUtil {
+
+    public static void sendFormattedMsg(CommandSender sender, ColorString msg, final Object... obj) {
+        sendFormattedMsg(sender, msg.toString(), obj);
+    }
 
     /**
      * @param sender
@@ -20,10 +24,6 @@ public class ChtUtil {
      */
     public static void sendFormattedMsg(final CommandSender sender, final String msg, final Object... obj) {
         sender.sendMessage(createFormattedMsg(msg, obj).split("\n"));
-    }
-
-    public static void sendFormattedMsg(CommandSender sender, ColorString msg, final Object... obj) {
-        sendFormattedMsg(sender, msg.toString(), obj);
     }
 
     /**

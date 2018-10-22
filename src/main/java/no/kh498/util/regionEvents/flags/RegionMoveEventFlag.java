@@ -34,6 +34,8 @@ public abstract class RegionMoveEventFlag extends Handler {
         return true;
     }
 
+    abstract StateFlag getFlagType();
+
     /**
      * @return {@code true} if an event should be called
      */
@@ -46,7 +48,5 @@ public abstract class RegionMoveEventFlag extends Handler {
      */
     abstract boolean callEvent(Player player, Location from, Location to, Set<ProtectedRegion> entered,
                                Set<ProtectedRegion> exited, MoveType moveType, boolean hasBypass);
-
-    abstract StateFlag getFlagType();
 }
 

@@ -1,10 +1,10 @@
 package no.kh498.util.itemMenus.api;
 
-import no.kh498.util.itemMenus.PluginHolder;
 import no.kh498.util.itemMenus.api.constants.CommonPos;
 import no.kh498.util.itemMenus.api.constants.Size;
 import no.kh498.util.itemMenus.api.items.StaticMenuItem;
 import no.kh498.util.itemMenus.events.ItemClickEvent;
+import no.kh498.util.itemMenus.items.StaticColoredPaneItem;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ import java.util.UUID;
 /**
  * A Menu controlled by ItemStacks in an Inventory.
  *
- * @author kh498
+ * @author Elg
  * @author nuclearcat1337
  * @author MrLittleKitty (taken from <a href="https://github.com/MrLittleKitty/AnnihilationPro">here</a>)
  * @author ampayne2 (orginal author, <a href="https://github.com/ampayne2/AmpMenus">github</a>)
@@ -31,15 +31,26 @@ public class ItemMenu {
 
     /**
      * The {@link StaticMenuItem StaticMenuItem} that appears in empty slots if {@link
-     * ItemMenu#fillEmptySlots()}   is called.
+     * ItemMenu#fillEmptySlots()} is called.
      */
-    @SuppressWarnings("deprecation") private static final MenuItem EMPTY_SLOT_ITEM =
-        new StaticMenuItem(" ", new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getDyeData()));
+    private static final MenuItem EMPTY_SLOT_ITEM = new StaticColoredPaneItem(" ", DyeColor.GRAY);
     private final Plugin plugin;
     private String name;
     private Size size;
     private MenuItem[] items;
     private ItemMenu parent;
+
+    /**
+     * Creates an ItemMenu with no parent.
+     *
+     * @param name
+     *     The name of the inventory.
+     * @param size
+     *     The {@link Size Size} of the inventory.
+     */
+    public ItemMenu(Plugin plugin, final String name, final Size size) {
+        this(plugin, name, size, null);
+    }
 
     /**
      * Creates an ItemMenu.
@@ -50,14 +61,9 @@ public class ItemMenu {
      *     The {@link Size} of the inventory.
      * @param parent
      *     The ItemMenu's parent.
-     * @param items
-     *     The items that this menu contains
-     *
-     * @deprecated Use constructor with plugin reference
      */
-    @Deprecated
-    public ItemMenu(final String name, final Size size, final ItemMenu parent, final MenuItem[] items) {
-        this(PluginHolder.getPlugin(), name, size, parent, items);
+    public ItemMenu(Plugin plugin, final String name, final Size size, final ItemMenu parent) {
+        this(plugin, name, size, parent, new MenuItem[size.getSize()]);
     }
 
     /**
@@ -89,73 +95,12 @@ public class ItemMenu {
     }
 
     /**
-     * Creates an ItemMenu.
-     *
-     * @param name
-     *     The name of the inventory.
-     * @param size
-     *     The {@link Size} of the inventory.
-     * @param parent
-     *     The ItemMenu's parent.
-     */
-    @Deprecated
-    public ItemMenu(final String name, final Size size, final ItemMenu parent) {
-        this(name, size, parent, new MenuItem[size.getSize()]);
-    }
-
-    /**
-     * Creates an ItemMenu.
-     *
-     * @param name
-     *     The name of the inventory.
-     * @param size
-     *     The {@link Size} of the inventory.
-     * @param parent
-     *     The ItemMenu's parent.
-     */
-    public ItemMenu(Plugin plugin, final String name, final Size size, final ItemMenu parent) {
-        this(plugin, name, size, parent, new MenuItem[size.getSize()]);
-    }
-
-    /**
-     * Creates an ItemMenu with no parent.
-     *
-     * @param name
-     *     The name of the inventory.
-     * @param size
-     *     The {@link Size Size} of the inventory.
-     */
-    @Deprecated
-    public ItemMenu(final String name, final Size size) {
-        this(name, size, null);
-    }
-
-    /**
-     * Creates an ItemMenu with no parent.
-     *
-     * @param name
-     *     The name of the inventory.
-     * @param size
-     *     The {@link Size Size} of the inventory.
-     */
-    public ItemMenu(Plugin plugin, final String name, final Size size) {
-        this(plugin, name, size, null);
-    }
-
-    /**
-     * @return A copy of the original ItemMenu
-     */
-    private static ItemMenu copy(final ItemMenu orgMenu) {
-        return new ItemMenu(orgMenu.plugin, orgMenu.name, orgMenu.size, orgMenu.parent, orgMenu.items);
-    }
-
-    /**
      * Gets the name of the ItemMenu.
      *
      * @return The ItemMenu's name.
      */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**
@@ -170,28 +115,12 @@ public class ItemMenu {
     }
 
     /**
-     * @return The ItemMenu's {@link Size}.
-     */
-    public Size getSize() {
-        return this.size;
-    }
-
-    /**
-     * Checks if the ItemMenu has a parent.
-     *
-     * @return True if the ItemMenu has a parent, else false.
-     */
-    public boolean hasParent() {
-        return this.parent != null;
-    }
-
-    /**
      * Gets the parent of the ItemMenu.
      *
      * @return The ItemMenu's parent.
      */
     public ItemMenu getParent() {
-        return this.parent;
+        return parent;
     }
 
     /**
@@ -218,7 +147,7 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     public ItemMenu setItem(final int position, final MenuItem menuItem) {
-        this.items[position] = menuItem;
+        items[position] = menuItem;
         return this;
     }
 
@@ -233,7 +162,7 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     public ItemMenu setItem(final CommonPos position, final MenuItem menuItem) {
-        this.items[position.getPos()] = menuItem;
+        items[position.getPos()] = menuItem;
         return this;
     }
 
@@ -250,7 +179,7 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     public ItemMenu setItem(final CommonPos position, final Size row, final MenuItem menuItem) {
-        this.items[position.getPos(row)] = menuItem;
+        items[position.getPos(row)] = menuItem;
         return this;
     }
 
@@ -258,7 +187,7 @@ public class ItemMenu {
      * @return All {@link MenuItem MenuItem}s in a ItemMenu
      */
     private MenuItem[] getItems() {
-        return this.items;
+        return items;
     }
 
     /**
@@ -266,6 +195,13 @@ public class ItemMenu {
      */
     public ItemMenu copy() {
         return ItemMenu.copy(this);
+    }
+
+    /**
+     * @return A copy of the original ItemMenu
+     */
+    private static ItemMenu copy(final ItemMenu orgMenu) {
+        return new ItemMenu(orgMenu.plugin, orgMenu.name, orgMenu.size, orgMenu.parent, orgMenu.items);
     }
 
     /**
@@ -277,7 +213,7 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     public ItemMenu clearItem(final int position) {
-        this.items[position] = new MenuItem("", new ItemStack(Material.AIR));
+        items[position] = new MenuItem("", new ItemStack(Material.AIR));
         return this;
     }
 
@@ -290,7 +226,7 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     public ItemMenu clearItem(final CommonPos position) {
-        this.items[position.getPos()] = new MenuItem("", new ItemStack(Material.AIR));
+        items[position.getPos()] = new MenuItem("", new ItemStack(Material.AIR));
         return this;
     }
 
@@ -305,7 +241,7 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     public ItemMenu clearItem(final CommonPos position, final Size row) {
-        this.items[position.getPos(row)] = new MenuItem("", new ItemStack(Material.AIR));
+        items[position.getPos(row)] = new MenuItem("", new ItemStack(Material.AIR));
         return this;
     }
 
@@ -315,25 +251,15 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     public ItemMenu clearAllItems() {
-        this.items = new MenuItem[this.getSize().getSize()];
+        items = new MenuItem[getSize().getSize()];
         return this;
     }
 
     /**
-     * Fills all empty slots in the ItemMenu with a certain {@link MenuItem MenuItem}.
-     *
-     * @param menuItem
-     *     The {@link MenuItem MenuItem} to fill with.
-     *
-     * @return The ItemMenu.
+     * @return The ItemMenu's {@link Size}.
      */
-    public ItemMenu fillEmptySlots(final MenuItem menuItem) {
-        for (int i = 0; i < this.items.length; i++) {
-            if (this.items[i] == null) {
-                this.items[i] = menuItem;
-            }
-        }
-        return this;
+    public Size getSize() {
+        return size;
     }
 
     /**
@@ -347,24 +273,62 @@ public class ItemMenu {
     }
 
     /**
-     * Opens the ItemMenu for a player.
+     * Fills all empty slots in the ItemMenu with a certain {@link MenuItem MenuItem}.
      *
-     * @param player
-     *     The player.
+     * @param menuItem
+     *     The {@link MenuItem MenuItem} to fill with.
      *
      * @return The ItemMenu.
      */
-    public ItemMenu open(final Player player) {
-        if (!ItemMenuListener.getInstance().isRegistered(plugin)) {
-            ItemMenuListener.getInstance().register(plugin);
+    public ItemMenu fillEmptySlots(final MenuItem menuItem) {
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] == null) {
+                items[i] = menuItem;
+            }
         }
-
-        final Inventory inventory = Bukkit
-            .createInventory(new ItemMenuHolder(this, Bukkit.createInventory(player, this.size.getSize())),
-                             this.size.getSize(), this.name);
-        apply(inventory, player);
-        player.openInventory(inventory);
         return this;
+    }
+
+    /**
+     * Handles InventoryClickEvents for the {@link MenuItem}.
+     */
+    void onInventoryClick(final InventoryClickEvent event) {
+        if (event.getClick() == ClickType.LEFT || event.getClick() == ClickType.RIGHT ||
+            event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
+            final int slot = event.getRawSlot();
+            if (slot >= 0 && slot < size.getSize() && items[slot] != null) {
+                final Player player = (Player) event.getWhoClicked();
+                final ItemClickEvent itemClickEvent =
+                    new ItemClickEvent(player, event.getCurrentItem(), event.getClick(), this, slot);
+                items[slot].onItemClick(itemClickEvent);
+                if (itemClickEvent.willUpdate()) {
+                    update(player);
+                }
+                else {
+                    //noinspection deprecation
+                    player.updateInventory();
+                    if (itemClickEvent.willClose()) {
+                        final UUID playerUUID = player.getUniqueId();
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                            final Player p = Bukkit.getPlayer(playerUUID);
+                            if (p != null) {
+                                p.closeInventory();
+                            }
+                        }, 1L);
+                    }
+                    if (itemClickEvent.willGoBack() && hasParent()) {
+                        final UUID playerUUID = player.getUniqueId();
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                            final Player p = Bukkit.getPlayer(playerUUID);
+                            if (p != null) {
+                                p.closeInventory();
+                                parent.open(p);
+                            }
+                        }, 1L);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -389,6 +353,36 @@ public class ItemMenu {
     }
 
     /**
+     * Checks if the ItemMenu has a parent.
+     *
+     * @return True if the ItemMenu has a parent, else false.
+     */
+    public boolean hasParent() {
+        return parent != null;
+    }
+
+    /**
+     * Opens the ItemMenu for a player.
+     *
+     * @param player
+     *     The player.
+     *
+     * @return The ItemMenu.
+     */
+    public ItemMenu open(final Player player) {
+        if (!ItemMenuListener.getInstance().isRegistered(plugin)) {
+            ItemMenuListener.getInstance().register(plugin);
+        }
+
+        final Inventory inventory = Bukkit
+            .createInventory(new ItemMenuHolder(this, Bukkit.createInventory(player, size.getSize())), size.getSize(),
+                             name);
+        apply(inventory, player);
+        player.openInventory(inventory);
+        return this;
+    }
+
+    /**
      * Applies the {@link MenuItem MenuItem}s for a player to an Inventory.
      *
      * @param inventory
@@ -399,64 +393,22 @@ public class ItemMenu {
      * @return The ItemMenu.
      */
     private ItemMenu apply(final Inventory inventory, final Player player) {
-        for (int i = 0; i < this.items.length; i++) {
-            if (this.items[i] != null) {
-                inventory.setItem(i, this.items[i].getFinalIcon(player));
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                inventory.setItem(i, items[i].getFinalIcon(player));
             }
         }
         return this;
     }
 
     /**
-     * Handles InventoryClickEvents for the {@link MenuItem}.
-     */
-    void onInventoryClick(final InventoryClickEvent event) {
-        if (event.getClick() == ClickType.LEFT || event.getClick() == ClickType.RIGHT ||
-            event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
-            final int slot = event.getRawSlot();
-            if (slot >= 0 && slot < this.size.getSize() && this.items[slot] != null) {
-                final Player player = (Player) event.getWhoClicked();
-                final ItemClickEvent itemClickEvent =
-                    new ItemClickEvent(player, event.getCurrentItem(), event.getClick(), this, slot);
-                this.items[slot].onItemClick(itemClickEvent);
-                if (itemClickEvent.willUpdate()) {
-                    update(player);
-                }
-                else {
-                    //noinspection deprecation
-                    player.updateInventory();
-                    if (itemClickEvent.willClose()) {
-                        final UUID playerUUID = player.getUniqueId();
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                            final Player p = Bukkit.getPlayer(playerUUID);
-                            if (p != null) {
-                                p.closeInventory();
-                            }
-                        }, 1L);
-                    }
-                    if (itemClickEvent.willGoBack() && hasParent()) {
-                        final UUID playerUUID = player.getUniqueId();
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                            final Player p = Bukkit.getPlayer(playerUUID);
-                            if (p != null) {
-                                p.closeInventory();
-                                ItemMenu.this.parent.open(p);
-                            }
-                        }, 1L);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Destroys the ItemMenu.
      */
     public void destroy() {
-        this.name = null;
-        this.size = null;
-        this.items = null;
-        this.parent = null;
+        name = null;
+        size = null;
+        items = null;
+        parent = null;
     }
 }
 

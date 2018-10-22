@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * @author Elg
  * @since 0.1.0
  */
 @SuppressWarnings("WeakerAccess")
@@ -22,16 +23,6 @@ public final class FileUtils {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
-
-    /**
-     * @param plugin
-     *     The plugin
-     *
-     * @return Get the absolute path of the plugins folder
-     */
-    public static String getPluginsFolder(final Plugin plugin) {
-        return plugin.getDataFolder().getAbsolutePath();
-    }
 
     /**
      * Saves the contents of an InputStream in a file.
@@ -61,7 +52,6 @@ public final class FileUtils {
             }
         }
     }
-
 
     /**
      * @param plugin
@@ -131,6 +121,16 @@ public final class FileUtils {
                 }
             }
         }
+    }
+
+    /**
+     * @param plugin
+     *     The plugin
+     *
+     * @return Get the absolute path of the plugins folder
+     */
+    public static String getPluginsFolder(final Plugin plugin) {
+        return plugin.getDataFolder().getAbsolutePath();
     }
 
     /**
@@ -251,6 +251,22 @@ public final class FileUtils {
     }
 
     /**
+     * @return A file in a plugin's data folder
+     */
+    public static File getDatafolderFile(Plugin plugin, String... children) {
+        return getDatafolderFile(plugin, Arrays.asList(children));
+    }
+
+    public static File getDatafolderFile(Plugin plugin, List<String> children) {
+        StringBuilder childrenPath = new StringBuilder();
+        for (String child : children) {
+            if (child == null) { return null; }
+            childrenPath.append(child).append(File.separatorChar);
+        }
+        return new File(plugin.getDataFolder(), childrenPath.toString());
+    }
+
+    /**
      * A more user friendly version of {@link #getRecursiveFiles(File, List, boolean)} as you do not  need to create
      * your own list
      * <p>
@@ -270,7 +286,6 @@ public final class FileUtils {
         getRecursiveFiles(file, files, excludeHyphenPrefix);
         return files;
     }
-
 
     public static List<File> getRecursiveFiles(boolean excludeHyphenPrefix, Plugin plugin, String... children) {
         return getRecursiveFiles(getDatafolderFile(plugin, children), excludeHyphenPrefix);
@@ -306,7 +321,6 @@ public final class FileUtils {
             files.add(file);
         }
     }
-
 
     /**
      * @param internalPath
@@ -349,23 +363,6 @@ public final class FileUtils {
         logger.trace("absIntPath: " + absIntPath);
 
         return FileUtils.class.getResourceAsStream(absIntPath);
-    }
-
-
-    public static File getDatafolderFile(Plugin plugin, List<String> children) {
-        StringBuilder childrenPath = new StringBuilder();
-        for (String child : children) {
-            if (child == null) { return null; }
-            childrenPath.append(child).append(File.separatorChar);
-        }
-        return new File(plugin.getDataFolder(), childrenPath.toString());
-    }
-
-    /**
-     * @return A file in a plugin's data folder
-     */
-    public static File getDatafolderFile(Plugin plugin, String... children) {
-        return getDatafolderFile(plugin, Arrays.asList(children));
     }
 
     /**

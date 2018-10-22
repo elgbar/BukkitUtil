@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
- * @author kh498
+ * @author Elg
  * @since 0.1.0
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
@@ -35,21 +35,6 @@ public final class AdvancedChat {
      */
     public static void sendActionbar(final String msg, final Player... players) {
         sendAltChat(msg, ChatType.ACTION_BAR, players);
-    }
-
-    /**
-     * Send a message to a player even when chat is turned off in the Minecraft client.
-     *
-     * @param players
-     *     The players to send the action bar to
-     * @param msg
-     *     The message to send
-     *
-     * @throws IllegalStateException
-     *     if ProtocolLib is not installed
-     */
-    public static void sendSystemChat(final String msg, final Player... players) {
-        sendAltChat(msg, ChatType.SYSTEM, players);
     }
 
     /**
@@ -77,8 +62,7 @@ public final class AdvancedChat {
     }
 
     /**
-     * Send a type of chat that is not normally easily sent. This method is public so future ChatTypes will be able to
-     * be used.
+     * Send a type of chat that is not normally easily sent.
      *
      * @param players
      *     The players to send the action bar to
@@ -89,11 +73,8 @@ public final class AdvancedChat {
      *
      * @throws IllegalStateException
      *     if ProtocolLib is not installed
-     * @deprecated Use {@link #sendAltChat(String, ChatType, Player...)}, it does not require ProtocolLib.
-     * However this method will always work as long as you have ProtocolLib
      */
-    public static void sendAltChatProtocolLib(final String msg, final ChatType type, final Player... players) {
-
+    private static void sendAltChatProtocolLib(final String msg, final ChatType type, final Player... players) {
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
             throw new IllegalStateException("You must be using ProtocolLib!");
         }
@@ -115,5 +96,20 @@ public final class AdvancedChat {
         } catch (final Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Send a message to a player even when chat is turned off in the Minecraft client.
+     *
+     * @param players
+     *     The players to send the action bar to
+     * @param msg
+     *     The message to send
+     *
+     * @throws IllegalStateException
+     *     if ProtocolLib is not installed
+     */
+    public static void sendSystemChat(final String msg, final Player... players) {
+        sendAltChat(msg, ChatType.SYSTEM, players);
     }
 }

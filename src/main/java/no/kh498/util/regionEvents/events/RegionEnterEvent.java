@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.Set;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public class RegionEnterEvent extends RegionMoveEvent {
 
@@ -24,13 +24,13 @@ public class RegionEnterEvent extends RegionMoveEvent {
      * @return List of all the regions the player entered
      */
     public Set<ProtectedRegion> getEnteredSet() {
-        return this.entered;
+        return entered;
     }
 
     /**
      * @return The first region the player entered, usually this is correct
      */
     public ProtectedRegion getFirstEntered() {
-        return this.entered.iterator().next();
+        return entered.iterator().next();
     }
 }

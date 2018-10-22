@@ -1,7 +1,7 @@
 package no.kh498.util;
 
 /**
- * @author karl henrik
+ * @author Elg
  * @since 0.1.0
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
@@ -10,7 +10,7 @@ public final class MCConstants {
     /**
      * The factor to multiply with to convert ticks into milliseconds.
      * <p>
-     * For example if you want to have one second from tick into millis you can do:
+     * For example if you want to have one second from tick into milliseconds you can do:
      * <p>
      * {@code 20 (nr of ticks in a second) * 50 = 1000 (nr of millis in a second)}
      */

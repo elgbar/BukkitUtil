@@ -7,11 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * @author kh498
+ * @author Elg
  * @since 0.1.0
  */
 public final class ColoredPaneItem extends ActionMenuItem {
-
 
     /**
      * @param name

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public class MultiPage {
 
@@ -34,18 +34,18 @@ public class MultiPage {
         this(command, DEFAULT_MAX_PER_PAGE, Arrays.asList(content));
     }
 
-    public MultiPage(final String command, final List<String> content) {
-        this(command, DEFAULT_MAX_PER_PAGE, content);
-    }
-
     public MultiPage(final String command, final int maxPerPage, final List<String> content) {
         this.command = command;
         this.maxPerPage = maxPerPage;
         this.content = content;
     }
 
+    public MultiPage(final String command, final List<String> content) {
+        this(command, DEFAULT_MAX_PER_PAGE, content);
+    }
+
     public void viewPage(int page, final CommandSender sender) {
-        final int pages = MathUtil.dividedRoundedUp(this.content.size(), this.maxPerPage);
+        final int pages = MathUtil.dividedRoundedUp(content.size(), maxPerPage);
         if (page > pages) {
             ChtUtil.sendFormattedMsg(sender, "&cThere is no page %d (max page is %d)", page, pages);
             return;
@@ -57,12 +57,12 @@ public class MultiPage {
         }
 
         final ArrayList<String> msgList = new ArrayList<>();
-        msgList.add(ChtUtil.createFormattedMsg(this.header, page, pages));
+        msgList.add(ChtUtil.createFormattedMsg(header, page, pages));
 
-        for (int i = (page - 1) * this.maxPerPage; i < this.maxPerPage * page; i++) {
+        for (int i = (page - 1) * maxPerPage; i < maxPerPage * page; i++) {
             try {
-                final String str = this.content.get(i);
-                msgList.add(this.elementPrefix.toString() + str);
+                final String str = content.get(i);
+                msgList.add(elementPrefix.toString() + str);
             } catch (final IndexOutOfBoundsException ignore) {
                 //This might be called on last page
                 break;
@@ -71,7 +71,7 @@ public class MultiPage {
         }
 
         if (page != pages) {
-            msgList.add(ChtUtil.createFormattedMsg(this.footer, this.command, page + 1));
+            msgList.add(ChtUtil.createFormattedMsg(footer, command, page + 1));
         }
         sender.sendMessage(msgList.toArray(new String[0]));
     }

@@ -6,6 +6,11 @@ import org.bukkit.inventory.ItemStack;
 public interface IBookBuilder {
 
     /**
+     * @return The current title of the book
+     */
+    String getTitle();
+
+    /**
      * Set the title of the book
      *
      * @param title
@@ -17,20 +22,9 @@ public interface IBookBuilder {
     IBookBuilder setTitle(String title);
 
     /**
-     * @return The current title of the book
+     * @return The current author of the book
      */
-    String getTitle();
-
-    /**
-     * Set the author of the book
-     *
-     * @param author
-     *     Name of the book author
-     *
-     * @throws NullPointerException
-     *     if the author is {@code null}
-     */
-    IBookBuilder setAuthor(String author);
+    String getAuthor();
 
     /**
      * Set the author of the book to a player
@@ -43,9 +37,15 @@ public interface IBookBuilder {
     }
 
     /**
-     * @return The current author of the book
+     * Set the author of the book
+     *
+     * @param author
+     *     Name of the book author
+     *
+     * @throws NullPointerException
+     *     if the author is {@code null}
      */
-    String getAuthor();
+    IBookBuilder setAuthor(String author);
 
     /**
      * Add a new page to the book

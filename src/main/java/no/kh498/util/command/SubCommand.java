@@ -1,7 +1,7 @@
 package no.kh498.util.command;
 
 import com.google.common.base.Preconditions;
-import no.kh498.util.ItemListFormat;
+import no.kh498.util.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,6 +29,17 @@ public abstract class SubCommand implements CommandExecutor {
 
         this.parent = parent;
     }
+
+    /**
+     * The first element must be defined in the plugin's {@code plugin.yml}
+     * <p>
+     * There must be at least one element in the alias.
+     * <p>
+     * None of the elements are {@code null}
+     *
+     * @return A collection of strings this subcommand is known for
+     */
+    public abstract List<String> getAliases();
 
     void verifySubcommands() {
 
@@ -59,26 +70,6 @@ public abstract class SubCommand implements CommandExecutor {
         }
     }
 
-
-    /**
-     * None of the elements are {@code null}
-     *
-     * @return Highest level sub commands (eg 'load' if the command is '/cmd load all') or null if there are no
-     * sub commands
-     */
-    public abstract List<SubCommand> getSubCommands();
-
-    /**
-     * The first element must be defined in the plugin's {@code plugin.yml}
-     * <p>
-     * There must be at least one element in the alias.
-     * <p>
-     * None of the elements are {@code null}
-     *
-     * @return A collection of strings this subcommand is known for
-     */
-    public abstract List<String> getAliases();
-
     public String getCommand() {
         return getAliases().get(0);
     }
@@ -100,6 +91,14 @@ public abstract class SubCommand implements CommandExecutor {
         }
         return null;
     }
+
+    /**
+     * None of the elements are {@code null}
+     *
+     * @return Highest level sub commands (eg 'load' if the command is '/cmd load all') or null if there are no
+     * sub commands
+     */
+    public abstract List<SubCommand> getSubCommands();
 
     /**
      * @return The parent command
@@ -128,7 +127,7 @@ public abstract class SubCommand implements CommandExecutor {
 
         if (args.length == 0 || getSubCommands().stream().noneMatch(sub -> sub.getAliases().contains(args[0]))) {
 
-            sender.sendMessage(ItemListFormat
+            sender.sendMessage(StringUtils
                                    .colorString(ChatColor.RED, ChatColor.DARK_RED, "Invalid sub-command, valid are ",
                                                 getSubCommands().stream().map(subCmd -> subCmd.getAliases().get(0))
                                                                 .distinct().toArray()));
@@ -140,10 +139,27 @@ public abstract class SubCommand implements CommandExecutor {
 
         for (SubCommand subCommand : getSubCommands()) {
             if (subCommand.getAliases().contains(args[0])) {
-                return subCommand.onCommand(sender, command, label, subArgs);
+                return subCommand.onCommand(sender, command, label + " " + args[0], subArgs);
             }
         }
 
         return false;
     }
+
+    /**
+     * Executes the given command, returning its success
+     *
+     * @param sender
+     *     Source of the command
+     * @param command
+     *     Command which was executed
+     * @param label
+     *     Alias of the command which was used (includes previous subcommands, if any separated by a space)
+     * @param args
+     *     Passed command arguments
+     *
+     * @return true if a valid command, otherwise false
+     */
+    @Override
+    public abstract boolean onCommand(CommandSender sender, Command command, String label, String[] args);
 }

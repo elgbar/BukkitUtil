@@ -1,5 +1,8 @@
 package no.kh498.util.book.bookbuilder;
 
+/**
+ * @author Elg
+ */
 public class PageBuilder {
 
     String page;
@@ -14,12 +17,12 @@ public class PageBuilder {
 
     public TextBuilder add() { return new TextBuilder(this); }
 
-    public TextBuilder add(String text) { return new TextBuilder(this).setText(text); }
-
     public PageBuilder newPage() {
         add("\n").build();
         return book.createPageBuilder();
     }
+
+    public TextBuilder add(String text) { return new TextBuilder(this).setText(text); }
 
     public IBookBuilder build() {
         book.addPage(page += "]}");

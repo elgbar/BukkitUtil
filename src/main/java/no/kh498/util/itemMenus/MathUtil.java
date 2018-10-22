@@ -1,7 +1,7 @@
 package no.kh498.util.itemMenus;
 
 /**
- * @author kh498
+ * @author Elg
  * @since 0.1.0
  */
 public class MathUtil {

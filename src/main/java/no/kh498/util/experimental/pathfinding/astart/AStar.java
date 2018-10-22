@@ -11,22 +11,17 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public class AStar {
 
-    private Logger logger = LoggerFactory.getLogger(AStar.class);
-
     private final PriorityQueue<Tile> open = new PriorityQueue<>();
     private final HashSet<Tile> openContains = new HashSet<>();
-
     private final HashSet<Tile> closed = new HashSet<>();
-
-    private World w;
-
     private final Tile start;
     private final Tile goal;
-
+    private Logger logger = LoggerFactory.getLogger(AStar.class);
+    private World w;
     //how many blocks should be checked before no path found is declared?
     private int timeoutSize = 5000;
 
@@ -36,7 +31,7 @@ public class AStar {
             throw new IllegalArgumentException("The start and the goal is not in the same world.");
         }
 
-        this.w = start.getWorld();
+        w = start.getWorld();
     }
 
     public AStar(final Tile start, final Tile goal) {
@@ -45,12 +40,17 @@ public class AStar {
 
         addOpen(this.start);
 
-        this.start.calcAll(this.goal, this.w);
+        this.start.calcAll(this.goal, w);
         logger.debug("start: " + start);
     }
 
+    private void addOpen(final Tile tile) {
+        open.offer(tile);
+        openContains.add(tile);
+    }
+
     public List<Location> pathfind() {
-        if (this.w == null) {
+        if (w == null) {
             logger.error("Cannot create a location path when the world has not been specified");
             return null;
         }
@@ -61,31 +61,30 @@ public class AStar {
         final ArrayList<Location> locPath = new ArrayList<>(tilePath.size());
 
         for (final Tile t : tilePath) {
-            locPath.add(t.toLocation(this.w));
+            locPath.add(t.toLocation(w));
         }
         return locPath;
     }
 
-
     public List<Tile> pathfindTile() {
-        while (!this.open.isEmpty()) {
+        while (!open.isEmpty()) {
             final Tile curr = pollOpen();
             logger.trace("curr " + curr);
-            if (curr.equals(this.goal)) {
+            if (curr.equals(goal)) {
                 return buildPath(curr);
             }
-            else if (this.closed.size() >= timeoutSize || curr.getWeight() >= Tile.NO_ACCESS) { //no path
+            else if (closed.size() >= timeoutSize || curr.getWeight() >= Tile.NO_ACCESS) { //no path
                 return null;
             }
 
-            this.closed.add(curr);
+            closed.add(curr);
 
             for (final Tile adj : getAdjacent(curr)) {
-                if (this.closed.contains(adj)) {
+                if (closed.contains(adj)) {
                     continue;
                 }
 
-                adj.calcAll(this.goal, this.w);
+                adj.calcAll(goal, w);
 
                 if (!containsOpen(adj)) {
                     addOpen(adj);
@@ -93,11 +92,16 @@ public class AStar {
                 final float maybeG = curr.g + adj.distanceSquared(curr);
                 if (maybeG < adj.g) {
                     adj.prev = curr;
-                    adj.calcG(this.w);
+                    adj.calcG(w);
                 }
             }
         }
         return null;
+    }
+
+    private Tile pollOpen() {
+        openContains.remove(open.peek());
+        return open.poll();
     }
 
     private List<Tile> buildPath(final Tile goal) {
@@ -107,8 +111,34 @@ public class AStar {
             path.push(curr);
             curr = curr.prev;
         }
-        path.push(this.start);
+        path.push(start);
         return path;
+    }
+
+    /**
+     * @return All locations around the location
+     */
+    private static Tile[] getAdjacent(final Tile tile) {
+        final Tile[] neighbor = new Tile[24];
+        int counter = 0;
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+
+                    //do not include directly above/below and at self
+                    if (dx == 0 && dz == 0) {
+                        continue;
+                    }
+                    neighbor[counter++] = new Tile(tile.x + dx, tile.y + dy, tile.z + dz, tile);
+                }
+            }
+        }
+        return neighbor;
+    }
+
+    private boolean containsOpen(final Tile t) {
+        return openContains.contains(t);
     }
 
     /**
@@ -125,10 +155,10 @@ public class AStar {
      * @return If a humanoid can walk on this tile.
      */
     private boolean isTileWalkable(final Tile t) {
-        if (this.w == null) {
+        if (w == null) {
             return true;
         }
-        final Block b = t.toLocation(this.w).getBlock();
+        final Block b = t.toLocation(w).getBlock();
         final Material mat = b.getType();
 
         //all the material that we CANT walk on
@@ -167,42 +197,6 @@ public class AStar {
                mat == Material.REDSTONE_TORCH_OFF || mat == Material.REDSTONE_TORCH_ON || mat == Material.SNOW ||
                mat == Material.ACTIVATOR_RAIL || mat == Material.POWERED_RAIL || mat == Material.DETECTOR_RAIL ||
                mat == Material.SIGN || mat == Material.SUGAR_CANE_BLOCK || mat == Material.DOUBLE_PLANT;
-    }
-
-    private void addOpen(final Tile tile) {
-        this.open.offer(tile);
-        this.openContains.add(tile);
-    }
-
-    private Tile pollOpen() {
-        this.openContains.remove(this.open.peek());
-        return this.open.poll();
-    }
-
-    private boolean containsOpen(final Tile t) {
-        return this.openContains.contains(t);
-    }
-
-    /**
-     * @return All locations around the location
-     */
-    private static Tile[] getAdjacent(final Tile tile) {
-        final Tile[] neighbor = new Tile[24];
-        int counter = 0;
-
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                for (int dz = -1; dz <= 1; dz++) {
-
-                    //do not include directly above/below and at self
-                    if (dx == 0 && dz == 0) {
-                        continue;
-                    }
-                    neighbor[counter++] = new Tile(tile.x + dx, tile.y + dy, tile.z + dz, tile);
-                }
-            }
-        }
-        return neighbor;
     }
 
     public int getTimeoutSize() {

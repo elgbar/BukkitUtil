@@ -12,6 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
+/**
+ * @author Elg
+ */
 public class ExitEventFlag extends RegionMoveEventFlag {
 
 
@@ -19,6 +22,11 @@ public class ExitEventFlag extends RegionMoveEventFlag {
 
     ExitEventFlag(final Session session) {
         super(session);
+    }
+
+    @Override
+    public boolean testNewRegion(final Set<ProtectedRegion> entered, final Set<ProtectedRegion> exited) {
+        return exited.size() > 0;
     }
 
     /**
@@ -30,11 +38,6 @@ public class ExitEventFlag extends RegionMoveEventFlag {
         final RegionExitEvent regionExitEvent = new RegionExitEvent(player, from, to, exited, moveType, hasBypass);
         Bukkit.getPluginManager().callEvent(regionExitEvent);
         return regionExitEvent.isCancelled();
-    }
-
-    @Override
-    public boolean testNewRegion(final Set<ProtectedRegion> entered, final Set<ProtectedRegion> exited) {
-        return exited.size() > 0;
     }
 
     @Override

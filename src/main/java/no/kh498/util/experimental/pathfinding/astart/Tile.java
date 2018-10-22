@@ -11,25 +11,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public class Tile implements Comparable<Tile> {
 
+    static int NO_ACCESS = 100000;
     private static Logger logger = LoggerFactory.getLogger(Tile.class);
-
     int x;
     int y;
     int z;
-
     float h = -1;
     float g = -1;
-
+    Tile prev;
     private float multiplier = -1;
     private Location loc;
-
-    Tile prev;
-
-    static int NO_ACCESS = 100000;
 
     public Tile(final int x, final int y, final int z, final Tile prev) {
         this.x = x;
@@ -39,19 +34,9 @@ public class Tile implements Comparable<Tile> {
     }
 
     Tile(final Location location) {
-        this.x = location.getBlockX();
-        this.y = location.getBlockY();
-        this.z = location.getBlockZ();
-    }
-
-    /**
-     * @param t
-     *     Other tile to find the distance to
-     *
-     * @return The squared distance between {@code this} tile and {@code t} tile
-     */
-    int distanceSquared(final Tile t) {
-        return square(this.x - t.x) + square(this.y - t.y) + square(this.z - t.z);
+        x = location.getBlockX();
+        y = location.getBlockY();
+        z = location.getBlockZ();
     }
 
     /**
@@ -62,111 +47,6 @@ public class Tile implements Comparable<Tile> {
      */
     private static int square(final int i) {
         return i * i;
-    }
-
-    void calcAll(final Tile goal, final World w) {
-        calcH(goal);
-        calcG(w);
-    }
-
-    private void calcH(final Tile goal) {
-        this.h = distanceSquared(goal);
-    }
-
-    void calcG(final World w) {
-        Tile currentPrev = this.prev, currentTile = this;
-        int gCost = 0;
-        // follow path back to start
-        while (currentPrev != null) {
-
-            gCost += currentTile.distanceSquared(currentPrev) * materialPenalty(w);
-
-            // move backwards a tile
-            currentTile = currentPrev;
-            currentPrev = currentTile.prev;
-        }
-        this.g = gCost;
-    }
-
-    Location toLocation(final World w) {
-        if (this.loc == null) {
-            this.loc = new Location(w, this.x, this.y, this.z);
-        }
-        return this.loc;
-    }
-
-    float getWeight() {
-        return this.h + this.g;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Tile)) {
-            return false;
-        }
-        final Tile tile = (Tile) o;
-        return this.x == tile.x && this.y == tile.y && this.z == tile.z;
-    }
-
-    @Override
-    public int hashCode() {
-        return this.x * 31 + this.y * 11 + this.z * 7;
-    }
-
-    @Override
-    public int compareTo(final Tile o) {
-        return (int) Math.signum((this.h + this.g) - (o.h + o.g));
-    }
-
-    @Override
-    public String toString() {
-        return "Tile{" + "coord=" + this.x + "," + this.y + "," + this.z + ", h=" + this.h + ", g=" + this.g +
-               ", weight=" + getWeight() + '}';
-    }
-
-    private float materialPenalty(final World w) {
-        if (this.multiplier != -1) {
-            return this.multiplier;
-        }
-        else if (w == null) {
-            this.multiplier = 1f;
-            return this.multiplier;
-        }
-
-        final Block b = toLocation(w).getBlock();
-
-        switch (b.getType()) {
-            case WATER:
-                return 25f;
-            case STATIONARY_WATER:
-                return 12f;
-            case SOUL_SAND:
-                return 8f;
-            case ICE:
-            case PACKED_ICE:
-                return 1.5f;
-            case LAVA:
-            case STATIONARY_LAVA:
-            case FENCE:
-            case ACACIA_FENCE:
-            case BIRCH_FENCE:
-            case DARK_OAK_FENCE:
-            case JUNGLE_FENCE:
-            case NETHER_FENCE:
-            case SPRUCE_FENCE:
-            case FENCE_GATE:
-            case ACACIA_FENCE_GATE:
-            case SPRUCE_FENCE_GATE:
-            case JUNGLE_FENCE_GATE:
-            case DARK_OAK_FENCE_GATE:
-            case BIRCH_FENCE_GATE:
-                return NO_ACCESS;
-            default:
-                return AStar.canBeWalkedThrough(b.getType()) ? NO_ACCESS : abovePenalty(b);
-        }
     }
 
     private static float abovePenalty(final Block b) {
@@ -217,5 +97,119 @@ public class Tile implements Comparable<Tile> {
             return 20f;
         }
         return 1f;
+    }
+
+    /**
+     * @param t
+     *     Other tile to find the distance to
+     *
+     * @return The squared distance between {@code this} tile and {@code t} tile
+     */
+    int distanceSquared(final Tile t) {
+        return square(x - t.x) + square(y - t.y) + square(z - t.z);
+    }
+
+    void calcAll(final Tile goal, final World w) {
+        calcH(goal);
+        calcG(w);
+    }
+
+    private void calcH(final Tile goal) {
+        h = distanceSquared(goal);
+    }
+
+    void calcG(final World w) {
+        Tile currentPrev = prev, currentTile = this;
+        int gCost = 0;
+        // follow path back to start
+        while (currentPrev != null) {
+
+            gCost += currentTile.distanceSquared(currentPrev) * materialPenalty(w);
+
+            // move backwards a tile
+            currentTile = currentPrev;
+            currentPrev = currentTile.prev;
+        }
+        g = gCost;
+    }
+
+    Location toLocation(final World w) {
+        if (loc == null) {
+            loc = new Location(w, x, y, z);
+        }
+        return loc;
+    }
+
+    @Override
+    public int hashCode() {
+        return x * 31 + y * 11 + z * 7;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Tile)) {
+            return false;
+        }
+        final Tile tile = (Tile) o;
+        return x == tile.x && y == tile.y && z == tile.z;
+    }
+
+    @Override
+    public String toString() {
+        return "Tile{" + "coord=" + x + "," + y + "," + z + ", h=" + h + ", g=" + g + ", weight=" + getWeight() + '}';
+    }
+
+    float getWeight() {
+        return h + g;
+    }
+
+    @Override
+    public int compareTo(final Tile o) {
+        return (int) Math.signum((h + g) - (o.h + o.g));
+    }
+
+    private float materialPenalty(final World w) {
+        if (multiplier != -1) {
+            return multiplier;
+        }
+        else if (w == null) {
+            multiplier = 1f;
+            return multiplier;
+        }
+
+        final Block b = toLocation(w).getBlock();
+
+        switch (b.getType()) {
+            case WATER:
+                return 25f;
+            case STATIONARY_WATER:
+                return 12f;
+            case SOUL_SAND:
+                return 8f;
+            case ICE:
+            case PACKED_ICE:
+                return 1.5f;
+            case LAVA:
+            case STATIONARY_LAVA:
+            case FENCE:
+            case ACACIA_FENCE:
+            case BIRCH_FENCE:
+            case DARK_OAK_FENCE:
+            case JUNGLE_FENCE:
+            case NETHER_FENCE:
+            case SPRUCE_FENCE:
+            case FENCE_GATE:
+            case ACACIA_FENCE_GATE:
+            case SPRUCE_FENCE_GATE:
+            case JUNGLE_FENCE_GATE:
+            case DARK_OAK_FENCE_GATE:
+            case BIRCH_FENCE_GATE:
+                return NO_ACCESS;
+            default:
+                return AStar.canBeWalkedThrough(b.getType()) ? NO_ACCESS : abovePenalty(b);
+        }
     }
 }

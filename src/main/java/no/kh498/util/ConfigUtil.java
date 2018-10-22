@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author Elg
+ */
 public class ConfigUtil {
 
     public static final String WORLD_UID = "world_uid";
@@ -92,6 +95,12 @@ public class ConfigUtil {
         return conf;
     }
 
+    /**
+     * Save a FileConfiguration to the datafolder of a plugin
+     */
+    public static void saveYaml(Plugin plugin, FileConfiguration conf, String... savePath) {
+        saveYaml(conf, FileUtils.getDatafolderFile(plugin, savePath));
+    }
 
     public static void saveYaml(FileConfiguration conf, File file) {
         try {
@@ -100,13 +109,6 @@ public class ConfigUtil {
             logger.error("Failed to save file {} to {}", file.getName(), file.getPath());
             if (logger.isDebugEnabled()) { e.printStackTrace(); }
         }
-    }
-
-    /**
-     * Save a FileConfiguration to the datafolder of a plugin
-     */
-    public static void saveYaml(Plugin plugin, FileConfiguration conf, String... savePath) {
-        saveYaml(conf, FileUtils.getDatafolderFile(plugin, savePath));
     }
 
     /**

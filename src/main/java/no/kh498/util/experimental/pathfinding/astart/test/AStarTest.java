@@ -6,7 +6,7 @@ import no.kh498.util.experimental.pathfinding.astart.Tile;
 import java.util.List;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public class AStarTest {
 

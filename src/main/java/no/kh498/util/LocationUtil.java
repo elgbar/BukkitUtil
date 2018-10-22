@@ -3,7 +3,7 @@ package no.kh498.util;
 import org.bukkit.Location;
 
 /**
- * @author kh498
+ * @author Elg
  */
 public final class LocationUtil {
 

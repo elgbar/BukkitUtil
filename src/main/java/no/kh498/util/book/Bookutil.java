@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+/**
+ * @author Elg
+ */
 public class Bookutil {
 
-    private static final Logger logger = LoggerFactory.getLogger(Bookutil.class);
-
     public static final int MAX_BOOK_LINES = 14;
+    private static final Logger logger = LoggerFactory.getLogger(Bookutil.class);
 
     /**
      * Open a book for a player

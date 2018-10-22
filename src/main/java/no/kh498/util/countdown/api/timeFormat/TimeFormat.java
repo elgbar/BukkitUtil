@@ -1,7 +1,7 @@
 package no.kh498.util.countdown.api.timeFormat;
 
 /**
- * @author karl henrik
+ * @author Elg
  */
 public interface TimeFormat {
 

@@ -29,10 +29,9 @@ public enum Size {
      */
     SIX(54);
 
-    private final int size;
-
-    private static final double COL = 9d;
+    private static final float COLUMNS = 9f;
     private static final int MAX_ROWS = Size.values().length - 1;
+    private final int size;
 
     Size(final int size) {
         this.size = size;
@@ -44,16 +43,11 @@ public enum Size {
      * @param slots
      *     The amount of slots.
      *
-     * @return The required size.
+     * @return The required size, or  {@link #MAX_ROWS} if slots is larger than the largest available.
      */
     public static Size fit(final int slots) {
-        final int sanSlots = Math.max(1, slots) - 1;
-
-        final int rows = (int) Math.floor(sanSlots / COL);
-
-        final int sanRows = Math.min(rows, MAX_ROWS);
-
-        return Size.values()[sanRows];
+        final int rows = (int) Math.floor(Math.max(1, slots) - 1 / COLUMNS);
+        return Size.values()[Math.min(rows, MAX_ROWS)];
     }
 
     /**
@@ -62,6 +56,6 @@ public enum Size {
      * @return The amount of slots.
      */
     public int getSize() {
-        return this.size;
+        return size;
     }
 }

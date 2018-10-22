@@ -43,9 +43,7 @@ public enum CommonPos {
      * @return A common position in a certain row
      */
     public int getPos(final Size row) {
-        if (row == Size.ONE) {
-            return position;
-        }
-        return position + Size.fit(row.getSize() - Size.ONE.getSize()).getSize();
+        if (row == Size.ONE) { return position; }
+        else { return position + Size.values()[row.ordinal() - 1].getSize(); }
     }
 }

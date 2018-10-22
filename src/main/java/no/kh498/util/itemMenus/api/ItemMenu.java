@@ -1,5 +1,6 @@
 package no.kh498.util.itemMenus.api;
 
+import com.google.common.base.Preconditions;
 import no.kh498.util.itemMenus.api.constants.CommonPos;
 import no.kh498.util.itemMenus.api.constants.Size;
 import no.kh498.util.itemMenus.api.items.StaticMenuItem;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -26,14 +28,14 @@ import java.util.UUID;
  * @author ampayne2 (orginal author, <a href="https://github.com/ampayne2/AmpMenus">github</a>)
  */
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public class ItemMenu {
 
     /**
      * The {@link StaticMenuItem StaticMenuItem} that appears in empty slots if {@link
      * ItemMenu#fillEmptySlots()} is called.
      */
-    private static final MenuItem EMPTY_SLOT_ITEM = new StaticColoredPaneItem(" ", DyeColor.GRAY);
+    private static final MenuItem EMPTY_SLOT_ITEM = new StaticColoredPaneItem(DyeColor.GRAY);
     private final Plugin plugin;
     private String name;
     private Size size;
@@ -84,14 +86,8 @@ public class ItemMenu {
         this.size = size;
         this.parent = parent;
 
-        if (items == null) {
-            this.items = null;
-        }
-        else {
-            final MenuItem[] cpy = new MenuItem[items.length];
-            System.arraycopy(items, 0, cpy, 0, items.length);
-            this.items = cpy;
-        }
+        if (items == null) { this.items = null; }
+        else { this.items = Arrays.copyOf(items, items.length); }
     }
 
     /**
@@ -107,7 +103,7 @@ public class ItemMenu {
      * @param name
      *     the name to set
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu setName(final String name) {
         this.name = name;
@@ -129,7 +125,7 @@ public class ItemMenu {
      * @param parent
      *     The ItemMenu's parent.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu setParent(final ItemMenu parent) {
         this.parent = parent;
@@ -144,9 +140,12 @@ public class ItemMenu {
      * @param menuItem
      *     The {@link MenuItem MenuItem}.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu setItem(final int position, final MenuItem menuItem) {
+        Preconditions
+            .checkArgument(position >= 0 && position < size.getSize(), "Position must be between zero and %s. was ",
+                           size.getSize(), position);
         items[position] = menuItem;
         return this;
     }
@@ -159,10 +158,10 @@ public class ItemMenu {
      * @param menuItem
      *     The {@link MenuItem MenuItem}.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu setItem(final CommonPos position, final MenuItem menuItem) {
-        items[position.getPos()] = menuItem;
+        setItem(position.getPos(), menuItem);
         return this;
     }
 
@@ -176,11 +175,10 @@ public class ItemMenu {
      * @param menuItem
      *     The {@link MenuItem MenuItem}.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu setItem(final CommonPos position, final Size row, final MenuItem menuItem) {
-        items[position.getPos(row)] = menuItem;
-        return this;
+        return setItem(position.getPos(row), menuItem);
     }
 
     /**
@@ -210,7 +208,7 @@ public class ItemMenu {
      * @param position
      *     Position to clear
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu clearItem(final int position) {
         items[position] = new MenuItem("", new ItemStack(Material.AIR));
@@ -223,7 +221,7 @@ public class ItemMenu {
      * @param position
      *     Position to clear
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu clearItem(final CommonPos position) {
         items[position.getPos()] = new MenuItem("", new ItemStack(Material.AIR));
@@ -238,7 +236,7 @@ public class ItemMenu {
      * @param row
      *     What row of the item to clear
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu clearItem(final CommonPos position, final Size row) {
         items[position.getPos(row)] = new MenuItem("", new ItemStack(Material.AIR));
@@ -248,7 +246,7 @@ public class ItemMenu {
     /**
      * Remove all {@link MenuItem MenuItem}s in the ItemMenu
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu clearAllItems() {
         items = new MenuItem[getSize().getSize()];
@@ -266,7 +264,7 @@ public class ItemMenu {
      * Fills all empty slots in the ItemMenu with the default {@link ItemMenu#EMPTY_SLOT_ITEM
      * EMPTY_SLOT_ITEM}.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu fillEmptySlots() {
         return fillEmptySlots(EMPTY_SLOT_ITEM);
@@ -278,7 +276,7 @@ public class ItemMenu {
      * @param menuItem
      *     The {@link MenuItem MenuItem} to fill with.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu fillEmptySlots(final MenuItem menuItem) {
         for (int i = 0; i < items.length; i++) {
@@ -337,7 +335,7 @@ public class ItemMenu {
      * @param player
      *     The player to update the ItemMenu for.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu update(final Player player) {
         if (player.getOpenInventory() != null) {
@@ -367,7 +365,7 @@ public class ItemMenu {
      * @param player
      *     The player.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     public ItemMenu open(final Player player) {
         if (!ItemMenuListener.getInstance().isRegistered(plugin)) {
@@ -390,7 +388,7 @@ public class ItemMenu {
      * @param player
      *     The Player.
      *
-     * @return The ItemMenu.
+     * @return this, for chaining
      */
     private ItemMenu apply(final Inventory inventory, final Player player) {
         for (int i = 0; i < items.length; i++) {

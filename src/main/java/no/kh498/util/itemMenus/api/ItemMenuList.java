@@ -73,6 +73,7 @@ public class ItemMenuList {
      * @throws NullPointerException
      *     if {@code plugin} or {@code menuItemList} is {@code null}
      */
+    @SuppressWarnings("WeakerAccess")
     public ItemMenuList(Plugin plugin, final List<MenuItem> menuItemList, final String title, boolean smoothUpdate) {
 
         Preconditions.checkArgument(smoothUpdate || title.length() <= 24,
@@ -89,18 +90,9 @@ public class ItemMenuList {
     }
 
     public void openMenu(final Player player) {
-        ItemMenu menu = generateMenu();
+        ItemMenu menu = new ItemMenu(plugin, title, Size.SIX);
         changePage(player, 0, menu);
         menu.open(player);
-    }
-
-    private ItemMenu generateMenu() {
-        ItemMenu menu = new ItemMenu(plugin, title, Size.SIX);
-
-        for (int m = 0; m < 9; m++) {
-            menu.setItem(Size.FOUR.getSize() + m, bottomPane);
-        }
-        return menu;
     }
 
     private void changePage(final Player player, final int page, ItemMenu menu) {
@@ -108,17 +100,25 @@ public class ItemMenuList {
             menu.setName(title + " " + (page + 1) + "/" + pages);
         }
 
-        int index = FIVE_LINES_SIZE * page;
+        //clean menu for next page
         menu.clearAllItems();
+        for (int m = 0; m < 9; m++) {
+            menu.setItem(Size.FIVE.getSize() + m, bottomPane);
+        }
+
+        //apply this pages items
+        int index = FIVE_LINES_SIZE * page;
         for (int i = 0; i < FIVE_LINES_SIZE; i++, index++) {
             if (menuItemList.size() > index) { menu.setItem(i, menuItemList.get(index)); }
         }
-        menu.setItem(CommonPos.LEFT, Size.SIX, page != 0 ? prevItem(player, page, menu) : bottomPane);
-        menu.setItem(CommonPos.RIGHT, Size.SIX, (page != pages - 1) ? nextItem(player, page, menu) : bottomPane);
+
+        //set items to go to next and previous pages, if any
+        if (page != 0) menu.setItem(CommonPos.LEFT, Size.SIX, prevItem(player, page, menu));
+        if (page != pages - 1) menu.setItem(CommonPos.RIGHT, Size.SIX, nextItem(player, page, menu));
     }
 
     private void open(final Player player, final int page, ItemMenu menu, ItemClickEvent event) {
-        //do not change page if there is no
+        //do not change page if there is no other page
         if (page < 0 || page >= pages) {
             return;
         }

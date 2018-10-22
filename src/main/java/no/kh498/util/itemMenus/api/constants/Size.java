@@ -43,10 +43,10 @@ public enum Size {
      * @param slots
      *     The amount of slots.
      *
-     * @return The required size, or  {@link #MAX_ROWS} if slots is larger than the largest available.
+     * @return The required size, or {@link #MAX_ROWS} if slots is larger than the largest available.
      */
     public static Size fit(final int slots) {
-        final int rows = (int) Math.floor(Math.max(1, slots) - 1 / COLUMNS);
+        final int rows = (int) Math.floor((Math.max(1, slots) - 1) / COLUMNS);
         return Size.values()[Math.min(rows, MAX_ROWS)];
     }
 

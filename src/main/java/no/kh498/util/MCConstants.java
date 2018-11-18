@@ -14,19 +14,19 @@ public final class MCConstants {
      * <p>
      * {@code 20 (nr of ticks in a second) * 50 = 1000 (nr of millis in a second)}
      */
-    public final static long TICK_TO_MILLIS_FACTOR = 50L;
+    public final static int TICK_TO_MILLIS_FACTOR = 50;
 
-    public final static long ONE_MINECRAFT_DAY_IN_TICKS = 24000L;
-    public final static long ONE_MINECRAFT_DAY_IN_MILLIS = ONE_MINECRAFT_DAY_IN_TICKS * TICK_TO_MILLIS_FACTOR;
+    public final static int ONE_MINECRAFT_DAY_IN_TICKS = 24000;
+    public final static int ONE_MINECRAFT_DAY_IN_MILLIS = ONE_MINECRAFT_DAY_IN_TICKS * TICK_TO_MILLIS_FACTOR;
 
 
-    public final static long ONE_SECOND_IN_TICKS = 20L;
-    public final static long ONE_MINUTE_IN_TICKS = ONE_SECOND_IN_TICKS * 60L;
-    public final static long ONE_HOUR_IN_TICKS = ONE_MINUTE_IN_TICKS * 60L;
+    public final static int ONE_SECOND_IN_TICKS = 20;
+    public final static int ONE_MINUTE_IN_TICKS = ONE_SECOND_IN_TICKS * 60;
+    public final static int ONE_HOUR_IN_TICKS = ONE_MINUTE_IN_TICKS * 60;
 
-    public static final long ONE_SECOND_IN_MILLIS = 1000L;
-    public static final long ONE_MINUTE_IN_MILLIS = ONE_SECOND_IN_MILLIS * 60L;
-    public static final long ONE_HOUR_IN_MILLIS = ONE_MINUTE_IN_MILLIS * 60L;
+    public static final int ONE_SECOND_IN_MILLIS = 1000;
+    public static final int ONE_MINUTE_IN_MILLIS = ONE_SECOND_IN_MILLIS * 60;
+    public static final int ONE_HOUR_IN_MILLIS = ONE_MINUTE_IN_MILLIS * 60;
 
 
     /**
@@ -37,7 +37,7 @@ public final class MCConstants {
      *
      * @return the input converted to milliseconds
      */
-    public static long ticksToMS(final long ticks) {
+    public static int ticksToMS(final int ticks) {
         return ticks * TICK_TO_MILLIS_FACTOR;
     }
 
@@ -49,7 +49,7 @@ public final class MCConstants {
      *
      * @return the input converted to ticks
      */
-    public static long msToTicks(final long ms) {
+    public static long msToTicks(final int ms) {
         return ms / TICK_TO_MILLIS_FACTOR;
     }
 }

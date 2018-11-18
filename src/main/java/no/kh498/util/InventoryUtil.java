@@ -286,4 +286,23 @@ public final class InventoryUtil {
         return skull;
     }
 
+    /**
+     * @return The armour of the given inventory in the order {@code helmet, chestplate, leggings, boots} or {@code
+     * null} if given inventory does no have any armour slots
+     *
+     * @throws IllegalArgumentException
+     *     if the given Inventory is {@code null} or
+     */
+    public static ItemStack[] getPlayerArmor(Inventory inv) {
+        if (inv == null) { throw new IllegalArgumentException("Given inventory is null"); }
+        if (inv instanceof PlayerInventory) {
+            return new ItemStack[] {((PlayerInventory) inv).getHelmet(), ((PlayerInventory) inv).getChestplate(),
+                ((PlayerInventory) inv).getLeggings(), ((PlayerInventory) inv).getBoots()};
+        }
+        else if (inv.getType() == InventoryType.CRAFTING) {
+            return new ItemStack[] {inv.getItem(103), inv.getItem(102), inv.getItem(101), inv.getItem(100)};
+        }
+        return null;
+    }
+
 }

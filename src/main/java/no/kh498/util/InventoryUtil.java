@@ -1,18 +1,16 @@
 package no.kh498.util;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
-
-import java.util.UUID;
 
 /**
  * @author Elg
@@ -62,7 +60,7 @@ public final class InventoryUtil {
         final ItemStack[] items = inv.getContents();
         int amount = item.getAmount();
 
-        final ItemStack AIR = new ItemStack(Material.AIR);
+//        final ItemStack AIR = new ItemStack(Material.AIR);
 
         for (int i = 0; i < items.length; i++) {
             final ItemStack is = items[i];
@@ -77,8 +75,8 @@ public final class InventoryUtil {
                     break;
                 }
                 else {
-                    items[i] = AIR; //replace the item with air
-                    amount = -newAmount;
+                    items[i] = null; //replace the item with air
+                    amount -= newAmount;
                     if (amount == 0) {
                         break;
                     }
@@ -271,10 +269,6 @@ public final class InventoryUtil {
             }
         }
         return slots;
-    }
-
-    public static ItemStack getPlayerSkull(final UUID uuid) {
-        return getPlayerSkull(Bukkit.getOfflinePlayer(uuid));
     }
 
     /**

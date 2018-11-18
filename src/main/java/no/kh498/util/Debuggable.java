@@ -31,6 +31,7 @@ public interface Debuggable {
      *
      * @return the given StringBuilder, {@code sb}, and the last appended item must be a newline (without the prefix)
      */
+    @NotNull
     ColorString appendDebugInfo(@NotNull ColorString sb, @NotNull String prefix);
 
     default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
@@ -69,7 +70,8 @@ public interface Debuggable {
 
             sb.gold("\t" + debuggable.getClass().getSimpleName());
             if (debuggable instanceof Nameable) {
-                sb.gold(" " + ((Nameable) debuggable).getName());
+                String name = ((Nameable) debuggable).getName();
+                sb.gold(" " + (name != null ? name : "{{UNNAMED}}"));
             }
             sb.none("\n");
 

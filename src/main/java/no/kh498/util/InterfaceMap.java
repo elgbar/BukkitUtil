@@ -41,7 +41,7 @@ public class InterfaceMap<I> {
      *     If the {@code clazz} is not an interface
      */
     public InterfaceMap(Class<I> clazz) {
-        Preconditions.checkArgument(Modifier.isInterface(clazz.getModifiers()), "The class must be an interface");
+        Preconditions.checkArgument(Modifier.isInterface(clazz.getModifiers()), "The type class must be an interface");
         interfaceClass = clazz;
         parts = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     }

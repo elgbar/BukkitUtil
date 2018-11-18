@@ -89,7 +89,7 @@ public class ItemMenuList {
 
     }
 
-    public void openMenu(final Player player) {
+    public void open(final Player player) {
         ItemMenu menu = new ItemMenu(plugin, title, Size.SIX);
         changePage(player, 0, menu);
         menu.open(player);
@@ -113,8 +113,8 @@ public class ItemMenuList {
         }
 
         //set items to go to next and previous pages, if any
-        if (page != 0) menu.setItem(CommonPos.LEFT, Size.SIX, prevItem(player, page, menu));
-        if (page != pages - 1) menu.setItem(CommonPos.RIGHT, Size.SIX, nextItem(player, page, menu));
+        if (page != 0) { menu.setItem(CommonPos.LEFT, Size.SIX, prevItem(player, page, menu)); }
+        if (page != pages - 1) { menu.setItem(CommonPos.RIGHT, Size.SIX, nextItem(player, page, menu)); }
     }
 
     private void open(final Player player, final int page, ItemMenu menu, ItemClickEvent event) {

@@ -26,8 +26,6 @@ public final class StaticColoredPaneItem extends StaticMenuItem {
     /**
      * @param name
      *     Name of the item
-     * @param handler
-     *     What the items does when you click on it
      * @param color
      *     Color of the item
      * @param lore

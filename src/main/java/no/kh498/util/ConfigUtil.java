@@ -86,10 +86,10 @@ public class ConfigUtil {
         try {
             conf.load(file);
         } catch (InvalidConfigurationException e) {
-            logger.warn("YAML in file {} is invalid.\n{}", file, e.getMessage());
+            logger.warn("YAML in file '{}' is invalid.\n{}", file, e.getMessage());
             return null;
         } catch (IOException e) {
-            logger.error("Failed to find the file", file);
+            logger.error("Failed to find the file '{}'", file);
             return null;
         }
         return conf;
@@ -103,10 +103,14 @@ public class ConfigUtil {
     }
 
     public static void saveYaml(FileConfiguration conf, File file) {
+        if (file == null || conf == null) {
+            logger.error("Failed to save Yaml. Got invalid parameters: conf = '{}' file = = '{}'", conf, file);
+            return;
+        }
         try {
             conf.save(file);
         } catch (IOException e) {
-            logger.error("Failed to save file {} to {}", file.getName(), file.getPath());
+            logger.error("Failed to save file '{}' to '{}'", file.getName(), file.getPath());
             if (logger.isDebugEnabled()) { e.printStackTrace(); }
         }
     }

@@ -16,5 +16,6 @@ public interface ConfigurationSectionSavable {
      *
      * @return if the configuration was successfully loaded
      */
+    //TODO make this return a List<String> of keys NOT used
     boolean fromConfig(ConfigurationSection conf);
 }

@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
  * @author Elg
  */
 @SuppressWarnings("WeakerAccess")
-public class ChtUtil {
+public class ChatUtil {
 
     public static void sendFormattedMsg(CommandSender sender, ColorString msg, final Object... obj) {
         sendFormattedMsg(sender, msg.toString(), obj);

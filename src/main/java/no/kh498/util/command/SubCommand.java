@@ -1,7 +1,7 @@
 package no.kh498.util.command;
 
 import com.google.common.base.Preconditions;
-import no.kh498.util.StringUtils;
+import no.kh498.util.ChatUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -127,7 +127,7 @@ public abstract class SubCommand implements CommandExecutor {
 
         if (args.length == 0 || getSubCommands().stream().noneMatch(sub -> sub.getAliases().contains(args[0]))) {
 
-            sender.sendMessage(StringUtils
+            sender.sendMessage(ChatUtil
                                    .colorString(ChatColor.RED, ChatColor.DARK_RED, "Invalid sub-command, valid are ",
                                                 getSubCommands().stream().map(subCmd -> subCmd.getAliases().get(0))
                                                                 .distinct().toArray()));

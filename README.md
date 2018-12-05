@@ -9,8 +9,8 @@ Various utilities for easier programming in bukkit. Some might require protocol 
 * [Countdown](https://github.com/kh498/BukkitUtil/tree/v4.0.0-beta.2/src/main/java/no/kh498/util/countdown) - Easy way of creating a countdown. (requires ProtocolLib for lower than 1.9.2)
 * [ItemMenus](https://github.com/kh498/BukkitUtil/tree/v4.0.0-beta.2/src/main/java/no/kh498/util/itemMenus) - Take an OOP approach to GUI based menus.
 * [RegionEvents](https://github.com/kh498/BukkitUtil/blob/v4.0.0-beta.2/src/main/java/no/kh498/util/regionEvents) - Region exit/enter events for WorldGuard. (requires WorldGuard 6.x, tested on WorldGuard 6.2)
-* [OOP Bukkit Style Commands]() Create commands with sub commands, that support basic tabulation.
-* [BookUtils](https://github.com/kh498/BukkitUtil/blob/v4.0.0-beta.2/src/main/java/no/kh498/util/book/Bookutil.java) Create and open books. *Note: It is using NMS code, so it does not support all versions*
+* [OOP Bukkit Style Commands](https://github.com/kh498/BukkitUtil/tree/v4.0.0-beta.2/src/main/java/no/kh498/util/command) Create commands with sub commands, that support basic tabulation.
+* [BookUtils](https://github.com/kh498/BukkitUtil/blob/v4.0.0-beta.2/src/main/java/no/kh498/util/book) Create and open books. *Note: It is using NMS code, so it does not support all versions*
 
 #### Single Class Utilities
 

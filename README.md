@@ -38,6 +38,9 @@ For more general java utilities see [CommonUtilsJava](https://github.com/kh498/C
 
 ## Install
 
+### About the versions
+
+Although the current version, 4.0.0-beta.2, has a beta tag, it does not mean that the older versions are more stable. The 3.x versions is not longer maintained and, due to some class renaming, is not compatible with the current version. 4.x versions are tagged as beta, so I may refactor any part as I see fit in the future. Though if I decide to remove/rename a class/method I will deprecate it for one version, before removing it.
 
 ### maven
 
@@ -50,7 +53,7 @@ Then add this as a dependency under the `dependencies` tag
 <dependency>
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>3.5.1</version> <!--Beta: <version>4.0.0-beta.2</version> -->
+    <version>4.0.0-beta.2</version>
 </dependency>
 ```
 
@@ -87,7 +90,7 @@ You might also need to shade (read copy) the used classes into your jar. Add the
 
 ### gradle
 
-The following is a skeleton gradle.build file. **NOTE** the order of the methods is required.
+The following is a skeleton gradle.build file. **NOTE** the order of the methods is required as is below.
 
 ```groovy
 
@@ -113,7 +116,7 @@ repositories {
 dependencies {
     //your other decencies goes here
     
-    shade group: 'no.kh498.util', name: 'BukkitUtil', version: '3.5.2' //for beta use '4.0.0-beta.2'
+    shade group: 'no.kh498.util', name: 'BukkitUtil', version: '4.0.0-beta.2'
 }
 
 jar {

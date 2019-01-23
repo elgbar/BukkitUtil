@@ -26,6 +26,7 @@ Sorted from greatest to least usefulness (for an average plugin)
 * [WorldUtil](https://github.com/kh498/BukkitUtil/blob/v4.0.0-beta.2/src/main/java/no/kh498/util/WorldUtil.java) - Get the highest valid block from a location.
 * [MultiPage](https://github.com/kh498/BukkitUtil/blob/v4.0.0-beta.2/src/main/java/no/kh498/util/MultiPage.java) - Create a help-ish menu but with any text.
 * [InterfaceImplManager](https://github.com/kh498/BukkitUtil/blob/v4.0.0-beta.2/src/main/java/no/kh498/util/InterfaceImplManager.java) Add an API layer to implementation of interfaces.
+* [EntityUtil](https://github.com/kh498/BukkitUtil/blob/v4.0.0-beta.3/src/main/java/no/kh498/util/EntityUtil.java) Metadata utility for entities.
 
 #### Interfaces
 

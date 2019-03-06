@@ -5,11 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-
 public interface ConfigurationSectionSavable {
-
-    String ROOT_PATH = File.separator;
 
     /**
      * @return this instance as a ConfigurationSection or {@code null} if there is nothing to save

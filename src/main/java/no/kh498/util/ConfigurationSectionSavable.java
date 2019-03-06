@@ -28,4 +28,14 @@ public interface ConfigurationSectionSavable {
      * @return if the configuration was successfully loaded
      */
     boolean fromConfig(@NotNull ConfigurationSection conf, @NotNull Configuration root, @NotNull String absolutePath);
+
+    /**
+     * @param root
+     *     The root configuration
+     *
+     * @return The same as {@code fromConfig(root, root, "")}
+     */
+    default boolean fromConfig(@NotNull Configuration root) {
+        return fromConfig(root, root, "");
+    }
 }

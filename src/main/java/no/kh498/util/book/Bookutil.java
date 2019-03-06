@@ -25,7 +25,7 @@ public class Bookutil {
      * @param player
      *     The player to open the book to
      * @param book
-     *     Tge book to open. Must have the material {@link org.bukkit.Material#WRITTEN_BOOK}
+     *     The book to open. Must have the material {@link org.bukkit.Material#WRITTEN_BOOK}
      *
      * @throws NotImplementedException
      *     if the NMS version is not supported

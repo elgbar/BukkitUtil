@@ -102,12 +102,13 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <minimizeJar>false</minimizeJar>
+                            <minimizeJar>true</minimizeJar>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
-                                    <include>info.ronjenkins:slf4bukkit</include>
-                                    <include>org.slf4j:slf4j-api</include>
+                                    <!--<include>info.ronjenkins:slf4bukkit</include>-->
+                                    <!--<include>org.slf4j:slf4j-api</include>-->
+                                    <include>no.kh498.util:CommonUtil:1.0.1</include>
                                     <include>io.github.classgraph:classgraph</include>
                                 </includes>
                             </artifactSet>

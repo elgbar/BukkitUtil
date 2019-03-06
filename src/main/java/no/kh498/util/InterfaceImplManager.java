@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * This utility class is responsible for holding references to different implementations of an interface. It is
@@ -107,12 +104,20 @@ public class InterfaceImplManager<I> {
             logger.error("Cannot register a null class");
             return false;
         }
-        else if (Modifier.isAbstract(clazz.getModifiers())) {
-            logger.debug("Did not register " + clazz.getSimpleName() + " as it is abstract");
-            return false;
-        }
         else if (parts.containsValue(clazz)) {
             logger.warn("Tried to register the class " + clazz.getSimpleName() + " twice");
+            return false;
+        }
+        else if (clazz.getAnnotations().length > 0 && Arrays.stream(clazz.getAnnotations()).anyMatch(
+            annotation -> annotation.getClass() == IgnoreImplementation.class)) {
+            logger
+                .debug("Did not register " + clazz.getSimpleName() + " as IgnoreImplementation annotation is present");
+            return false;
+        }
+        else if (Modifier.isAbstract(clazz.getModifiers())) {
+            logger.debug("Did not register " + clazz.getSimpleName() + " as it is abstract");
+            logger.warn("No IgnoreImplementation annotation was found on the abstract class '" + clazz.getSimpleName() +
+                        "', please add it for extra clarity");
             return false;
         }
 

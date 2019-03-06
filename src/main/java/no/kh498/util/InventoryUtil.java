@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Elg
@@ -196,6 +197,19 @@ public final class InventoryUtil {
         for (final ItemStack item : items) {
             if (item != null && item.getType() == material && (ignoreDmgVal || item.getDurability() == damageValue)) {
                 amount += item.getAmount();
+            }
+        }
+        return amount;
+    }
+
+    /**
+     * @return How many of the given item is in in the given inventory
+     */
+    public static int count(@NotNull Inventory inv, @NotNull ItemStack item) {
+        int amount = 0;
+        for (ItemStack invItem : inv.getContents()) {
+            if (item.isSimilar(invItem)) {
+                amount += invItem.getAmount();
             }
         }
         return amount;

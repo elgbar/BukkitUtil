@@ -119,7 +119,7 @@
         </plugins>
         <testResources>
             <testResource>
-                <directory>${basedir}/src/test/resource</directory>
+                <directory>${basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
     </build>

@@ -12,10 +12,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,20 +29,24 @@ public final class OnJoinMessage implements Listener {
 
     private static final String FILE_PATH = "";
     private static final String FILE_NAME = "JoinMessages";
-    private static HashMap<UUID, ArrayList<String>> messageMap;
+    private static HashMap<UUID, List<String>> messageMap;
     private final Plugin plugin;
 
-    public OnJoinMessage(final Plugin plugin) {
+    public OnJoinMessage(@NotNull Plugin plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        load(plugin);
+        try {
+            load(plugin);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void load(final Plugin plugin) {
-        final String json = FileUtils.readJSON(plugin, FILE_PATH, FILE_NAME, true);
+    public static void load(final Plugin plugin) throws IOException {
+        final String json = FileUtils.read(plugin, FILE_PATH, FILE_NAME + ".json");
         final Type type = new TypeToken<HashMap<UUID, ArrayList<String>>>() { }.getType();
 
-        final HashMap<UUID, ArrayList<String>> msgMap = new Gson().fromJson(json, type);
+        final HashMap<UUID, List<String>> msgMap = new Gson().fromJson(json, type);
 
         messageMap = (msgMap != null) ? msgMap : new HashMap<>();
     }
@@ -84,7 +91,7 @@ public final class OnJoinMessage implements Listener {
      */
     public static void queueMessage(final UUID uuid, final String msg) {
         Preconditions.checkNotNull(uuid, "Player cannot be null when sending a message");
-        final ArrayList<String> list;
+        final List<String> list;
 
         //get the list of messages queued for a player (or create one)
         if (messageMap.containsKey(uuid)) {
@@ -106,7 +113,11 @@ public final class OnJoinMessage implements Listener {
 
     public static void save(final Plugin plugin) {
         final Type type = new TypeToken<HashMap<UUID, ArrayList<String>>>() { }.getType();
-        FileUtils.writeJSON(plugin, FILE_PATH, FILE_NAME, new Gson().toJson(messageMap, type), true);
+        try {
+            FileUtils.write(new Gson().toJson(messageMap, type), plugin, FILE_PATH, FILE_NAME + ".json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

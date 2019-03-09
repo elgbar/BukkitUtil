@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -218,7 +217,7 @@ public final class FileUtils {
                          file.getPath());
             return null;
         }
-        return org.apache.commons.io.FileUtils.readFileToString(file, Charset.defaultCharset());
+        return org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
     }
 
 

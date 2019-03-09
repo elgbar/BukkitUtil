@@ -187,7 +187,7 @@ public class FileUtilsTest {
         assertTrue(file.isFile());
         assertTrue(file.canRead());
 
-        String readContentNIO = Files.readAllLines(file.toPath()).get(0);
+        String readContentNIO = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8).get(0);
         String readContentFUread = FileUtils.read(plugin, filename);
 
         assertEquals(content, readContentNIO);
@@ -217,7 +217,7 @@ public class FileUtilsTest {
         assertTrue(file.isFile());
         assertTrue(file.canRead());
 
-        String readContentNIO = String.join("\n", Files.readAllLines(file.toPath())) + "\n";
+        String readContentNIO = String.join("\n", Files.readAllLines(file.toPath(), StandardCharsets.UTF_8)) + "\n";
         String readContentFUread = FileUtils.read(plugin, filename);
 
         assertEquals(confStr, readContentNIO);
@@ -254,7 +254,7 @@ public class FileUtilsTest {
         assertTrue(file.isFile());
         assertTrue(file.canRead());
 
-        String readContentNIO = Files.readAllLines(file.toPath()).get(0);
+        String readContentNIO = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8).get(0);
         String readContentFUread = FileUtils.read(plugin, filename);
 
         assertEquals(content, readContentNIO);

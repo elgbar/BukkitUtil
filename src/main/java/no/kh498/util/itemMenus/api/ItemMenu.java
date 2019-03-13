@@ -15,6 +15,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -37,9 +39,13 @@ public class ItemMenu {
      */
     private static final MenuItem EMPTY_SLOT_ITEM = new StaticColoredPaneItem(DyeColor.GRAY);
     private final Plugin plugin;
+    @Nullable
     private String name;
+    @Nullable
     private Size size;
+    @Nullable
     private MenuItem[] items;
+    @Nullable
     private ItemMenu parent;
 
     /**
@@ -50,7 +56,7 @@ public class ItemMenu {
      * @param size
      *     The {@link Size Size} of the inventory.
      */
-    public ItemMenu(Plugin plugin, final String name, final Size size) {
+    public ItemMenu(Plugin plugin, final String name, @NotNull final Size size) {
         this(plugin, name, size, null);
     }
 
@@ -64,7 +70,7 @@ public class ItemMenu {
      * @param parent
      *     The ItemMenu's parent.
      */
-    public ItemMenu(Plugin plugin, final String name, final Size size, final ItemMenu parent) {
+    public ItemMenu(Plugin plugin, final String name, @NotNull final Size size, final ItemMenu parent) {
         this(plugin, name, size, parent, new MenuItem[size.getSize()]);
     }
 
@@ -80,7 +86,8 @@ public class ItemMenu {
      * @param items
      *     The items that this menu contains
      */
-    public ItemMenu(Plugin plugin, final String name, final Size size, final ItemMenu parent, final MenuItem[] items) {
+    public ItemMenu(Plugin plugin, final String name, final Size size, final ItemMenu parent,
+                    @Nullable final MenuItem[] items) {
         this.plugin = plugin;
         this.name = name;
         this.size = size;
@@ -95,6 +102,7 @@ public class ItemMenu {
      *
      * @return The ItemMenu's name.
      */
+    @Nullable
     public String getName() {
         return name;
     }
@@ -105,6 +113,7 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
+    @NotNull
     public ItemMenu setName(final String name) {
         this.name = name;
         return this;
@@ -115,6 +124,7 @@ public class ItemMenu {
      *
      * @return The ItemMenu's parent.
      */
+    @Nullable
     public ItemMenu getParent() {
         return parent;
     }
@@ -127,6 +137,7 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
+    @NotNull
     public ItemMenu setParent(final ItemMenu parent) {
         this.parent = parent;
         return this;
@@ -142,6 +153,7 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
+    @NotNull
     public ItemMenu setItem(final int position, final MenuItem menuItem) {
         Preconditions
             .checkArgument(position >= 0 && position < size.getSize(), "Position must be between zero and %s. was ",
@@ -160,7 +172,8 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
-    public ItemMenu setItem(final CommonPos position, final MenuItem menuItem) {
+    @NotNull
+    public ItemMenu setItem(@NotNull final CommonPos position, final MenuItem menuItem) {
         setItem(position.getPos(), menuItem);
         return this;
     }
@@ -177,13 +190,15 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
-    public ItemMenu setItem(final CommonPos position, final Size row, final MenuItem menuItem) {
+    @NotNull
+    public ItemMenu setItem(@NotNull final CommonPos position, @NotNull final Size row, final MenuItem menuItem) {
         return setItem(position.getPos(row), menuItem);
     }
 
     /**
      * @return All {@link MenuItem MenuItem}s in a ItemMenu
      */
+    @Nullable
     private MenuItem[] getItems() {
         return items;
     }
@@ -191,6 +206,7 @@ public class ItemMenu {
     /**
      * @return A copy of this ItemMenu
      */
+    @NotNull
     public ItemMenu copy() {
         return ItemMenu.copy(this);
     }
@@ -210,6 +226,7 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
+    @NotNull
     public ItemMenu clearItem(final int position) {
         items[position] = new MenuItem("", new ItemStack(Material.AIR));
         return this;
@@ -223,7 +240,8 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
-    public ItemMenu clearItem(final CommonPos position) {
+    @NotNull
+    public ItemMenu clearItem(@NotNull final CommonPos position) {
         items[position.getPos()] = new MenuItem("", new ItemStack(Material.AIR));
         return this;
     }
@@ -238,7 +256,8 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
-    public ItemMenu clearItem(final CommonPos position, final Size row) {
+    @NotNull
+    public ItemMenu clearItem(@NotNull final CommonPos position, @NotNull final Size row) {
         items[position.getPos(row)] = new MenuItem("", new ItemStack(Material.AIR));
         return this;
     }
@@ -248,6 +267,7 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
+    @NotNull
     public ItemMenu clearAllItems() {
         items = new MenuItem[getSize().getSize()];
         return this;
@@ -256,6 +276,7 @@ public class ItemMenu {
     /**
      * @return The ItemMenu's {@link Size}.
      */
+    @Nullable
     public Size getSize() {
         return size;
     }
@@ -266,6 +287,7 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
+    @NotNull
     public ItemMenu fillEmptySlots() {
         return fillEmptySlots(EMPTY_SLOT_ITEM);
     }
@@ -278,6 +300,7 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
+    @NotNull
     public ItemMenu fillEmptySlots(final MenuItem menuItem) {
         for (int i = 0; i < items.length; i++) {
             if (items[i] == null) {
@@ -290,7 +313,7 @@ public class ItemMenu {
     /**
      * Handles InventoryClickEvents for the {@link MenuItem}.
      */
-    void onInventoryClick(final InventoryClickEvent event) {
+    void onInventoryClick(@NotNull final InventoryClickEvent event) {
         if (event.getClick() == ClickType.LEFT || event.getClick() == ClickType.RIGHT ||
             event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
             final int slot = event.getRawSlot();
@@ -337,7 +360,8 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
-    public ItemMenu update(final Player player) {
+    @NotNull
+    public ItemMenu update(@NotNull final Player player) {
         if (player.getOpenInventory() != null) {
             final Inventory inventory = player.getOpenInventory().getTopInventory();
             if (inventory.getHolder() instanceof ItemMenuHolder &&
@@ -367,7 +391,8 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
-    public ItemMenu open(final Player player) {
+    @NotNull
+    public ItemMenu open(@NotNull final Player player) {
         if (!ItemMenuListener.getInstance().isRegistered(plugin)) {
             ItemMenuListener.getInstance().register(plugin);
         }
@@ -390,7 +415,8 @@ public class ItemMenu {
      *
      * @return this, for chaining
      */
-    private ItemMenu apply(final Inventory inventory, final Player player) {
+    @NotNull
+    private ItemMenu apply(@NotNull final Inventory inventory, final Player player) {
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
                 inventory.setItem(i, items[i].getFinalIcon(player));

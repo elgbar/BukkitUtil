@@ -7,6 +7,7 @@ import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Elg
@@ -18,7 +19,7 @@ public class Bookutil {
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
-    public static void openBook(Player player, ItemStack book) {
+    public static void openBook(@NotNull Player player, @NotNull ItemStack book) {
         Preconditions.checkNotNull(player);
         Preconditions.checkNotNull(book);
         Preconditions.checkArgument(book.getType() == Material.WRITTEN_BOOK);

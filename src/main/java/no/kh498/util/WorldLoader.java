@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -31,7 +33,8 @@ public class WorldLoader {
      *
      * @return A ConfigurationSection containing the serialized location
      */
-    public static ConfigurationSection locationToConfig(Location location) {
+    @NotNull
+    public static ConfigurationSection locationToConfig(@NotNull Location location) {
         return locationToConfig(location, true);
     }
 
@@ -43,7 +46,8 @@ public class WorldLoader {
      *
      * @return A ConfigurationSection containing the serialized location
      */
-    public static ConfigurationSection locationToConfig(Location location, boolean useUUID) {
+    @NotNull
+    public static ConfigurationSection locationToConfig(@NotNull Location location, boolean useUUID) {
         ConfigurationSection conf = new YamlConfiguration();
 
         if (useUUID) { conf.set(WORLD_UID, location.getWorld().getUID()); }
@@ -60,14 +64,15 @@ public class WorldLoader {
     /**
      * @return The location saved in {@code conf}
      */
-    public static Location locationFromConfig(ConfigurationSection conf) {
+    @Nullable
+    public static Location locationFromConfig(@NotNull ConfigurationSection conf) {
         return locationFromConfig(conf, true);
     }
 
     /**
      * @return The location saved in {@code conf}
      */
-    public static Location locationFromConfig(ConfigurationSection conf, boolean useUUID) {
+    public static Location locationFromConfig(@NotNull ConfigurationSection conf, boolean useUUID) {
         World world;
         if (useUUID) { world = Bukkit.getWorld(UUID.fromString(conf.getString(WORLD_UID))); }
         else { world = Bukkit.getWorld(conf.getString(WORLD_NAME)); }
@@ -98,7 +103,8 @@ public class WorldLoader {
      *
      * @return A ConfigurationSection containing the serialized location
      */
-    public static ConfigurationSection blockLocationToConfig(Location location) {
+    @NotNull
+    public static ConfigurationSection blockLocationToConfig(@NotNull Location location) {
         return blockLocationToConfig(location, true);
     }
 
@@ -110,7 +116,8 @@ public class WorldLoader {
      *
      * @return A ConfigurationSection containing the serialized location
      */
-    public static ConfigurationSection blockLocationToConfig(Location location, boolean useUUID) {
+    @NotNull
+    public static ConfigurationSection blockLocationToConfig(@NotNull Location location, boolean useUUID) {
         ConfigurationSection conf = new YamlConfiguration();
 
         if (useUUID) { conf.set(WORLD_UID, location.getWorld().getUID()); }
@@ -125,14 +132,15 @@ public class WorldLoader {
     /**
      * @return The location saved in {@code conf}
      */
-    public static Location blockLocationFromConfig(ConfigurationSection conf) {
+    @Nullable
+    public static Location blockLocationFromConfig(@NotNull ConfigurationSection conf) {
         return blockLocationFromConfig(conf, true);
     }
 
     /**
      * @return The location saved in {@code conf}
      */
-    public static Location blockLocationFromConfig(ConfigurationSection conf, boolean useUUID) {
+    public static Location blockLocationFromConfig(@NotNull ConfigurationSection conf, boolean useUUID) {
         World world = null;
         if (useUUID && conf.contains(WORLD_UID)) {
             world = Bukkit.getWorld(UUID.fromString(conf.getString(WORLD_UID)));

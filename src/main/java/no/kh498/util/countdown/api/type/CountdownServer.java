@@ -5,6 +5,7 @@ import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -27,7 +28,8 @@ public class CountdownServer extends Countdown {
      * @param timeFormat
      *     The way time is displayed
      */
-    public CountdownServer(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat) {
+    public CountdownServer(final Plugin plugin, @NotNull final String text, final long time,
+                           final TimeFormat timeFormat) {
         super(plugin, text, time, timeFormat);
     }
 

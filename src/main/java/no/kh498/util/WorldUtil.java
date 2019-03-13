@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Elg
@@ -20,7 +21,8 @@ public final class WorldUtil {
      *
      * @return The highest block that is "valid" or null if the location is null or no block can be found
      */
-    public static Block highestValidBlock(final Location location) {
+    @Nullable
+    public static Block highestValidBlock(@Nullable final Location location) {
         if (location == null || location.getWorld() == null) {
             return null;
         }
@@ -32,7 +34,7 @@ public final class WorldUtil {
         return location.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ());
     }
 
-    public static int highestValidBlockY(final Location location) {
+    public static int highestValidBlockY(@Nullable final Location location) {
         if (location == null || location.getWorld() == null) {
 //            Logger.log(Severity.FINEST,
 //                       "Could not validate the location due it being invalid (either null or the world is null) |  " +
@@ -57,7 +59,7 @@ public final class WorldUtil {
      *
      * @return The y location of a valid block or {@link #INVALID_LOCATION} if the location is invalid
      */
-    public static int getValidHeight(final Block block) {
+    public static int getValidHeight(@Nullable final Block block) {
         if (block == null) {
 //            Logger.log(Severity.FINEST, "Tried to verify height for null block");
             return LOCATION_ERR;

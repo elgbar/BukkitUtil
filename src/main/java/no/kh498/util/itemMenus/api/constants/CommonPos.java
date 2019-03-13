@@ -1,5 +1,7 @@
 package no.kh498.util.itemMenus.api.constants;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Elg
  * @since 0.1.0
@@ -42,8 +44,7 @@ public enum CommonPos {
      *
      * @return A common position in a certain row
      */
-    public int getPos(final Size row) {
+    public int getPos(@NotNull final Size row) {
         if (row == Size.ONE) { return position; }
         else { return position + Size.values()[row.ordinal() - 1].getSize(); }
-    }
-}
+    }}

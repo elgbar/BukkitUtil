@@ -6,6 +6,7 @@ import no.kh498.util.itemMenus.events.ItemClickEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A {@link StaticMenuItem} that opens the {@link ItemMenu}'s
@@ -18,7 +19,7 @@ public class BackMenuItem extends StaticMenuItem {
     }
 
     @Override
-    public void onItemClick(final ItemClickEvent event) {
+    public void onItemClick(@NotNull final ItemClickEvent event) {
         event.setWillGoBack(true);
     }
 }

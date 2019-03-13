@@ -9,6 +9,7 @@ import java.util.Collections;
 
 public interface Debuggable {
 
+    @NotNull
     default String showDebugInfo() {
         return appendDebugInfo(new ColorString()).toString();
     }
@@ -19,6 +20,7 @@ public interface Debuggable {
      *
      * @return the given StringBuilder, {@code sb}, and the last appended item must be a newline
      */
+    @NotNull
     default ColorString appendDebugInfo(@NotNull ColorString sb) {
         return appendDebugInfo(sb, "");
     }

@@ -11,6 +11,8 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Passes inventory correctNPCRightClick events to their menus for handling.
@@ -18,6 +20,7 @@ import org.bukkit.plugin.RegisteredListener;
 public class ItemMenuListener implements Listener {
 
     private static final ItemMenuListener INSTANCE = new ItemMenuListener();
+    @Nullable
     private Plugin plugin;
 
     private ItemMenuListener() {}
@@ -27,6 +30,7 @@ public class ItemMenuListener implements Listener {
      *
      * @return The ItemMenuListener instance.
      */
+    @NotNull
     public static ItemMenuListener getInstance() {
         return INSTANCE;
     }
@@ -46,7 +50,7 @@ public class ItemMenuListener implements Listener {
      * @param plugin
      *     The plugin used to register the events.
      */
-    public void register(final Plugin plugin) {
+    public void register(@NotNull final Plugin plugin) {
         if (!isRegistered(plugin)) {
             plugin.getServer().getPluginManager().registerEvents(INSTANCE, plugin);
             this.plugin = plugin;
@@ -61,7 +65,7 @@ public class ItemMenuListener implements Listener {
      *
      * @return True if the ItemMenuListener is registered to the plugin, else false.
      */
-    public boolean isRegistered(final Plugin plugin) {
+    public boolean isRegistered(@NotNull final Plugin plugin) {
         if (plugin.equals(this.plugin)) {
             for (final RegisteredListener listener : HandlerList.getRegisteredListeners(plugin)) {
                 if (listener.getListener().equals(INSTANCE)) {
@@ -73,7 +77,7 @@ public class ItemMenuListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPluginDisable(final PluginDisableEvent event) {
+    public void onPluginDisable(@NotNull final PluginDisableEvent event) {
         if (event.getPlugin().equals(plugin)) {
             closeOpenMenus();
             plugin = null;

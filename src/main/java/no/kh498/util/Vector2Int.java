@@ -1,6 +1,7 @@
 package no.kh498.util;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public class Vector2Int {
      *
      * @return This vector added with the given vector
      */
+    @NotNull
     public Vector2Int add(@NotNull Vector2Int other) {
         return add(other.x, other.y);
     }
@@ -38,6 +40,7 @@ public class Vector2Int {
      *
      * @return This vector multiplied by the given x and y
      */
+    @NotNull
     public Vector2Int add(int dx, int dy) {
         return new Vector2Int(x + dx, y + dy);
     }
@@ -49,6 +52,7 @@ public class Vector2Int {
      *
      * @return This vector multiplied by another vector
      */
+    @NotNull
     public Vector2Int mult(@NotNull Vector2Int other) {
         return mult(other.x, other.y);
     }
@@ -61,6 +65,7 @@ public class Vector2Int {
      *
      * @return This vector multiplied by the given x and y
      */
+    @NotNull
     public Vector2Int mult(int dx, int dy) {
         return new Vector2Int(x * dx, y * dy);
     }
@@ -71,6 +76,7 @@ public class Vector2Int {
      *
      * @return This vector divided the given vector
      */
+    @NotNull
     public Vector2Int div(@NotNull Vector2Int other) {
         return div(other.x, other.y);
     }
@@ -83,6 +89,7 @@ public class Vector2Int {
      *
      * @return This vector divided by the given x and y
      */
+    @NotNull
     public Vector2Int div(int dx, int dy) {
         return new Vector2Int(x / dx, y / dy);
     }
@@ -107,13 +114,14 @@ public class Vector2Int {
         return ((x - other.x) * (x - other.x)) + ((y - other.y) * (y - other.y));
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) { return true; }
         if (o == null || getClass() != o.getClass()) { return false; }
         Vector2Int anInt = (Vector2Int) o;

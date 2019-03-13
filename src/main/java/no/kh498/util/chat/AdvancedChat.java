@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Elg
@@ -33,7 +34,7 @@ public final class AdvancedChat {
      * @throws IllegalStateException
      *     if ProtocolLib is not installed
      */
-    public static void sendActionbar(final String msg, final Player... players) {
+    public static void sendActionbar(@NotNull final String msg, final Player... players) {
         sendAltChat(msg, ChatType.ACTION_BAR, players);
     }
 
@@ -48,14 +49,14 @@ public final class AdvancedChat {
      * @param type
      *     The type of chat to send
      */
-    public static void sendAltChat(final String msg, final ChatType type, final Player... players) {
+    public static void sendAltChat(@NotNull final String msg, final ChatType type, final Player... players) {
         try {
             final BaseComponent comp = new TextComponent(msg);
             final ChatMessageType cmType = ChatMessageType.valueOf(type.name());
             for (final Player player : players) {
                 player.spigot().sendMessage(cmType, comp);
             }
-        } catch (final NoSuchMethodError e) {
+        } catch (@NotNull final NoSuchMethodError e) {
             //try to use the ProtocolLib
             sendAltChatProtocolLib(msg, type, players);
         }
@@ -74,7 +75,8 @@ public final class AdvancedChat {
      * @throws IllegalStateException
      *     if ProtocolLib is not installed
      */
-    private static void sendAltChatProtocolLib(final String msg, final ChatType type, final Player... players) {
+    private static void sendAltChatProtocolLib(@NotNull final String msg, @NotNull final ChatType type,
+                                               @NotNull final Player... players) {
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
             throw new IllegalStateException("You must be using ProtocolLib!");
         }
@@ -93,7 +95,7 @@ public final class AdvancedChat {
             for (final Player p : players) {
                 ProtocolLibrary.getProtocolManager().sendServerPacket(p, chatPacket);
             }
-        } catch (final Exception e) {
+        } catch (@NotNull final Exception e) {
             e.printStackTrace();
         }
     }
@@ -109,7 +111,7 @@ public final class AdvancedChat {
      * @throws IllegalStateException
      *     if ProtocolLib is not installed
      */
-    public static void sendSystemChat(final String msg, final Player... players) {
+    public static void sendSystemChat(@NotNull final String msg, final Player... players) {
         sendAltChat(msg, ChatType.SYSTEM, players);
     }
 }

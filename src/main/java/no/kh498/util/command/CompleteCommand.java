@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +35,7 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
      * @throws IllegalArgumentException
      *     if {@link #getAliases()} contains a {@code null} element
      */
-    public CompleteCommand(JavaPlugin plugin) {
+    public CompleteCommand(@NotNull JavaPlugin plugin) {
         this(plugin, 5L);
     }
 
@@ -58,7 +60,7 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
      * @throws IllegalStateException
      *     if the first argument in {@link #getAliases()} is not registered in the plugins plugin.yml
      */
-    public CompleteCommand(JavaPlugin plugin, long checkDelay) {
+    public CompleteCommand(@NotNull JavaPlugin plugin, long checkDelay) {
         super(null);
         Preconditions.checkNotNull(plugin, "A valid java plugin instance is needed to register this command");
         Preconditions.checkNotNull(getAliases(), "getAliases() cannot be null");
@@ -82,8 +84,9 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
         Bukkit.getScheduler().runTaskLater(plugin, this::verifySubcommands, checkDelay);
     }
 
+    @Nullable
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, @NotNull String[] args) {
         logger.trace("tab complete event called");
 
         SubCommand currSubCommand = this;
@@ -140,7 +143,8 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
         return suggestions;
     }
 
-    private List<String> getListOfSubcommandAliases(SubCommand subCommand) {
+    @Nullable
+    private List<String> getListOfSubcommandAliases(@Nullable SubCommand subCommand) {
         if (subCommand == null || subCommand.getSubCommands() == null) {
             return null;
         }

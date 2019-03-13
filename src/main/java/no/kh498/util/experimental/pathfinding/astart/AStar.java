@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +27,7 @@ public class AStar {
     //how many blocks should be checked before no path found is declared?
     private int timeoutSize = 5000;
 
-    public AStar(final Location start, final Location goal) {
+    public AStar(@NotNull final Location start, @NotNull final Location goal) {
         this(new Tile(start), new Tile(goal));
         if (!start.getWorld().equals(goal.getWorld())) {
             throw new IllegalArgumentException("The start and the goal is not in the same world.");
@@ -44,11 +46,12 @@ public class AStar {
         logger.debug("start: " + start);
     }
 
-    private void addOpen(final Tile tile) {
+    private void addOpen(@NotNull final Tile tile) {
         open.offer(tile);
         openContains.add(tile);
     }
 
+    @Nullable
     public List<Location> pathfind() {
         if (w == null) {
             logger.error("Cannot create a location path when the world has not been specified");
@@ -66,6 +69,7 @@ public class AStar {
         return locPath;
     }
 
+    @Nullable
     public List<Tile> pathfindTile() {
         while (!open.isEmpty()) {
             final Tile curr = pollOpen();
@@ -104,6 +108,7 @@ public class AStar {
         return open.poll();
     }
 
+    @NotNull
     private List<Tile> buildPath(final Tile goal) {
         final Stack<Tile> path = new Stack<>();
         Tile curr = goal;
@@ -118,7 +123,8 @@ public class AStar {
     /**
      * @return All locations around the location
      */
-    private static Tile[] getAdjacent(final Tile tile) {
+    @NotNull
+    private static Tile[] getAdjacent(@NotNull final Tile tile) {
         final Tile[] neighbor = new Tile[24];
         int counter = 0;
 
@@ -154,7 +160,7 @@ public class AStar {
      *
      * @return If a humanoid can walk on this tile.
      */
-    private boolean isTileWalkable(final Tile t) {
+    private boolean isTileWalkable(@NotNull final Tile t) {
         if (w == null) {
             return true;
         }

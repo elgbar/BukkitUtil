@@ -6,6 +6,7 @@ import no.kh498.util.itemMenus.api.items.SubMenuItem;
 import no.kh498.util.itemMenus.events.ItemClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Elg
@@ -21,7 +22,7 @@ public class ComboMenuItem extends SubMenuItem {
     }
 
     @Override
-    public void onItemClick(final ItemClickEvent event) {
+    public void onItemClick(@NotNull final ItemClickEvent event) {
         if (handler != null) {
             handler.onItemClick(event);
         }

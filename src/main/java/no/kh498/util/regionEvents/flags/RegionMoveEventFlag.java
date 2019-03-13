@@ -9,19 +9,20 @@ import com.sk89q.worldguard.session.Session;
 import com.sk89q.worldguard.session.handler.Handler;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
 public abstract class RegionMoveEventFlag extends Handler {
 
-    RegionMoveEventFlag(final Session session) {
+    RegionMoveEventFlag(@NotNull final Session session) {
         super(session);
     }
 
     @Override
-    public boolean onCrossBoundary(final Player player, final Location from, final Location to,
-                                   final ApplicableRegionSet toSet, final Set<ProtectedRegion> entered,
-                                   final Set<ProtectedRegion> exited, final MoveType moveType) {
+    public boolean onCrossBoundary(@NotNull final Player player, final Location from, @NotNull final Location to,
+                                   @NotNull final ApplicableRegionSet toSet, final Set<ProtectedRegion> entered,
+                                   final Set<ProtectedRegion> exited, @NotNull final MoveType moveType) {
         final LocalPlayer localPlayer = getPlugin().wrapPlayer(player);
         final boolean allowed = toSet.testState(localPlayer, getFlagType());
         final boolean hasBypass = getSession().getManager().hasBypass(player, to.getWorld());

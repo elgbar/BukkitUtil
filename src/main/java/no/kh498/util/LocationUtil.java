@@ -1,6 +1,8 @@
 package no.kh498.util;
 
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Elg
@@ -15,6 +17,7 @@ public final class LocationUtil {
      *
      * @return The location's XYZ values set to {@code location.getBlockX/Y/Z()}
      */
+    @NotNull
     public static Location roundLocation(final Location location) {
         location.setX(location.getBlockX());
         location.setY(location.getBlockY());
@@ -42,7 +45,7 @@ public final class LocationUtil {
      *
      * @return A nicely formatted location, if world is not null it is displayed as well
      */
-    public static String beautify(final Location location, boolean displayWorld) {
+    public static String beautify(@Nullable final Location location, boolean displayWorld) {
         if (location == null) {
             return "null";
         }

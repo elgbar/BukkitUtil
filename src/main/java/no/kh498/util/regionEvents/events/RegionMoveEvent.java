@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Elg
@@ -30,6 +31,7 @@ abstract class RegionMoveEvent extends Event implements Cancellable {
         this.bypass = bypass;
     }
 
+    @NotNull
     @SuppressWarnings("unused")
     public static HandlerList getHandlerList() {
         return handlers;
@@ -63,6 +65,7 @@ abstract class RegionMoveEvent extends Event implements Cancellable {
         return moveType;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

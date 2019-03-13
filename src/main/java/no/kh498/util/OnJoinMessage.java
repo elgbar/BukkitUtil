@@ -30,6 +30,7 @@ public final class OnJoinMessage implements Listener {
     private static final String FILE_PATH = "";
     private static final String FILE_NAME = "JoinMessages";
     private static HashMap<UUID, List<String>> messageMap;
+    @NotNull
     private final Plugin plugin;
 
     public OnJoinMessage(@NotNull Plugin plugin) {
@@ -42,7 +43,7 @@ public final class OnJoinMessage implements Listener {
         }
     }
 
-    public static void load(final Plugin plugin) throws IOException {
+    public static void load(@NotNull final Plugin plugin) throws IOException {
         final String json = FileUtils.read(plugin, FILE_PATH, FILE_NAME + ".json");
         final Type type = new TypeToken<HashMap<UUID, ArrayList<String>>>() { }.getType();
 
@@ -59,7 +60,7 @@ public final class OnJoinMessage implements Listener {
      * @param msg
      *     The message to display
      */
-    public static void sendIfOnline(final OfflinePlayer player, final String msg) {
+    public static void sendIfOnline(@NotNull final OfflinePlayer player, final String msg) {
         Preconditions.checkNotNull(player, "Player cannot be null when sending a message");
         if (player.isOnline()) {
             ((Player) player).sendMessage(msg);
@@ -111,7 +112,7 @@ public final class OnJoinMessage implements Listener {
         save(event.getPlugin());
     }
 
-    public static void save(final Plugin plugin) {
+    public static void save(@NotNull final Plugin plugin) {
         final Type type = new TypeToken<HashMap<UUID, ArrayList<String>>>() { }.getType();
         try {
             FileUtils.write(new Gson().toJson(messageMap, type), plugin, FILE_PATH, FILE_NAME + ".json");

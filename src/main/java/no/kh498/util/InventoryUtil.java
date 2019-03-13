@@ -12,6 +12,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Elg
@@ -39,7 +40,7 @@ public final class InventoryUtil {
      *     The data, if you only want to remove material use {@link #removeInvMat(Inventory, Material, int)}
      */
     @SuppressWarnings("deprecation")
-    public static void removeInvItem(final Inventory inv, final Material type, final int amount,
+    public static void removeInvItem(@NotNull final Inventory inv, @NotNull final Material type, final int amount,
                                      final MaterialData data) {
         removeInvItem(inv, new ItemStack(type, amount, data.getData()), false);
     }
@@ -98,7 +99,7 @@ public final class InventoryUtil {
      * @param item
      *     the item to remove
      */
-    public static void removeInvItem(final Inventory inv, final ItemStack item) {
+    public static void removeInvItem(@NotNull final Inventory inv, @NotNull final ItemStack item) {
         removeInvItem(inv, item, false);
     }
 
@@ -112,7 +113,7 @@ public final class InventoryUtil {
      * @param amount
      *     The amount of {@code material} to remove
      */
-    public static void removeInvMat(final Inventory inv, final Material material, final int amount) {
+    public static void removeInvMat(@NotNull final Inventory inv, @NotNull final Material material, final int amount) {
         removeInvItem(inv, new ItemStack(material, amount), true);
     }
 
@@ -126,7 +127,7 @@ public final class InventoryUtil {
      *
      * @return if an inventory contains a certain amount of items with the amount of the items set by {@code amount}
      */
-    public static boolean contains(final Inventory inv, final ItemStack item, int amount) {
+    public static boolean contains(@Nullable final Inventory inv, @Nullable final ItemStack item, int amount) {
         if (item == null || inv == null) {
             return false;
         }
@@ -174,7 +175,7 @@ public final class InventoryUtil {
      *
      * @return The number of items that is a certain material
      */
-    public static int countItems(final Player player, final Material material) {
+    public static int countItems(@NotNull final Player player, final Material material) {
         return countItems(player, material, (short) -1);
     }
 
@@ -188,7 +189,7 @@ public final class InventoryUtil {
      *
      * @return The number of items has the same {@code material} and {@code damageValue} as specified
      */
-    public static int countItems(final Player player, final Material material, final short damageValue) {
+    public static int countItems(@NotNull final Player player, final Material material, final short damageValue) {
         Preconditions.checkNotNull(player);
         final PlayerInventory inventory = player.getInventory();
         final ItemStack[] items = inventory.getContents();
@@ -224,7 +225,7 @@ public final class InventoryUtil {
      * @return true if the player can hold the item {@code new ItemStack(material, quantity, data)}
      */
     @SuppressWarnings("deprecation")
-    public static boolean canHold(final Player player, final ItemStack item) {
+    public static boolean canHold(@NotNull final Player player, final ItemStack item) {
         return canHold(player, item.getType(), item.getData().getData(), item.getAmount());
     }
 
@@ -240,7 +241,8 @@ public final class InventoryUtil {
      *
      * @return true if the player can hold the item {@code new ItemStack(material, quantity, data)}
      */
-    public static boolean canHold(final Player player, final Material material, final byte data, final int quantity) {
+    public static boolean canHold(final Player player, @NotNull final Material material, final byte data,
+                                  final int quantity) {
         final PlayerInventory playerInv = player.getInventory();
 
         final int emptySlots = emptySlots(playerInv);
@@ -291,7 +293,8 @@ public final class InventoryUtil {
      *
      * @return The skull of the player
      */
-    public static ItemStack getPlayerSkull(final OfflinePlayer player) {
+    @NotNull
+    public static ItemStack getPlayerSkull(@NotNull final OfflinePlayer player) {
         Preconditions.checkNotNull(player, "player");
         final ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         final SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -307,7 +310,7 @@ public final class InventoryUtil {
      * @throws IllegalArgumentException
      *     if the given Inventory is {@code null} or
      */
-    public static ItemStack[] getPlayerArmor(Inventory inv) {
+    public static ItemStack[] getPlayerArmor(@Nullable Inventory inv) {
         if (inv == null) { throw new IllegalArgumentException("Given inventory is null"); }
         if (inv instanceof PlayerInventory) {
             return new ItemStack[] {((PlayerInventory) inv).getHelmet(), ((PlayerInventory) inv).getChestplate(),

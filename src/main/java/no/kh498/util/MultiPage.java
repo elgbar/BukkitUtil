@@ -3,6 +3,7 @@ package no.kh498.util;
 import no.kh498.util.itemMenus.MathUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,14 +20,17 @@ public class MultiPage {
 
     public int maxPerPage;
     public List<String> content;
+    @NotNull
     public ChatColor elementPrefix = ChatColor.YELLOW;
     /**
      * Must contain two %d, one for the current page and one for max number of pages
      */
+    @NotNull
     public String header = DEFAULT_HEADER;
     /**
      * Must contain first a %s for the command and a %d for the next page number
      */
+    @NotNull
     public String footer = DEFAULT_FOOTER;
     public String command;
 
@@ -44,7 +48,7 @@ public class MultiPage {
         this(command, DEFAULT_MAX_PER_PAGE, content);
     }
 
-    public void viewPage(int page, final CommandSender sender) {
+    public void viewPage(int page, @NotNull final CommandSender sender) {
         final int pages = MathUtil.dividedRoundedUp(content.size(), maxPerPage);
         if (page > pages) {
             ChatUtil.sendFormattedMsg(sender, "&cThere is no page %d (max page is %d)", page, pages);
@@ -63,7 +67,7 @@ public class MultiPage {
             try {
                 final String str = content.get(i);
                 msgList.add(elementPrefix.toString() + str);
-            } catch (final IndexOutOfBoundsException ignore) {
+            } catch (@NotNull final IndexOutOfBoundsException ignore) {
                 //This might be called on last page
                 break;
             }

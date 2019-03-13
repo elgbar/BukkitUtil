@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,14 +61,15 @@ public class ConfigUtil {
     /**
      * @return A FileConfiguration from the relative plugin path or {@code null} if invalid yaml or no file found found
      */
-    public static FileConfiguration getYaml(Plugin plugin, String... filename) {
+    @Nullable
+    public static FileConfiguration getYaml(@NotNull Plugin plugin, String... filename) {
         return getYaml(FileUtils.getDatafolderFile(plugin, filename));
     }
 
     /**
      * @return A FileConfiguration from the given file or {@code null} if invalid yaml or no file found found
      */
-    public static FileConfiguration getYaml(File file) {
+    public static FileConfiguration getYaml(@NotNull File file) {
         YamlConfiguration conf = new YamlConfiguration();
         try {
             conf.load(file);
@@ -84,11 +86,11 @@ public class ConfigUtil {
     /**
      * Save a FileConfiguration to the datafolder of a plugin
      */
-    public static void saveYaml(Plugin plugin, FileConfiguration conf, String... savePath) {
+    public static void saveYaml(@NotNull Plugin plugin, FileConfiguration conf, String... savePath) {
         saveYaml(conf, FileUtils.getDatafolderFile(plugin, savePath));
     }
 
-    public static void saveYaml(FileConfiguration conf, File file) {
+    public static void saveYaml(@Nullable FileConfiguration conf, @Nullable File file) {
         if (file == null || conf == null) {
             logger.error("Failed to save Yaml. Got invalid parameters: conf = '{}' file = = '{}'", conf, file);
             return;
@@ -109,11 +111,13 @@ public class ConfigUtil {
      *
      * @return A map of all nodes at the given path, if an error occurred an empty map will be returned
      */
+    @Nullable
     public static Map<String, Object> getMapSection(ConfigurationSection conf, String path) {
         return getMapSection(conf.get(path));
     }
 
-    public static Map<String, Object> getMapSection(Object obj) {
+    @Nullable
+    public static Map<String, Object> getMapSection(@Nullable Object obj) {
         if (obj == null) { return new HashMap<>(); }
         try {
             MemorySection memProp = (MemorySection) obj;
@@ -128,6 +132,7 @@ public class ConfigUtil {
         }
     }
 
+    @NotNull
     public static ConfigurationSection getSection(Object obj) {
         if (obj instanceof ConfigurationSection) {
             return (ConfigurationSection) obj;
@@ -138,6 +143,7 @@ public class ConfigUtil {
     /**
      * Convert a map into a configuration section
      */
+    @NotNull
     public static ConfigurationSection getSectionFromMap(Map<String, Object> map) {
         YamlConfiguration conf = new YamlConfiguration();
         map.forEach((path, obj) -> {
@@ -152,11 +158,12 @@ public class ConfigUtil {
         return conf;
     }
 
-    public static boolean isEmpty(ConfigurationSection conf) {
+    public static boolean isEmpty(@Nullable ConfigurationSection conf) {
         return conf == null || conf.getKeys(false).isEmpty();
     }
 
-    public static FileConfiguration toFileConf(ConfigurationSection conf) {
+    @NotNull
+    public static FileConfiguration toFileConf(@NotNull ConfigurationSection conf) {
         FileConfiguration fileConf = new YamlConfiguration();
         for (Map.Entry<String, Object> entry : getMapSection(conf, "").entrySet()) {
             fileConf.set(entry.getKey(), entry.getValue());

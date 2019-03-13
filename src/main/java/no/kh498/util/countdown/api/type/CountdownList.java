@@ -5,6 +5,8 @@ import no.kh498.util.countdown.api.Countdown;
 import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -17,6 +19,7 @@ import java.util.Collection;
  */
 public class CountdownList extends Countdown {
 
+    @Nullable
     private final Collection<Player> players;
 
     /**
@@ -31,15 +34,16 @@ public class CountdownList extends Countdown {
      * @param players
      *     the players to see the countdown
      */
-    public CountdownList(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat,
-                         final Collection<Player> players) {
+    public CountdownList(final Plugin plugin, @NotNull final String text, final long time, final TimeFormat timeFormat,
+                         @Nullable final Collection<Player> players) {
         super(plugin, text, time, timeFormat);
         Preconditions.checkArgument(players != null);
         this.players = players;
     }
 
+    @Nullable
     @Override
     public Collection<Player> getPlayers() {
-        return this.players;
+        return players;
     }
 }

@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class SubMenuItem extends MenuItem {
     }
 
     @Override
-    public void onItemClick(final ItemClickEvent event) {
+    public void onItemClick(@NotNull final ItemClickEvent event) {
         event.setWillClose(true);
         final UUID ID = event.getPlayer().getUniqueId();
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {

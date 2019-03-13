@@ -9,6 +9,7 @@ import no.kh498.util.regionEvents.events.RegionExitEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class ExitEventFlag extends RegionMoveEventFlag {
     }
 
     @Override
-    public boolean testNewRegion(final Set<ProtectedRegion> entered, final Set<ProtectedRegion> exited) {
+    public boolean testNewRegion(final Set<ProtectedRegion> entered, @NotNull final Set<ProtectedRegion> exited) {
         return exited.size() > 0;
     }
 
@@ -50,6 +51,7 @@ public class ExitEventFlag extends RegionMoveEventFlag {
         Factory() {
         }
 
+        @NotNull
         @Override
         public ExitEventFlag create(final Session session) {
             return new ExitEventFlag(session);

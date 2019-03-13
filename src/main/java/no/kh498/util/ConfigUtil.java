@@ -6,11 +6,13 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +22,7 @@ import java.util.Map;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class ConfigUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
+    public static Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
 
     /**
      * Load all default files from the plugin's jar and place them in the datafolder.
@@ -29,32 +31,27 @@ public class ConfigUtil {
      * @param plugin
      *     The plugin to save from
      * @param resources
-     *     The absolute path in plugins jar
+     *     The absolute path in plugin jar
      */
-    public static void saveDefaultResources(Plugin plugin, String... resources) {
+    public static void saveDefaultResources(@NotNull Plugin plugin, @NotNull String... resources) throws IOException {
         for (String resource : resources) {
-            try {
-                plugin.saveResource(resource, false);
-            } catch (IllegalArgumentException ex) {
-                File outFile = new File(plugin.getDataFolder(), resource);
+            if (resource == null) {
+                logger.error("One of the resource given was null!");
+                continue;
+            }
+            else if (resource.isEmpty()) {
+                logger.warn("Cannot save a resource with an empty path");
+                continue;
+            }
+            String[] path = resource.split("[/\\\\]");
+            if (FileUtils.getDatafolderFile(plugin, path).exists()) {
+                continue;
+            }
+            File outFile = FileUtils.createDatafolderFile(plugin, path);
 
-                if (outFile.exists()) {
-                    continue;
-                }
-
-                int lastIndex = resource.lastIndexOf(47);
-                File outDir = new File(plugin.getDataFolder(), resource.substring(0, lastIndex >= 0 ? lastIndex : 0));
-                if (!outDir.exists()) {
-                    //noinspection ResultOfMethodCallIgnored
-                    outDir.mkdirs();
-                }
-                try {
-                    //noinspection ResultOfMethodCallIgnored
-                    outFile.createNewFile();
-                } catch (IOException e) {
-                    logger.error("Failed to create empty file {} in {}", resource, outDir);
-                    e.printStackTrace();
-                }
+            InputStream is = FileUtils.getInternalFileStream(path);
+            if (is != null) {
+                org.apache.commons.io.FileUtils.copyInputStreamToFile(is, outFile);
             }
         }
     }

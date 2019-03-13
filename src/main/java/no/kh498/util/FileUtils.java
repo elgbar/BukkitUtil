@@ -64,11 +64,21 @@ public final class FileUtils {
     @NotNull
     public static File createDatafolderFile(@NotNull Plugin plugin, @NotNull String... children) throws IOException {
         File file = getDatafolderFile(plugin, children);
+        createFileSafely(file);
+        return file;
+    }
 
+    /**
+     * If the file does exists, the file will not be overwritten
+     *
+     * @param file
+     *     the file to create
+     */
+    public static void createFileSafely(@NotNull File file) throws IOException {
+        if (file.exists()) { return; }
         createParentFolder(file);
         //noinspection ResultOfMethodCallIgnored
         file.createNewFile();
-        return file;
     }
 
 
@@ -78,12 +88,21 @@ public final class FileUtils {
      * @return {@code true} if the folders were successfully created
      */
     public static boolean createFolders(@NotNull Plugin plugin, @NotNull String... children) {
-        File convFolder = FileUtils.getDatafolderFile(plugin, children);
-        if (!convFolder.exists()) {
-            return convFolder.mkdirs();
+        return createFolderSafely(FileUtils.getDatafolderFile(plugin, children));
+    }
+
+    /**
+     * @param folder
+     *     the folder to create
+     *
+     * @return {@code true} if the folders were successfully created
+     */
+    public static boolean createFolderSafely(@NotNull File folder) {
+        if (!folder.exists()) {
+            return folder.mkdirs();
         }
-        else if (!convFolder.isDirectory()) {
-            logger.error("File at '{}' is not a folder.", convFolder.getPath());
+        else if (!folder.isDirectory()) {
+            logger.error("File at '{}' is not a folder.", folder.getPath());
             return false;
         }
         return true;
@@ -105,9 +124,22 @@ public final class FileUtils {
      */
     public static boolean write(@NotNull String string, @NotNull Plugin plugin, @NotNull String... path)
     throws IOException {
+        return write(string, createDatafolderFile(plugin, path));
 
-        final File file = createDatafolderFile(plugin, path);
+    }
 
+    /**
+     * Write a UTF-8 String to a file in a plugin's datafolder. If the file does not exists, it will be created a long
+     * with any of the directories not existing. If it does exists it will be overwritten.
+     *
+     * @param string
+     *     The string to write to the given file
+     * @param file
+     *     The file to write to
+     *
+     * @return {@code true} if the content was successfully written to file.
+     */
+    public static boolean write(@NotNull String string, @NotNull File file) throws IOException {
         if (file.isDirectory()) {
             logger.error("The given file is a folder '{}'", file.getPath());
             return false;
@@ -199,9 +231,11 @@ public final class FileUtils {
      */
     @Nullable
     public static String read(@NotNull Plugin plugin, @NotNull String... path) throws IOException {
+        return read(getDatafolderFile(plugin, path));
+    }
 
-        final File file = getDatafolderFile(plugin, path);
-
+    @Nullable
+    public static String read(@NotNull File file) throws IOException {
         if (!file.exists()) {
             logger.error("Failed to find a file at '{}'", file.getPath());
             return null;
@@ -232,9 +266,11 @@ public final class FileUtils {
      */
     @Nullable
     public static List<File> getFiles(@NotNull Plugin plugin, @NotNull String... subPath) {
+        return getFiles(getDatafolderFile(plugin, subPath));
+    }
 
-        final File folder = getDatafolderFile(plugin, subPath);
-
+    @Nullable
+    public static List<File> getFiles(@NotNull File folder) {
         if (!folder.exists()) {
             logger.warn("There is nothing at the given path '{}'", folder.getPath());
             return null;
@@ -247,7 +283,6 @@ public final class FileUtils {
         //noinspection ConstantConditions folder is checked
         return Arrays.asList(folder.listFiles());
     }
-
 
     /**
      * @param plugin
@@ -265,6 +300,16 @@ public final class FileUtils {
         if (files == null) {
             return null;
         }
+        return getFileNames(files);
+    }
+
+
+    /**
+     * @return Get a list of the names of all the files in the {@code subPath}, or {@code null} if given subpath does
+     * not exists or is a file
+     */
+    @NotNull
+    public static List<String> getFileNames(@NotNull List<File> files) {
         return files.stream().filter(File::isFile).map(File::getName).collect(Collectors.toList());
     }
 

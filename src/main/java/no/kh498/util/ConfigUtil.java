@@ -99,7 +99,7 @@ public class ConfigUtil {
             conf.save(file);
         } catch (IOException e) {
             logger.error("Failed to save file '{}' to '{}'", file.getName(), file.getPath());
-            if (logger.isDebugEnabled()) { e.printStackTrace(); }
+            e.printStackTrace();
         }
     }
 

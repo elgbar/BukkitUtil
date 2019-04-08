@@ -36,9 +36,9 @@ public class ChatUtil {
      *
      * @return A message that can use '&amp;' as bukkit color and {@link String#format(String, Object...)}
      */
-    @Nullable
+    @NotNull
     public static String createFormattedMsg(@Nullable final String msg, final Object... obj) {
-        if (msg == null) { return null; }
+        if (msg == null) { return ""; }
         return toBukkitColor(String.format(msg, obj));
     }
 

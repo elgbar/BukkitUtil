@@ -122,7 +122,7 @@ public class ConfigUtil {
         if (obj == null) { return new HashMap<>(); }
         try {
             MemorySection memProp = (MemorySection) obj;
-            return memProp.getValues(false);
+            return memProp.getValues(true);
         } catch (ClassCastException e1) {
             try {
                 //noinspection unchecked

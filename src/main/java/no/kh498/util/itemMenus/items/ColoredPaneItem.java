@@ -5,6 +5,7 @@ import no.kh498.util.itemMenus.api.items.ActionMenuItem;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Elg
@@ -33,7 +34,7 @@ public final class ColoredPaneItem extends ActionMenuItem {
      * @param color
      *     Color of the item
      */
-    public ColoredPaneItem(final DyeColor color, final ItemClickHandler handler) {
+    public ColoredPaneItem(@NotNull final DyeColor color, final ItemClickHandler handler) {
         this(" ", color, handler);
     }
 }

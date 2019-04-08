@@ -6,6 +6,8 @@ import no.kh498.util.countdown.api.timeFormat.TimeFormat;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -18,6 +20,7 @@ import java.util.Collection;
  */
 public class CountdownWorld extends Countdown {
 
+    @Nullable
     private final World world;
 
     /**
@@ -32,20 +35,21 @@ public class CountdownWorld extends Countdown {
      * @param world
      *     The world to send the countdown to
      */
-    public CountdownWorld(final Plugin plugin, final String text, final long time, final TimeFormat timeFormat,
-                          final World world) {
+    public CountdownWorld(final Plugin plugin, @NotNull final String text, final long time, final TimeFormat timeFormat,
+                          @Nullable final World world) {
         super(plugin, text, time, timeFormat);
         Preconditions.checkArgument(world != null);
         this.world = world;
     }
 
+    @Nullable
     public World getWorld() {
-        return this.world;
+        return world;
     }
 
     @Override
     public Collection<Player> getPlayers() {
         //TODO maybe cache this and check less often?
-        return this.world.getPlayers();
+        return world.getPlayers();
     }
 }

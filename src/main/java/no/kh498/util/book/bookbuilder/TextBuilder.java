@@ -1,12 +1,18 @@
 package no.kh498.util.book.bookbuilder;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * @author Elg
  */
 public class TextBuilder {
 
+    @Nullable
     private String text = null;
+    @Nullable
     private ClickAction click = null;
+    @Nullable
     private HoverAction hover = null;
 
     private boolean underlined;
@@ -15,6 +21,7 @@ public class TextBuilder {
     private boolean strikethrough;
     private boolean obfuscated;
 
+    @NotNull
     private StringBuilder hoverLines = new StringBuilder();
     private String clickValue;
 
@@ -22,16 +29,19 @@ public class TextBuilder {
 
     TextBuilder(PageBuilder builder) { this.builder = builder; }
 
+    @NotNull
     public TextBuilder setText(String text) {
         this.text = text;
         return this;
     }
 
+    @NotNull
     public TextBuilder clickEvent(ClickAction action) {
         click = action;
         return this;
     }
 
+    @NotNull
     public TextBuilder hoverEvent(HoverAction action) {
         hover = action;
         return this;
@@ -41,12 +51,14 @@ public class TextBuilder {
         hoverLines.setLength(0);
     }
 
+    @NotNull
     public TextBuilder clickEvent(ClickAction action, String value) {
         click = action;
         clickValue = value;
         return this;
     }
 
+    @NotNull
     public TextBuilder addHoverLine(String value) {
         hoverLines.append(", \"").append(value).append("\"");
         return this;
@@ -91,6 +103,7 @@ public class TextBuilder {
         return underlined;
     }
 
+    @NotNull
     public TextBuilder setUnderlined(boolean underlined) {
         this.underlined = underlined;
         return this;
@@ -100,6 +113,7 @@ public class TextBuilder {
         return bold;
     }
 
+    @NotNull
     public TextBuilder setBold(boolean bold) {
         this.bold = bold;
         return this;
@@ -109,6 +123,7 @@ public class TextBuilder {
         return italic;
     }
 
+    @NotNull
     public TextBuilder setItalic(boolean italic) {
         this.italic = italic;
         return this;
@@ -118,6 +133,7 @@ public class TextBuilder {
         return strikethrough;
     }
 
+    @NotNull
     public TextBuilder setStrikethrough(boolean strikethrough) {
         this.strikethrough = strikethrough;
         return this;
@@ -127,6 +143,7 @@ public class TextBuilder {
         return obfuscated;
     }
 
+    @NotNull
     public TextBuilder setObfuscated(boolean obfuscated) {
         this.obfuscated = obfuscated;
         return this;

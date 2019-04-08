@@ -3,6 +3,8 @@ package no.kh498.util;
 import info.ronjenkins.slf4bukkit.ColorString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Elg
@@ -10,7 +12,7 @@ import org.bukkit.command.CommandSender;
 @SuppressWarnings("WeakerAccess")
 public class ChatUtil {
 
-    public static void sendFormattedMsg(CommandSender sender, ColorString msg, final Object... obj) {
+    public static void sendFormattedMsg(@NotNull CommandSender sender, ColorString msg, final Object... obj) {
         sendFormattedMsg(sender, msg.toString(), obj);
     }
 
@@ -34,18 +36,20 @@ public class ChatUtil {
      *
      * @return A message that can use '&amp;' as bukkit color and {@link String#format(String, Object...)}
      */
-    public static String createFormattedMsg(final String msg, final Object... obj) {
-        if (msg == null) { return null; }
+    @NotNull
+    public static String createFormattedMsg(@Nullable final String msg, final Object... obj) {
+        if (msg == null) { return ""; }
         return toBukkitColor(String.format(msg, obj));
     }
 
     /**
      * @param str
-     *     The String to colorify
+     *     The String to colorfy
      *
      * @return Add color to string that is using the color code '&amp;'
      */
-    public static String toBukkitColor(final String str) {
+    @Nullable
+    public static String toBukkitColor(@Nullable final String str) {
         if (str == null) { return null; }
         return ChatColor.translateAlternateColorCodes('&', sanitizeSpecialChars(str));
     }
@@ -58,7 +62,8 @@ public class ChatUtil {
      *
      * @return convert windows and mac os new line to linux newline, and replace tab char with four spaces
      */
-    public static String sanitizeSpecialChars(final String str) {
+    @Nullable
+    public static String sanitizeSpecialChars(@Nullable final String str) {
         if (str == null) { return null; }
         return str.replace("\n\r", "\n").replace('\r', '\n').replace("\t", "    ");
     }
@@ -84,7 +89,7 @@ public class ChatUtil {
      *
      * @return A formatted string
      */
-    public static String colorString(final ChatColor pri, final ChatColor sec, final Object[] args) {
+    public static String colorString(final ChatColor pri, final ChatColor sec, @NotNull final Object[] args) {
         return colorString(pri, sec, "", args);
     }
 
@@ -113,7 +118,7 @@ public class ChatUtil {
      * @return A formatted string
      */
     public static String colorString(final ChatColor pri, final ChatColor sec, final String prefix,
-                                     final Object[] args) {
+                                     @NotNull final Object[] args) {
         return colorString(pri, sec, prefix, ", ", args);
     }
 

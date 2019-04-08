@@ -1,5 +1,7 @@
 package no.kh498.util.book.bookbuilder;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Elg
  */
@@ -15,6 +17,7 @@ public class PageBuilder {
         page = "{text:\"\", extra:[";
     }
 
+    @NotNull
     public TextBuilder add() { return new TextBuilder(this); }
 
     public PageBuilder newPage() {

@@ -1,5 +1,7 @@
 package no.kh498.util.countdown.api.timeFormat;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * {@inheritDoc}
  *
@@ -17,6 +19,7 @@ public class FormatSeconds implements TimeFormat {
         this.seconds = seconds;
     }
 
+    @NotNull
     @Override
     public String formatTime(final long timeLeft) {
         return timeLeft / 1000L + " " + seconds;

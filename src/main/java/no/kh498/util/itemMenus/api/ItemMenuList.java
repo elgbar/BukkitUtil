@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,9 @@ public class ItemMenuList {
     /* constants */
     private static final int FIVE_LINES_SIZE = Size.FIVE.getSize();
     /* set by the user */
+    @NotNull
     private final List<MenuItem> menuItemList;
+    @NotNull
     private final String title;
     private final Plugin plugin;
     /* generated */
@@ -56,7 +59,7 @@ public class ItemMenuList {
      * @throws NullPointerException
      *     if {@code plugin} or {@code menuItemList} is {@code null}
      */
-    public ItemMenuList(Plugin plugin, final List<MenuItem> menuItemList, final String title) {
+    public ItemMenuList(Plugin plugin, @NotNull final List<MenuItem> menuItemList, @NotNull final String title) {
         this(plugin, menuItemList, title, true);
     }
 
@@ -74,7 +77,8 @@ public class ItemMenuList {
      *     if {@code plugin} or {@code menuItemList} is {@code null}
      */
     @SuppressWarnings("WeakerAccess")
-    public ItemMenuList(Plugin plugin, final List<MenuItem> menuItemList, final String title, boolean smoothUpdate) {
+    public ItemMenuList(Plugin plugin, @NotNull final List<MenuItem> menuItemList, @NotNull final String title,
+                        boolean smoothUpdate) {
 
         Preconditions.checkArgument(smoothUpdate || title.length() <= 24,
                                     "Title must be shorter than 24 characters when displaying page number");
@@ -89,13 +93,13 @@ public class ItemMenuList {
 
     }
 
-    public void open(final Player player) {
+    public void open(@NotNull final Player player) {
         ItemMenu menu = new ItemMenu(plugin, title, Size.SIX);
         changePage(player, 0, menu);
         menu.open(player);
     }
 
-    private void changePage(final Player player, final int page, ItemMenu menu) {
+    private void changePage(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
         if (!useSmoothUpdate()) {
             menu.setName(title + " " + (page + 1) + "/" + pages);
         }
@@ -117,7 +121,8 @@ public class ItemMenuList {
         if (page != pages - 1) { menu.setItem(CommonPos.RIGHT, Size.SIX, nextItem(player, page, menu)); }
     }
 
-    private void open(final Player player, final int page, ItemMenu menu, ItemClickEvent event) {
+    private void open(@NotNull final Player player, final int page, @NotNull ItemMenu menu,
+                      @NotNull ItemClickEvent event) {
         //do not change page if there is no other page
         if (page < 0 || page >= pages) {
             return;
@@ -133,12 +138,12 @@ public class ItemMenuList {
         }
     }
 
-    private MenuItem nextItem(final Player player, final int page, ItemMenu menu) {
+    private MenuItem nextItem(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
         return new ActionMenuItem(ChatColor.WHITE + "Next page", event -> open(player, page + 1, menu, event),
                                   new ItemStack(Material.SLIME_BALL));
     }
 
-    private MenuItem prevItem(final Player player, final int page, ItemMenu menu) {
+    private MenuItem prevItem(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
         return new ActionMenuItem(ChatColor.WHITE + "Previous page", event -> open(player, page - 1, menu, event),
                                   new ItemStack(Material.MAGMA_CREAM));
     }
@@ -146,6 +151,7 @@ public class ItemMenuList {
     /**
      * @return the List of menuItem that will be displayed
      */
+    @NotNull
     public final List<MenuItem> getMenuItemList() {
         return menuItemList;
     }
@@ -153,6 +159,7 @@ public class ItemMenuList {
     /**
      * @return the title
      */
+    @NotNull
     public final String getTitle() {
         return title;
     }
@@ -168,6 +175,7 @@ public class ItemMenuList {
         return smoothUpdate;
     }
 
+    @NotNull
     public ItemMenuList setSmoothUpdate(boolean smoothUpdate) {
         this.smoothUpdate = smoothUpdate;
         return this;
@@ -186,6 +194,7 @@ public class ItemMenuList {
         this.bottomPane = bottomPane;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "ListItemMenu{" + ", title='" + title + '\'' + ", pages=" + pages + '}';

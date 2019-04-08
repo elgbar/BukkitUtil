@@ -1,211 +1,287 @@
 package no.kh498.util;
 
-import com.google.common.base.Preconditions;
 import org.apache.commons.io.IOUtils;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
+ * Simplify the writing of IO with this utility. If you are using {@link Configuration} then you might want to take a
+ * look at {@link ConfigUtil}
+ *
  * @author Elg
- * @since 0.1.0
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public final class FileUtils {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
-    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
+    public static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+
+
+    /////////////
+    // Writing //
+    /////////////
+
+    /**
+     * @param file
+     *     The child of the parent dir to create
+     *
+     * @return {@code true} if an error occurred when creating the folder
+     */
+    public static boolean createParentFolder(@NotNull File file) {
+        if (file.exists()) { return false; }
+
+        if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
+            logger.error("Failed to create the parent folder '{}'", file.getParentFile().getPath());
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * If the file does exists, the file will not be overwritten
+     *
+     * @param plugin
+     *     The plugin to use
+     * @param children
+     *     The relative path to the file
+     *
+     * @return A file, that exists, at the given path.
+     */
+    @NotNull
+    public static File createDatafolderFile(@NotNull Plugin plugin, @NotNull String... children) throws IOException {
+        File file = getDatafolderFile(plugin, children);
+        createFileSafely(file);
+        return file;
+    }
+
+    /**
+     * If the file does exists, the file will not be overwritten
+     *
+     * @param file
+     *     the file to create
+     */
+    public static void createFileSafely(@NotNull File file) throws IOException {
+        if (file.exists()) { return; }
+        createParentFolder(file);
+        //noinspection ResultOfMethodCallIgnored
+        file.createNewFile();
+    }
+
+
+    /**
+     * Create folders with in a plugin's data folder.
+     *
+     * @return {@code true} if the folders were successfully created
+     */
+    public static boolean createFolders(@NotNull Plugin plugin, @NotNull String... children) {
+        return createFolderSafely(FileUtils.getDatafolderFile(plugin, children));
+    }
+
+    /**
+     * @param folder
+     *     the folder to create
+     *
+     * @return {@code true} if the folders were successfully created
+     */
+    public static boolean createFolderSafely(@NotNull File folder) {
+        if (!folder.exists()) {
+            return folder.mkdirs();
+        }
+        else if (!folder.isDirectory()) {
+            logger.error("File at '{}' is not a folder.", folder.getPath());
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Write a UTF-8 String to a file in a plugin's datafolder. If the file does not exists, it will be created a long
+     * with any of the directories not existing. If it does exists it will be overwritten.
+     *
+     * @param string
+     *     The string to write to the given file
+     * @param plugin
+     *     The plugin that writes the json
+     * @param path
+     *     Path from /plugins/{$plugin_name}/
+     *
+     * @return {@code true} if the content was successfully written to file.
+     */
+    public static boolean write(@NotNull String string, @NotNull Plugin plugin, @NotNull String... path)
+    throws IOException {
+        return write(string, createDatafolderFile(plugin, path));
+
+    }
+
+    /**
+     * Write a UTF-8 String to a file in a plugin's datafolder. If the file does not exists, it will be created a long
+     * with any of the directories not existing. If it does exists it will be overwritten.
+     *
+     * @param string
+     *     The string to write to the given file
+     * @param file
+     *     The file to write to
+     *
+     * @return {@code true} if the content was successfully written to file.
+     */
+    public static boolean write(@NotNull String string, @NotNull File file) throws IOException {
+        if (file.isDirectory()) {
+            logger.error("The given file is a folder '{}'", file.getPath());
+            return false;
+        }
+
+        if (!file.canWrite()) {
+            logger.error("Cannot write the file as the current user does not have reading permission'{}'",
+                         file.getPath());
+            return false;
+        }
+
+        try (BufferedWriter wtr = new BufferedWriter(
+            new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            wtr.write(string);
+            wtr.flush();
+        }
+        return true;
+    }
+
 
     /**
      * Saves the contents of an InputStream in a file.
      *
-     * @param plugin
-     *     The plugin that saves the InputStream
      * @param in
      *     The InputStream to read from. This stream will not be closed when this method returns.
-     * @param file
-     *     The file to save to. Will be replaced if it exists, or created if it doesn't.
-     *
-     * @throws IOException
-     *     For the same reasons as {@link FileOutputStream} does
+     * @param plugin
+     *     The plugin that saves the InputStream
+     * @param path
+     *     The relative (to the plugins datafolder) path of the file to save to. It will be replaced if it exists, or
+     *     created if it does not
      */
-    public static void save(final Plugin plugin, final InputStream in, final File file) throws IOException {
-        Preconditions.checkNotNull(plugin, "Plugin cannot be null");
+    public static boolean save(@NotNull InputStream in, @NotNull Plugin plugin, @NotNull String... path)
+    throws IOException {
+        return save(in, createDatafolderFile(plugin, path));
+    }
 
-        if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
-            logger.error("Failed to create the parent folder '" + file.getParentFile().toString() + "'");
-            return;
-        }
+    /**
+     * Saves the contents of an InputStream in a file.
+     *
+     * @param in
+     *     The InputStream to read from. This stream will not be closed when this method returns.
+     */
+    public static boolean save(@NotNull InputStream in, @NotNull File file) {
+
         try (final FileOutputStream out = new FileOutputStream(file)) {
             final byte[] buffer = new byte[16 * 1024];
             int read;
             while ((read = in.read(buffer)) > 0) {
                 out.write(buffer, 0, read);
             }
-        }
-    }
-
-    /**
-     * @param plugin
-     *     The plugin that writes the json
-     * @param subPath
-     *     Path from /plugins/{$plugin_name}/
-     * @param fileName
-     *     File name of the file (no ending)
-     * @param str
-     *     String to write to file
-     */
-    public static void writeStringToFile(final Plugin plugin, final String subPath, final String fileName,
-                                         final String str) {
-        writeJSON(plugin, subPath, fileName, str, false);
-    }
-
-    /**
-     * @param plugin
-     *     The plugin that writes the json
-     * @param subPath
-     *     Path from /plugins/{$plugin_name}/
-     * @param fileName
-     *     Filename of the file (no ending)
-     * @param jsonString
-     *     Json string
-     * @param addEnding
-     *     if a '.json' ending should be appended to the filename
-     */
-    public static void writeJSON(final Plugin plugin, final String subPath, final String fileName,
-                                 final String jsonString, final boolean addEnding) {
-        Preconditions.checkArgument(plugin != null, "Plugin cannot be null");
-        Preconditions.checkArgument(subPath != null, "subPath cannot be null");
-        Preconditions.checkArgument(fileName != null, "fileName cannot be null");
-        Preconditions.checkArgument(jsonString != null, "Cannot write a null message to file!");
-
-        BufferedWriter wtr = null;
-
-        try {
-            final File file = new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName +
-                                       (addEnding ? ".json" : ""));
-            final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
-            if (!filePath.isDirectory() && !filePath.mkdirs()) {
-                logger.error("Failed to create folder for '" + filePath.toString() + "'");
-                return;
-            }
-
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    logger.error("Failed to create files in '" + filePath.toString() + "'");
-                    return;
-                }
-            }
-            wtr = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
-
-            wtr.write(jsonString);
-
-            wtr.flush();
-
-        } catch (final IOException e) {
-            logger.error("Failed to write the json");
-        } finally {
-            if (wtr != null) {
-                try {
-                    wtr.close();
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
-     * @param plugin
-     *     The plugin
-     *
-     * @return Get the absolute path of the plugins folder
-     */
-    public static String getPluginsFolder(final Plugin plugin) {
-        return plugin.getDataFolder().getAbsolutePath();
-    }
-
-    /**
-     * @param plugin
-     *     The plugin that reads the json
-     * @param subPath
-     *     Path from /plugins/{$plugin_name}/
-     * @param fileName
-     *     File name of the file
-     *
-     * @return The content of the file read as UTF-8 text
-     */
-    public static String readFileToString(final Plugin plugin, final String subPath, final String fileName) {
-        //noinspection deprecation
-        return readJSON(plugin, subPath, fileName, false);
-    }
-
-    /**
-     * @param plugin
-     *     The plugin that reads the json
-     * @param subPath
-     *     Path from /plugins/{$plugin_name}/
-     * @param fileName
-     *     File name of the file
-     * @param addEnding
-     *     If the method should add an ending eg "file" becomes "file.json"
-     *
-     * @return The content of the file read as UTF-8 text
-     *
-     * @deprecated The name make it seem like it only reads json files. Instead use
-     * {@link #readFileToString(Plugin, String, String)}
-     */
-    @Deprecated
-    public static String readJSON(final Plugin plugin, final String subPath, final String fileName,
-                                  final boolean addEnding) {
-        Preconditions.checkNotNull(plugin, "Plugin cannot be null");
-        Preconditions.checkNotNull(subPath, "subPath cannot be null");
-        Preconditions.checkNotNull(fileName, "fileName cannot be null");
-        try {
-            final File file = new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName +
-                                       (addEnding ? ".json" : ""));
-            final File filePath = new File(getPluginsFolder(plugin) + File.separator + subPath);
-
-            if (!filePath.isDirectory() && !filePath.mkdirs()) {
-                logger.error("Failed to create folder for '" + filePath.toString() + "'");
-                return null;
-            }
-
-            if (!file.exists()) {
-                logger.warn("Could not find the files to read, is this the first time you load this plugin?");
-                return null;
-            }
-            return org.apache.commons.io.FileUtils.readFileToString(file, Charset.defaultCharset());
-        } catch (final IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    //////////////////////
+    // Reading of files //
+    //////////////////////
+
+
+    /**
+     * @return A file in a plugin's data folder. If any of the child folder names are
+     * null {@code null} is returned
+     *
+     * @throws NullPointerException
+     *     if one of the children is null
+     */
+    @NotNull
+    public static File getDatafolderFile(@NotNull Plugin plugin, @NotNull String... children) {
+        try {
+            return Paths.get(plugin.getDataFolder().getAbsolutePath(), children).toFile();
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException(
+                "One of the children given is null. children: " + String.join(File.separator, children));
+        }
+    }
+
+
+    /**
+     * @param plugin
+     *     The plugin that reads the file
+     * @param path
+     *     Path from /plugins/{$plugin_name}/
+     *
+     * @return The content of the file read as UTF-8 text or {@code null} if the file does not exist or cannot be read
+     */
+    @Nullable
+    public static String read(@NotNull Plugin plugin, @NotNull String... path) throws IOException {
+        return read(getDatafolderFile(plugin, path));
+    }
+
+    @Nullable
+    public static String read(@NotNull File file) throws IOException {
+        if (!file.exists()) {
+            logger.error("Failed to find a file at '{}'", file.getPath());
             return null;
         }
+
+        if (file.isDirectory()) {
+            logger.error("The given file is a folder '{}'", file.getPath());
+            return null;
+        }
+
+        if (!file.canRead()) {
+            logger.error("Cannot read the file as the current user does not have reading permission for the file '{}'",
+                         file.getPath());
+            return null;
+        }
+        return org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
     }
+
 
     /**
      * @param plugin
-     *     The plugin that reads the json
+     *     The plugin that has the files
      * @param subPath
      *     Path from /plugins/{$plugin_name}/
-     * @param fileName
-     *     File name of the file
      *
-     * @return if the file specified exists or not
+     * @return A list of all the files (and folders) in the {@code subPath}, or {@code null} if given subpath does not
+     * exists or is a file
      */
-    public static boolean existFile(final Plugin plugin, final String subPath, final String fileName) {
-        Preconditions.checkNotNull(plugin, "Plugin cannot be null");
-        Preconditions.checkNotNull(subPath, "subPath cannot be null");
-        Preconditions.checkNotNull(fileName, "fileName cannot be null");
-        final File file = new File(getPluginsFolder(plugin) + File.separator + subPath + File.separator + fileName);
-        return file.exists();
+    @Nullable
+    public static List<File> getFiles(@NotNull Plugin plugin, @NotNull String... subPath) {
+        return getFiles(getDatafolderFile(plugin, subPath));
+    }
+
+    @Nullable
+    public static List<File> getFiles(@NotNull File folder) {
+        if (!folder.exists()) {
+            logger.warn("There is nothing at the given path '{}'", folder.getPath());
+            return null;
+        }
+        if (!folder.isDirectory()) {
+            logger.warn("Given path does not resolve into a folder '{}'", folder.getPath());
+            return null;
+        }
+
+        //noinspection ConstantConditions folder is checked
+        return Arrays.asList(folder.listFiles());
     }
 
     /**
@@ -214,106 +290,91 @@ public final class FileUtils {
      * @param subPath
      *     Path from /plugins/{$plugin_name}/
      *
-     * @return Get a list of the names of all the files in the {@code subPath}
+     * @return Get a list of the names of all the files in the {@code subPath}, or {@code null} if given subpath does
+     * not exists or is a file
      */
-    public static List<String> getFileNames(final Plugin plugin, final String subPath) {
-        Preconditions.checkNotNull(plugin, "Plugin cannot be null");
-        Preconditions.checkNotNull(subPath, "subPath cannot be null");
-        final File folder = new File(getPluginsFolder(plugin), subPath);
-        final File[] listOfFiles = folder.listFiles();
-        final List<String> listOfFileName = new ArrayList<>();
+    @Nullable
+    public static List<String> getFileNames(@NotNull Plugin plugin, @NotNull String... subPath) {
 
-        if (listOfFiles != null) {
-            for (final File file : listOfFiles) {
-                if (file.isFile()) {
-                    listOfFileName.add(file.getName());
-                }
-            }
+        List<File> files = getFiles(plugin, subPath);
+        if (files == null) {
+            return null;
         }
-        return listOfFileName;
+        return getFileNames(files);
     }
 
+
     /**
+     * @return Get a list of the names of all the files in the {@code subPath}, or {@code null} if given subpath does
+     * not exists or is a file
+     */
+    @NotNull
+    public static List<String> getFileNames(@NotNull List<File> files) {
+        return files.stream().filter(File::isFile).map(File::getName).collect(Collectors.toList());
+    }
+
+
+    /**
+     * @param excludeHyphenPrefix
+     *     If any files with the hyphen (-) should be excluded from the list
      * @param plugin
-     *     The plugin that has the files
-     * @param subPath
-     *     Path from /plugins/{$plugin_name}/
+     *     The plugin's datafolder to get the file from
+     * @param children
+     *     The path to the file
      *
-     * @return Get a list of the names of all the files in the {@code subPath}
+     * @return null if any of the children are null, else a list of all non-folder files in the given file.
      */
-    public static List<File> getFiles(final Plugin plugin, final String... subPath) {
-        Preconditions.checkNotNull(plugin, "Plugin cannot be null");
-        Preconditions.checkNotNull(subPath, "subPath cannot be null");
-        final File folder = getDatafolderFile(plugin, subPath);
-        File[] files = folder.listFiles();
-        if (files == null || files.length == 0) { return new ArrayList<>(0); }
-        return Arrays.asList(files);
+    @NotNull
+    public static List<File> getRecursiveFiles(boolean excludeHyphenPrefix, @NotNull Plugin plugin,
+                                               @NotNull String... children) {
+        return getRecursiveFiles(excludeHyphenPrefix, getDatafolderFile(plugin, children));
     }
 
     /**
-     * @return A file in a plugin's data folder
-     */
-    public static File getDatafolderFile(Plugin plugin, String... children) {
-        return getDatafolderFile(plugin, Arrays.asList(children));
-    }
-
-    public static File getDatafolderFile(Plugin plugin, List<String> children) {
-        StringBuilder childrenPath = new StringBuilder();
-        for (String child : children) {
-            if (child == null) { return null; }
-            childrenPath.append(child).append(File.separatorChar);
-        }
-        return new File(plugin.getDataFolder(), childrenPath.toString());
-    }
-
-    /**
-     * A more user friendly version of {@link #getRecursiveFiles(File, List, boolean)} as you do not  need to create
+     * A more user friendly version of {@link #getRecursiveFiles(List, boolean, File)} as you do not  need to create
      * your own list
      * <p>
      * This method uses a {@link LinkedList} as its list as it provides constant time adding. If random access is needed
-     * for the files, it is recommended to use the method {@link #getRecursiveFiles(File, List, boolean)} with an {@link
+     * for the files, it is recommended to use the method {@link #getRecursiveFiles(List, boolean, File)} with an {@link
      * ArrayList}
      *
-     * @param file
-     *     The file to start at, if this is not a directory it will be the only element
      * @param excludeHyphenPrefix
      *     If any files with the hyphen (-) should be excluded from the list
+     * @param file
+     *     The file to start at, if this is not a folder it will be the only element
      *
-     * @return A list of all non-directory files in the given file.
+     * @return A list of all non-folder files in the given file.
      */
-    public static List<File> getRecursiveFiles(File file, boolean excludeHyphenPrefix) {
+    @NotNull
+    public static List<File> getRecursiveFiles(boolean excludeHyphenPrefix, @NotNull File file) {
         List<File> files = new LinkedList<>();
-        getRecursiveFiles(file, files, excludeHyphenPrefix);
+        getRecursiveFiles(files, excludeHyphenPrefix, file);
         return files;
     }
 
-    public static List<File> getRecursiveFiles(boolean excludeHyphenPrefix, Plugin plugin, String... children) {
-        return getRecursiveFiles(getDatafolderFile(plugin, children), excludeHyphenPrefix);
-    }
-
     /**
-     * @param file
-     *     The file to start at, if this is not a directory it will be the only element
      * @param excludeHyphenPrefix
      *     If any files with the hyphen (-) should be excluded from the list
+     * @param file
+     *     The file to start at, if this is not a folder it will be the only element
      */
-    private static void getRecursiveFiles(File file, List<File> files, boolean excludeHyphenPrefix) {
+    private static void getRecursiveFiles(@NotNull List<File> files, boolean excludeHyphenPrefix, @NotNull File file) {
         if (!file.canRead()) {
-            logger.info("Did not read '{}', as we have no reading permission", file.getPath());
+            logger.warn("Require reading permissions to read '{}'", file.getPath());
             return;
         }
         else if (excludeHyphenPrefix && file.getName().startsWith("-")) {
             return;
         }
         if (file.isDirectory()) {
-            logger.trace("file is a directory '{}'", file.getPath());
+            logger.trace("file is a folder '{}'", file.getPath());
             File[] subFiles = file.listFiles();
             if (subFiles == null) {
-                logger.error("Failed to get a list of files in directory '{}'", file.getPath());
+                logger.error("Failed to get a list of files in folder '{}'", file.getPath());
                 return;
             }
             for (File subFile : subFiles) {
-                getRecursiveFiles(subFile, files, excludeHyphenPrefix);
+                getRecursiveFiles(files, excludeHyphenPrefix, subFile);
             }
         }
         else if (file.isFile()) {
@@ -322,63 +383,53 @@ public final class FileUtils {
         }
     }
 
-    /**
-     * @param internalPath
-     *     The path to the file within the jar
-     *
-     * @return The file at {@code internalPath} or {@code null} if the file cannot be read or not found
-     */
-    public static String getInternalFileContent(final String internalPath) {
-        Preconditions.checkArgument(internalPath != null, "The internal path cannot be null!");
 
-        final InputStream is = getInternalFileStream(internalPath);
-        logger.trace("is: " + is);
-        String content;
+    /**
+     * Get a file from within the jar.
+     * <p>
+     * NOTE: If the file cannot be found (ie this returns null) but you're 100% sure the path is correct (see logged
+     * path) then you need to shade this class into your jar. See
+     * <a href="https://github.com/kh498/BukkitUtil#install">github
+     * repo</a> for more information
+     *
+     * @param absPath
+     *     The absolute path to the file within the jar
+     *
+     * @return The file at {@code absPath} as an InputStream or {@code null} if the file is not found
+     */
+    @Nullable
+    public static InputStream getInternalFileStream(@NotNull String... absPath) {
+        String path = "/" + String.join("/", absPath);
+        logger.debug("path: " + path);
+        return FileUtils.class.getResourceAsStream(path);
+    }
+
+
+    /**
+     * Read a file within the jar to a string
+     *
+     * @param absPath
+     *     The absolute path to the file within the jar
+     *
+     * @return The UTF-8 String content of the file at {@code absPath} or {@code null} if the file cannot be read or
+     * not found
+     */
+    @Nullable
+    public static String readInternalFile(@NotNull String... absPath) {
+
+        InputStream is = getInternalFileStream(absPath);
+        if (is == null) {
+            logger.debug("Failed to find the internal file");
+            return null;
+        }
+        String content = null;
         try {
             content = IOUtils.toString(is, StandardCharsets.UTF_8);
-        } catch (final IOException | NullPointerException e) {
-            logger.debug("Failed to get internal file due to a " + e.getClass().getSimpleName());
-            if (logger.isTraceEnabled()) {
-                e.printStackTrace();
-            }
-            content = null;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         IOUtils.closeQuietly(is);
         return content;
     }
 
-    /**
-     * @param internalPath
-     *     The path to the file within the jar
-     *
-     * @return The file at {@code internalPath} as an InputStream or {@code null} if the file is not found
-     */
-    public static InputStream getInternalFileStream(final String internalPath) {
-        Preconditions.checkArgument(internalPath != null, "The internal path cannot be null!");
-
-        //a '/' marks the path as absolute, must be present to search for files from the root of the jar
-        final String prefix = internalPath.charAt(0) != '/' ? "/" : "";
-        final String absIntPath = prefix + internalPath;
-
-        logger.trace("absIntPath: " + absIntPath);
-
-        return FileUtils.class.getResourceAsStream(absIntPath);
-    }
-
-    /**
-     * Create a folder with in a plugin's data folder.
-     *
-     * @return If there were any errors when creating the folder(s)
-     */
-    public static boolean makeFolder(Plugin plugin, String... children) {
-        File convFolder = FileUtils.getDatafolderFile(plugin, children);
-        if (!convFolder.exists()) {
-            return convFolder.mkdirs();
-        }
-        else if (!convFolder.isDirectory()) {
-            logger.error("File at '{}' is not a directory! No conversations will be loaded.", convFolder.getPath());
-            return false;
-        }
-        return true;
-    }
 }

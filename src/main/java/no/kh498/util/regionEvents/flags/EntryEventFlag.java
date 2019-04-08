@@ -9,6 +9,7 @@ import no.kh498.util.regionEvents.events.RegionEnterEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class EntryEventFlag extends RegionMoveEventFlag {
 
 
     @Override
-    public boolean testNewRegion(final Set<ProtectedRegion> entered, final Set<ProtectedRegion> exited) {
+    public boolean testNewRegion(@NotNull final Set<ProtectedRegion> entered, final Set<ProtectedRegion> exited) {
         return entered.size() > 0;
     }
 
@@ -50,6 +51,7 @@ public class EntryEventFlag extends RegionMoveEventFlag {
         Factory() {
         }
 
+        @NotNull
         @Override
         public EntryEventFlag create(final Session session) {
             return new EntryEventFlag(session);

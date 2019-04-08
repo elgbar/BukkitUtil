@@ -7,6 +7,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,16 +107,16 @@ public class Tile implements Comparable<Tile> {
      *
      * @return The squared distance between {@code this} tile and {@code t} tile
      */
-    int distanceSquared(final Tile t) {
+    int distanceSquared(@NotNull final Tile t) {
         return square(x - t.x) + square(y - t.y) + square(z - t.z);
     }
 
-    void calcAll(final Tile goal, final World w) {
+    void calcAll(@NotNull final Tile goal, final World w) {
         calcH(goal);
         calcG(w);
     }
 
-    private void calcH(final Tile goal) {
+    private void calcH(@NotNull final Tile goal) {
         h = distanceSquared(goal);
     }
 
@@ -157,6 +159,7 @@ public class Tile implements Comparable<Tile> {
         return x == tile.x && y == tile.y && z == tile.z;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Tile{" + "coord=" + x + "," + y + "," + z + ", h=" + h + ", g=" + g + ", weight=" + getWeight() + '}';
@@ -167,11 +170,11 @@ public class Tile implements Comparable<Tile> {
     }
 
     @Override
-    public int compareTo(final Tile o) {
+    public int compareTo(@NotNull final Tile o) {
         return (int) Math.signum((h + g) - (o.h + o.g));
     }
 
-    private float materialPenalty(final World w) {
+    private float materialPenalty(@Nullable final World w) {
         if (multiplier != -1) {
             return multiplier;
         }

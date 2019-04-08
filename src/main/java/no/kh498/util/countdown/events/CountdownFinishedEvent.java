@@ -3,6 +3,7 @@ package no.kh498.util.countdown.events;
 import no.kh498.util.countdown.api.Countdown;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Elg
@@ -17,6 +18,7 @@ public final class CountdownFinishedEvent extends Event {
         this.countdown = countdown;
     }
 
+    @NotNull
     @SuppressWarnings("unused")
     public static HandlerList getHandlerList() {
         return handlers;
@@ -24,6 +26,7 @@ public final class CountdownFinishedEvent extends Event {
 
     public Countdown getCountdown() {return countdown;}
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +35,9 @@ public abstract class Countdown implements Runnable {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
     private static final Logger LOG = LoggerFactory.getLogger(Countdown.class);
+    @Nullable
     private final Plugin plugin;
+    @Nullable
     private final TimeFormat timeFormat;
     private String text;
     private long time;
@@ -52,7 +56,8 @@ public abstract class Countdown implements Runnable {
      * @param timeFormat
      *     The way time is displayed
      */
-    public Countdown(final Plugin plugin, final String text, final long timeMS, final TimeFormat timeFormat) {
+    public Countdown(@Nullable final Plugin plugin, final String text, final long timeMS,
+                     @Nullable final TimeFormat timeFormat) {
         Preconditions.checkArgument(text != null, "The text cannot be null");
         Preconditions.checkArgument(plugin != null, "The plugin cannot be null");
         Preconditions.checkArgument(timeFormat != null, "The timeFormat cannot be null");
@@ -90,8 +95,8 @@ public abstract class Countdown implements Runnable {
      * @param force
      *     if this messages should be forced to replace another interrupt
      */
-    public static void tryInterrupt(final Countdown c, final Player player, final String interruptText, final long time,
-                                    final boolean force) {
+    public static void tryInterrupt(@Nullable final Countdown c, final Player player,
+                                    @NotNull final String interruptText, final long time, final boolean force) {
         if (c != null && c.running) {
             c.interrupt(player, interruptText, time, force);
         }
@@ -169,6 +174,7 @@ public abstract class Countdown implements Runnable {
     /**
      * @return The players who should see the countdown.
      */
+    @Nullable
     public abstract Collection<? extends Player> getPlayers();
 
     /**
@@ -205,7 +211,8 @@ public abstract class Countdown implements Runnable {
      * @deprecated Use the static method to support the countdown being null
      */
     @Deprecated
-    public void tryInterrupt(final Player player, final String interruptText, final long time, final boolean force) {
+    public void tryInterrupt(final Player player, @NotNull final String interruptText, final long time,
+                             final boolean force) {
         if (running) {
             interrupt(player, interruptText, time, force);
         }
@@ -254,6 +261,7 @@ public abstract class Countdown implements Runnable {
         this.time = time;
     }
 
+    @Nullable
     private Plugin getPlugin() {
         return plugin;
     }
@@ -265,7 +273,7 @@ public abstract class Countdown implements Runnable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) { return true; }
         if (o == null || getClass() != o.getClass()) { return false; }
         Countdown countdown = (Countdown) o;

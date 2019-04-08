@@ -2,6 +2,7 @@ package no.kh498.util.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A command that hosts other commands, it does nothing on it's own and will call
@@ -15,7 +16,7 @@ public abstract class HostCommand extends SubCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, Command command, String label, @NotNull String[] args) {
         return onSubCommand(sender, command, label, args);
     }
 }

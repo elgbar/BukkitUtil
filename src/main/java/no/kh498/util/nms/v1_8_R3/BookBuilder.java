@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import net.minecraft.server.v1_8_R3.*;
 import no.kh498.util.book.bookbuilder.IBookBuilder;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class BookBuilder implements IBookBuilder {
         pages = new ArrayList<>();
     }
 
+    @NotNull
     @Override
     public IBookBuilder setTitle(String title) {
         Preconditions.checkNotNull(title, "The title cannot be null");
@@ -35,6 +37,7 @@ public class BookBuilder implements IBookBuilder {
         return title;
     }
 
+    @NotNull
     @Override
     public IBookBuilder setAuthor(String author) {
         Preconditions.checkNotNull(author, "The title cannot be null");
@@ -47,12 +50,14 @@ public class BookBuilder implements IBookBuilder {
         return author;
     }
 
+    @NotNull
     @Override
     public IBookBuilder addPage(String page) {
         pages.add(page);
         return this;
     }
 
+    @NotNull
     @Override
     public org.bukkit.inventory.ItemStack build() {
         ItemStack book = new ItemStack(Item.getById(387));

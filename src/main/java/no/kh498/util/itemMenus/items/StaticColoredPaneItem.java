@@ -4,6 +4,7 @@ import no.kh498.util.itemMenus.api.items.StaticMenuItem;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Static version of {@link ColoredPaneItem}
@@ -19,7 +20,7 @@ public final class StaticColoredPaneItem extends StaticMenuItem {
      * @param color
      *     Color of the item
      */
-    public StaticColoredPaneItem(final DyeColor color) {
+    public StaticColoredPaneItem(@NotNull final DyeColor color) {
         this(" ", color);
     }
 

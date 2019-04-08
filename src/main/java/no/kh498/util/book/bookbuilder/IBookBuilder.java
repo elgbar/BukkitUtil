@@ -2,6 +2,8 @@ package no.kh498.util.book.bookbuilder;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface IBookBuilder {
 
@@ -19,6 +21,7 @@ public interface IBookBuilder {
      * @throws NullPointerException
      *     if the title is {@code null}
      */
+    @NotNull
     IBookBuilder setTitle(String title);
 
     /**
@@ -32,7 +35,8 @@ public interface IBookBuilder {
      * @param player
      *     The author
      */
-    default IBookBuilder setAuthor(OfflinePlayer player) {
+    @NotNull
+    default IBookBuilder setAuthor(@Nullable OfflinePlayer player) {
         return setAuthor(player == null ? "" : player.getName());
     }
 
@@ -45,6 +49,7 @@ public interface IBookBuilder {
      * @throws NullPointerException
      *     if the author is {@code null}
      */
+    @NotNull
     IBookBuilder setAuthor(String author);
 
     /**
@@ -53,13 +58,15 @@ public interface IBookBuilder {
      * @param page
      *     Page text to add
      */
+    @NotNull
     IBookBuilder addPage(String page);
 
     /**
      * @param pb
      *     The page builder to build a page from
      */
-    default IBookBuilder addPage(PageBuilder pb) {
+    @NotNull
+    default IBookBuilder addPage(@NotNull PageBuilder pb) {
         pb.build();
         return this;
     }
@@ -67,8 +74,10 @@ public interface IBookBuilder {
     /**
      * Build the book into an itemstack
      */
+    @NotNull
     ItemStack build();
 
+    @NotNull
     default PageBuilder createPageBuilder() {
         return new PageBuilder(this);
     }

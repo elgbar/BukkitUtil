@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +41,7 @@ public abstract class SubCommand implements CommandExecutor {
      *
      * @return A collection of strings this subcommand is known for
      */
+    @NotNull
     public abstract List<String> getAliases();
 
     void verifySubcommands() {
@@ -77,7 +80,8 @@ public abstract class SubCommand implements CommandExecutor {
     /**
      * @return A subcommand of this subcommand from one of it's aliases
      */
-    public SubCommand getSubFromAlias(String alias) {
+    @Nullable
+    public SubCommand getSubFromAlias(@Nullable String alias) {
         if (alias == null || getSubCommands() == null) {
             return null;
         }
@@ -119,7 +123,7 @@ public abstract class SubCommand implements CommandExecutor {
      *
      * @return if the command was handled
      */
-    public boolean onSubCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onSubCommand(@NotNull CommandSender sender, Command command, String label, @NotNull String[] args) {
 
         if (getSubCommands() == null || getSubCommands().size() == 0) {
             return false;

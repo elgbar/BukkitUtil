@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +49,8 @@ import java.util.*;
 public class InterfaceImplManager<I> {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(InterfaceImplManager.class);
+    public static Logger logger = LoggerFactory.getLogger(InterfaceImplManager.class);
+    @NotNull
     private final Class<I> interfaceClass;
 
     private Map<String, Class<? extends I>> parts;
@@ -57,7 +60,7 @@ public class InterfaceImplManager<I> {
      * @throws IllegalArgumentException
      *     If the {@code clazz} is not an interface
      */
-    public InterfaceImplManager(Class<I> clazz) {
+    public InterfaceImplManager(@NotNull Class<I> clazz) {
         Preconditions.checkArgument(Modifier.isInterface(clazz.getModifiers()), "The type class must be an interface");
         interfaceClass = clazz;
         parts = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -68,7 +71,7 @@ public class InterfaceImplManager<I> {
      * <p>
      * Scan classes in this path and look for classes implementing {@link I}
      */
-    public void registerFromPackage(Plugin plugin, String packagePath) {
+    public void registerFromPackage(@NotNull Plugin plugin, String packagePath) {
         try (ScanResult scanResult = new ClassGraph().addClassLoader(plugin.getClass().getClassLoader())
                                                      .whitelistPackages(packagePath).scan()) {
             List<Class<I>> subTypes =
@@ -99,7 +102,7 @@ public class InterfaceImplManager<I> {
      *
      * @return if the class was registered or not
      */
-    public boolean registerClass(Class<? extends I> clazz) {
+    public boolean registerClass(@Nullable Class<? extends I> clazz) {
         if (clazz == null) {
             logger.error("Cannot register a null class");
             return false;
@@ -132,14 +135,15 @@ public class InterfaceImplManager<I> {
      *
      * @return The class corresponding to the given {@code clazzName}
      */
-    public I getInstance(String simpleName) {
+    @Nullable
+    public I getInstance(@Nullable String simpleName) {
         if (simpleName == null || !parts.containsKey(simpleName)) {
             return null;
         }
 
         try {
             return parts.get(simpleName).getConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (@NotNull InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException("Failed to create a new instance of '" + simpleName +
                                        "'. The constructor must not contain any arguments and must be public");
         }
@@ -148,10 +152,12 @@ public class InterfaceImplManager<I> {
     /**
      * @return A copy of the internal map
      */
+    @NotNull
     public Map<String, Class<? extends I>> getImplementations() {
         return Collections.unmodifiableMap(parts);
     }
 
+    @NotNull
     public Class<I> getInterfaceClass() {
         return interfaceClass;
     }

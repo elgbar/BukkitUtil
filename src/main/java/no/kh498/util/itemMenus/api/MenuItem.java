@@ -4,6 +4,7 @@ import no.kh498.util.itemMenus.events.ItemClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +30,7 @@ public class MenuItem {
         this.lore = lore;
     }
 
-    public void updateItem(final MenuItem menuItem) {
+    public void updateItem(@NotNull final MenuItem menuItem) {
         icon = menuItem.icon;
         displayName = menuItem.displayName;
         lore = menuItem.lore;
@@ -48,6 +49,7 @@ public class MenuItem {
      *
      * @return The ItemStack.
      */
+    @NotNull
     public static ItemStack setNameAndLore(final ItemStack itemStack, final String displayName,
                                            final List<String> lore) {
         final ItemMeta meta = itemStack.getItemMeta();

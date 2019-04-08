@@ -2,15 +2,17 @@ package no.kh498.util;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +22,7 @@ import java.util.Map;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class ConfigUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
+    public static Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
 
     /**
      * Load all default files from the plugin's jar and place them in the datafolder.
@@ -29,32 +31,27 @@ public class ConfigUtil {
      * @param plugin
      *     The plugin to save from
      * @param resources
-     *     The absolute path in plugins jar
+     *     The absolute path in plugin jar
      */
-    public static void saveDefaultResources(Plugin plugin, String... resources) {
+    public static void saveDefaultResources(@NotNull Plugin plugin, @NotNull String... resources) throws IOException {
         for (String resource : resources) {
-            try {
-                plugin.saveResource(resource, false);
-            } catch (IllegalArgumentException ex) {
-                File outFile = new File(plugin.getDataFolder(), resource);
+            if (resource == null) {
+                logger.error("One of the resource given was null!");
+                continue;
+            }
+            else if (resource.isEmpty()) {
+                logger.warn("Cannot save a resource with an empty path");
+                continue;
+            }
+            String[] path = resource.split("[/\\\\]");
+            if (FileUtils.getDatafolderFile(plugin, path).exists()) {
+                continue;
+            }
+            File outFile = FileUtils.createDatafolderFile(plugin, path);
 
-                if (outFile.exists()) {
-                    continue;
-                }
-
-                int lastIndex = resource.lastIndexOf(47);
-                File outDir = new File(plugin.getDataFolder(), resource.substring(0, lastIndex >= 0 ? lastIndex : 0));
-                if (!outDir.exists()) {
-                    //noinspection ResultOfMethodCallIgnored
-                    outDir.mkdirs();
-                }
-                try {
-                    //noinspection ResultOfMethodCallIgnored
-                    outFile.createNewFile();
-                } catch (IOException e) {
-                    logger.error("Failed to create empty file {} in {}", resource, outDir);
-                    e.printStackTrace();
-                }
+            InputStream is = FileUtils.getInternalFileStream(path);
+            if (is != null) {
+                org.apache.commons.io.FileUtils.copyInputStreamToFile(is, outFile);
             }
         }
     }
@@ -63,14 +60,16 @@ public class ConfigUtil {
     /**
      * @return A FileConfiguration from the relative plugin path or {@code null} if invalid yaml or no file found found
      */
-    public static FileConfiguration getYaml(Plugin plugin, String... filename) {
+    @Nullable
+    public static FileConfiguration getYaml(@NotNull Plugin plugin, String... filename) {
         return getYaml(FileUtils.getDatafolderFile(plugin, filename));
     }
 
     /**
      * @return A FileConfiguration from the given file or {@code null} if invalid yaml or no file found found
      */
-    public static FileConfiguration getYaml(File file) {
+    @Nullable
+    public static FileConfiguration getYaml(@NotNull File file) {
         YamlConfiguration conf = new YamlConfiguration();
         try {
             conf.load(file);
@@ -87,11 +86,11 @@ public class ConfigUtil {
     /**
      * Save a FileConfiguration to the datafolder of a plugin
      */
-    public static void saveYaml(Plugin plugin, FileConfiguration conf, String... savePath) {
+    public static void saveYaml(@NotNull Plugin plugin, FileConfiguration conf, String... savePath) {
         saveYaml(conf, FileUtils.getDatafolderFile(plugin, savePath));
     }
 
-    public static void saveYaml(FileConfiguration conf, File file) {
+    public static void saveYaml(@Nullable FileConfiguration conf, @Nullable File file) {
         if (file == null || conf == null) {
             logger.error("Failed to save Yaml. Got invalid parameters: conf = '{}' file = = '{}'", conf, file);
             return;
@@ -100,7 +99,7 @@ public class ConfigUtil {
             conf.save(file);
         } catch (IOException e) {
             logger.error("Failed to save file '{}' to '{}'", file.getName(), file.getPath());
-            if (logger.isDebugEnabled()) { e.printStackTrace(); }
+            e.printStackTrace();
         }
     }
 
@@ -112,15 +111,24 @@ public class ConfigUtil {
      *
      * @return A map of all nodes at the given path, if an error occurred an empty map will be returned
      */
-    public static Map<String, Object> getMapSection(ConfigurationSection conf, String path) {
+    @NotNull
+    public static Map<String, Object> getMapSection(@NotNull ConfigurationSection conf, @NotNull String path) {
         return getMapSection(conf.get(path));
     }
 
-    public static Map<String, Object> getMapSection(Object obj) {
+    /**
+     * @param obj
+     *     The object to get the map from. NOTE: this must be a {@link ConfigurationSection} or a
+     *     {@link Map}{@code <String, Object>} in order to return something else than an empty map
+     *
+     * @return A map of all nodes at the given path, if an error occurred an empty map will be returned
+     */
+    @NotNull
+    public static Map<String, Object> getMapSection(@Nullable Object obj) {
         if (obj == null) { return new HashMap<>(); }
         try {
-            MemorySection memProp = (MemorySection) obj;
-            return memProp.getValues(false);
+            ConfigurationSection section = (ConfigurationSection) obj;
+            return section.getValues(true);
         } catch (ClassCastException e1) {
             try {
                 //noinspection unchecked
@@ -131,7 +139,8 @@ public class ConfigUtil {
         }
     }
 
-    public static ConfigurationSection getSection(Object obj) {
+    @NotNull
+    public static ConfigurationSection getSection(@NotNull Object obj) {
         if (obj instanceof ConfigurationSection) {
             return (ConfigurationSection) obj;
         }
@@ -141,7 +150,8 @@ public class ConfigUtil {
     /**
      * Convert a map into a configuration section
      */
-    public static ConfigurationSection getSectionFromMap(Map<String, Object> map) {
+    @NotNull
+    public static ConfigurationSection getSectionFromMap(@NotNull Map<String, Object> map) {
         YamlConfiguration conf = new YamlConfiguration();
         map.forEach((path, obj) -> {
             if (obj instanceof Map) {
@@ -155,11 +165,12 @@ public class ConfigUtil {
         return conf;
     }
 
-    public static boolean isEmpty(ConfigurationSection conf) {
+    public static boolean isEmpty(@Nullable ConfigurationSection conf) {
         return conf == null || conf.getKeys(false).isEmpty();
     }
 
-    public static FileConfiguration toFileConf(ConfigurationSection conf) {
+    @NotNull
+    public static FileConfiguration toFileConf(@NotNull ConfigurationSection conf) {
         FileConfiguration fileConf = new YamlConfiguration();
         for (Map.Entry<String, Object> entry : getMapSection(conf, "").entrySet()) {
             fileConf.set(entry.getKey(), entry.getValue());

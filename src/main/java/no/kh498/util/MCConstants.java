@@ -42,6 +42,18 @@ public final class MCConstants {
     }
 
     /**
+     * Convert ticks to milliseconds
+     *
+     * @param ticks
+     *     the tick to convert
+     *
+     * @return the input converted to milliseconds
+     */
+    public static long ticksToMS(final long ticks) {
+        return ticks * TICK_TO_MILLIS_FACTOR;
+    }
+
+    /**
      * Convert milliseconds to ticks
      *
      * @param ms
@@ -49,7 +61,19 @@ public final class MCConstants {
      *
      * @return the input converted to ticks
      */
-    public static long msToTicks(final int ms) {
+    public static int msToTicks(final int ms) {
+        return ms / TICK_TO_MILLIS_FACTOR;
+    }
+
+    /**
+     * Convert milliseconds to ticks
+     *
+     * @param ms
+     *     the milliseconds to convert
+     *
+     * @return the input converted to ticks
+     */
+    public static long msToTicks(final long ms) {
         return ms / TICK_TO_MILLIS_FACTOR;
     }
 }

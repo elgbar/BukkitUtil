@@ -1,5 +1,7 @@
 package no.kh498.util.countdown.api.timeFormat;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * {@inheritDoc}
  *
@@ -22,6 +24,7 @@ public class FormatHHMMSS implements TimeFormat {
         secondsStr = seconds;
     }
 
+    @NotNull
     @Override
     public String formatTime(final long timeLeft) {
         final long time = timeLeft / 1000L; //time in seconds
@@ -45,7 +48,7 @@ public class FormatHHMMSS implements TimeFormat {
         return sb.toString();
     }
 
-    private static void ensureDoubleDig(final StringBuilder sb, final long toCheck) {
+    private static void ensureDoubleDig(@NotNull final StringBuilder sb, final long toCheck) {
         if (toCheck < 10) {
             sb.append("0");
         }

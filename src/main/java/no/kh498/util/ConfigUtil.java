@@ -69,6 +69,7 @@ public class ConfigUtil {
     /**
      * @return A FileConfiguration from the given file or {@code null} if invalid yaml or no file found found
      */
+    @Nullable
     public static FileConfiguration getYaml(@NotNull File file) {
         YamlConfiguration conf = new YamlConfiguration();
         try {
@@ -111,12 +112,12 @@ public class ConfigUtil {
      *
      * @return A map of all nodes at the given path, if an error occurred an empty map will be returned
      */
-    @Nullable
-    public static Map<String, Object> getMapSection(ConfigurationSection conf, String path) {
+    @NotNull
+    public static Map<String, Object> getMapSection(@NotNull ConfigurationSection conf, @NotNull String path) {
         return getMapSection(conf.get(path));
     }
 
-    @Nullable
+    @NotNull
     public static Map<String, Object> getMapSection(@Nullable Object obj) {
         if (obj == null) { return new HashMap<>(); }
         try {
@@ -133,7 +134,7 @@ public class ConfigUtil {
     }
 
     @NotNull
-    public static ConfigurationSection getSection(Object obj) {
+    public static ConfigurationSection getSection(@NotNull Object obj) {
         if (obj instanceof ConfigurationSection) {
             return (ConfigurationSection) obj;
         }
@@ -144,7 +145,7 @@ public class ConfigUtil {
      * Convert a map into a configuration section
      */
     @NotNull
-    public static ConfigurationSection getSectionFromMap(Map<String, Object> map) {
+    public static ConfigurationSection getSectionFromMap(@NotNull Map<String, Object> map) {
         YamlConfiguration conf = new YamlConfiguration();
         map.forEach((path, obj) -> {
             if (obj instanceof Map) {

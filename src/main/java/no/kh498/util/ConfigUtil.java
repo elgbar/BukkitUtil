@@ -2,7 +2,6 @@ package no.kh498.util;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -117,12 +116,19 @@ public class ConfigUtil {
         return getMapSection(conf.get(path));
     }
 
+    /**
+     * @param obj
+     *     The object to get the map from. NOTE: this must be a {@link ConfigurationSection} or a
+     *     {@link Map}{@code <String, Object>} in order to return something else than an empty map
+     *
+     * @return A map of all nodes at the given path, if an error occurred an empty map will be returned
+     */
     @NotNull
     public static Map<String, Object> getMapSection(@Nullable Object obj) {
         if (obj == null) { return new HashMap<>(); }
         try {
-            MemorySection memProp = (MemorySection) obj;
-            return memProp.getValues(true);
+            ConfigurationSection section = (ConfigurationSection) obj;
+            return section.getValues(true);
         } catch (ClassCastException e1) {
             try {
                 //noinspection unchecked

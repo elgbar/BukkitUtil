@@ -44,7 +44,7 @@ public class ChatUtil {
 
     /**
      * @param str
-     *     The String to colorify
+     *     The String to colorfy
      *
      * @return Add color to string that is using the color code '&amp;'
      */

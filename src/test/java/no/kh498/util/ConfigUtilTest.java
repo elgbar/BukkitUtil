@@ -26,7 +26,7 @@ public class ConfigUtilTest {
     private static final String TEST_FILE_WITH_DIR_PATH = "folde1/testfile.txt";
 
 
-    private static final String NON_EXISING_TEST_FILE_WITH_DIR_PATH = "folde2/testfile2.txt";
+    private static final String NON_EXISTING_TEST_FILE_WITH_DIR_PATH = "folde2/testfile2.txt";
 
     @Rule
     public TemporaryFolder dataFolder = new TemporaryFolder();
@@ -73,8 +73,8 @@ public class ConfigUtilTest {
 
     @Test
     public void saveDefaultResourcesNotExisting() throws IOException {
-        ConfigUtil.saveDefaultResources(plugin, NON_EXISING_TEST_FILE_WITH_DIR_PATH);
-        File saved = FileUtils.getDatafolderFile(plugin, NON_EXISING_TEST_FILE_WITH_DIR_PATH);
+        ConfigUtil.saveDefaultResources(plugin, NON_EXISTING_TEST_FILE_WITH_DIR_PATH);
+        File saved = FileUtils.getDatafolderFile(plugin, NON_EXISTING_TEST_FILE_WITH_DIR_PATH);
         Assert.assertTrue(saved.isFile());
 
         String content = org.apache.commons.io.FileUtils.readFileToString(saved);
@@ -119,7 +119,7 @@ public class ConfigUtilTest {
     @Test
     public void saveDefaultResourcesSavesMultipleFiles() throws IOException {
         String[] filesPaths =
-            {TEST_FILE_WITH_DIR_PATH, TEST_FILE_WITHOUT_DIR_PATH, NON_EXISING_TEST_FILE_WITH_DIR_PATH};
+            {TEST_FILE_WITH_DIR_PATH, TEST_FILE_WITHOUT_DIR_PATH, NON_EXISTING_TEST_FILE_WITH_DIR_PATH};
 
         List<File> expectedFiles = new ArrayList<>();
         for (String path : filesPaths) {

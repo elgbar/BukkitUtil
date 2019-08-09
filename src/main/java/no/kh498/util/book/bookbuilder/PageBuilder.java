@@ -9,9 +9,9 @@ public class PageBuilder {
 
     String page;
     boolean first;
-    private IBookBuilder book;
+    private BookBuilder book;
 
-    PageBuilder(IBookBuilder book) {
+    PageBuilder(BookBuilder book) {
         this.book = book;
         first = true;
         page = "{text:\"\", extra:[";
@@ -27,7 +27,7 @@ public class PageBuilder {
 
     public TextBuilder add(String text) { return new TextBuilder(this).setText(text); }
 
-    public IBookBuilder build() {
+    public BookBuilder build() {
         book.addPage(page += "]}");
         return book;
     }

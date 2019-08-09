@@ -487,8 +487,21 @@ public final class FileUtils {
      */
     @Nullable
     public static String readInternalFile(@NotNull String... absPath) {
+        return readInternalFile(FileUtils.class, absPath);
+    }
 
-        InputStream is = getInternalFileStream(absPath);
+    /**
+     * Read a file within the jar to a string
+     *
+     * @param absPath
+     *     The absolute path to the file within the jar
+     *
+     * @return The UTF-8 String content of the file at {@code absPath} or {@code null} if the file cannot be read or
+     * not found
+     */
+    @Nullable
+    public static String readInternalFile(@NotNull Class<?> resourceClazz, @NotNull String... absPath) {
+        InputStream is = getInternalFileStream(resourceClazz, absPath);
         if (is == null) {
             logger.debug("Failed to find the internal file");
             return null;

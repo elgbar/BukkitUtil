@@ -151,7 +151,7 @@ public class FileUtilsTest {
 
         Assert.assertFalse(file.isDirectory());
 
-        assertTrue(FileUtils.createFolders(plugin, "folder"));
+        assertTrue(FileUtils.createFolder(plugin, "folder"));
         Assert.assertTrue(file.isDirectory());
     }
 
@@ -160,7 +160,7 @@ public class FileUtilsTest {
         File file = FileUtils.createDatafolderFile(plugin, "folder");
 
         Assert.assertTrue(file.isFile());
-        Assert.assertFalse(FileUtils.createFolders(plugin, "folder"));
+        Assert.assertFalse(FileUtils.createFolder(plugin, "folder"));
         Assert.assertTrue(file.isFile());
     }
 

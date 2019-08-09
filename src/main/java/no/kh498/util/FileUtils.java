@@ -81,11 +81,11 @@ public final class FileUtils {
 
 
     /**
-     * Create folders with in a plugin's data folder.
+     * Create the file at the given path as a folder (including all its parent folders)
      *
      * @return {@code true} if the folders were successfully created
      */
-    public static boolean createFolders(@NotNull Plugin plugin, @NotNull String... children) {
+    public static boolean createFolder(@NotNull Plugin plugin, @NotNull String... children) {
         return createFolderSafely(FileUtils.getDatafolderFile(plugin, children));
     }
 

@@ -138,15 +138,17 @@ public final class FileUtils {
      * @return {@code true} if the content was successfully written to file.
      */
     public static boolean write(@NotNull String string, @NotNull File file) throws IOException {
-        if (file.isDirectory()) {
-            logger.error("The given file is a folder '{}'", file.getPath());
-            return false;
-        }
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                logger.error("The given file is a folder '{}'", file.getPath());
+                return false;
+            }
 
-        if (!file.canWrite()) {
-            logger.error("Cannot write the file as the current user does not have reading permission'{}'",
-                         file.getPath());
-            return false;
+            if (!file.canWrite()) {
+                logger.error("Cannot write the file as the current user does not have reading permission '{}'",
+                             file.getPath());
+                return false;
+            }
         }
 
         try (BufferedWriter wtr = new BufferedWriter(

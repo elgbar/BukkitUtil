@@ -230,6 +230,16 @@ public class FileUtilsTest {
         assertFalse(FileUtils.write("whatever", plugin));
     }
 
+    @Test
+    public void writeSucceedsWhenWritingToNonExistingFile() throws IOException {
+        String outName = "file.txt";
+        String outContent = "test123123";
+        //get pointer to the outfile (does not exists yet)
+        File outFile = FileUtils.getDatafolderFile(plugin, outName);
+        //write the internal file to the outfile (then created)
+        assertTrue(FileUtils.write(outContent, outFile));
+        assertEquals(outContent, FileUtils.read(outFile));
+    }
     //////////
     // save //
     //////////

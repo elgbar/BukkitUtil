@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -32,8 +33,58 @@ public class ConfigUtil {
      *     The plugin to save from
      * @param resources
      *     The absolute path in plugin jar
+     *
+     * @throws IOException
+     *     If {@link org.apache.commons.io.FileUtils#copyInputStreamToFile(InputStream, File) apache's
+     *     copyInputStreamToFile} does
+     * @throws IOException
+     *     if {@link FileUtils#createDatafolderFile(Plugin, String...)} does
      */
     public static void saveDefaultResources(@NotNull Plugin plugin, @NotNull String... resources) throws IOException {
+        saveDefaultResources(plugin, true, resources);
+    }
+
+    /**
+     * Load all default files from the plugin's jar and place them in the datafolder.
+     *
+     * @param plugin
+     *     The plugin to save from
+     * @param create
+     *     If the resource does not exist in the jar an empty file should be created
+     * @param resources
+     *     The absolute path in plugin jar
+     *
+     * @throws FileNotFoundException
+     *     If the file is not found (and create is false)
+     * @throws IOException
+     *     If {@link org.apache.commons.io.FileUtils#copyInputStreamToFile(InputStream, File) apache's
+     *     copyInputStreamToFile} does
+     * @throws IOException
+     *     if {@link FileUtils#createDatafolderFile(Plugin, String...)} does
+     */
+    public static void saveDefaultResources(@NotNull Plugin plugin, boolean create, @NotNull String... resources)
+    throws IOException {saveDefaultResources(plugin, plugin.getClass(), create, resources);}
+
+    /**
+     * Load all default files from the plugin's jar and place them in the datafolder.
+     *
+     * @param plugin
+     *     The plugin to save from
+     * @param resources
+     *     The absolute path in plugin jar
+     * @param create
+     *     If the resource does not exist in the jar an empty file should be created
+     *
+     * @throws FileNotFoundException
+     *     If the file is not found (and create is false)
+     * @throws IOException
+     *     If {@link org.apache.commons.io.FileUtils#copyInputStreamToFile(InputStream, File) apache's
+     *     copyInputStreamToFile} does
+     * @throws IOException
+     *     if {@link FileUtils#createDatafolderFile(Plugin, String...)} does
+     */
+    public static void saveDefaultResources(@NotNull Plugin plugin, @NotNull Class<?> resourceJar, boolean create,
+                                            @NotNull String... resources) throws IOException {
         for (String resource : resources) {
             if (resource == null) {
                 logger.error("One of the resource given was null!");
@@ -43,15 +94,24 @@ public class ConfigUtil {
                 logger.warn("Cannot save a resource with an empty path");
                 continue;
             }
+            //split the given string by '/' and '\'
             String[] path = resource.split("[/\\\\]");
             if (FileUtils.getDatafolderFile(plugin, path).exists()) {
+                //file already exists so it shouldn't be overwritten
                 continue;
             }
-            File outFile = FileUtils.createDatafolderFile(plugin, path);
 
-            InputStream is = FileUtils.getInternalFileStream(path);
-            if (is != null) {
-                org.apache.commons.io.FileUtils.copyInputStreamToFile(is, outFile);
+            InputStream is = FileUtils.getInternalFileStream(resourceJar, path);
+
+            if (create || is != null) {
+                File outFile = FileUtils.createDatafolderFile(plugin, path);
+                if (is != null) {
+                    org.apache.commons.io.FileUtils.copyInputStreamToFile(is, outFile);
+                }
+            }
+            else {
+                throw new FileNotFoundException(
+                    "Failed to find the file '" + resource + "' in plugin " + plugin.getName());
             }
         }
     }

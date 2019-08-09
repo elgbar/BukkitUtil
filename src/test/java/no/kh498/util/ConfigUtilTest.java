@@ -1,12 +1,16 @@
 package no.kh498.util;
 
 import org.bukkit.plugin.Plugin;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.powermock.api.mockito.PowerMockito;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,17 +57,18 @@ public class ConfigUtilTest {
     public void saveDefaultResourcesWithoutDir() throws IOException {
         ConfigUtil.saveDefaultResources(plugin, TEST_FILE_WITHOUT_DIR_PATH);
         File saved = FileUtils.getDatafolderFile(plugin, TEST_FILE_WITHOUT_DIR_PATH);
-        Assert.assertTrue(saved.isFile());
+        assertTrue(saved.isFile());
 
-        assertEquals(FileUtils.read(plugin, TEST_FILE_WITHOUT_DIR_PATH),
-                     org.apache.commons.io.FileUtils.readFileToString(saved));
+        String content = org.apache.commons.io.FileUtils.readFileToString(saved);
+        assertFalse(content.isEmpty());
+        assertEquals(FileUtils.read(plugin, TEST_FILE_WITHOUT_DIR_PATH), content);
     }
 
     @Test
     public void saveDefaultResourcesWithDir() throws IOException {
         ConfigUtil.saveDefaultResources(plugin, TEST_FILE_WITH_DIR_PATH);
         File saved = FileUtils.getDatafolderFile(plugin, TEST_FILE_WITH_DIR_PATH);
-        Assert.assertTrue(saved.isFile());
+        assertTrue(saved.isFile());
 
         String content = org.apache.commons.io.FileUtils.readFileToString(saved);
 
@@ -75,17 +80,22 @@ public class ConfigUtilTest {
     public void saveDefaultResourcesNotExisting() throws IOException {
         ConfigUtil.saveDefaultResources(plugin, NON_EXISTING_TEST_FILE_WITH_DIR_PATH);
         File saved = FileUtils.getDatafolderFile(plugin, NON_EXISTING_TEST_FILE_WITH_DIR_PATH);
-        Assert.assertTrue(saved.isFile());
+        assertTrue(saved.isFile());
 
         String content = org.apache.commons.io.FileUtils.readFileToString(saved);
-        Assert.assertTrue(content.isEmpty());
+        assertTrue(content.isEmpty());
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void saveDefaultResourcesNotExistingWhenNotCreating() throws IOException {
+        ConfigUtil.saveDefaultResources(plugin, false, NON_EXISTING_TEST_FILE_WITH_DIR_PATH);
     }
 
     @Test
     public void saveDefaultResourcesIgnoresNull() throws IOException {
         ConfigUtil.saveDefaultResources(plugin, null, TEST_FILE_WITHOUT_DIR_PATH);
         File saved = FileUtils.getDatafolderFile(plugin, TEST_FILE_WITHOUT_DIR_PATH);
-        Assert.assertTrue(saved.isFile());
+        assertTrue(saved.isFile());
 
         String content = org.apache.commons.io.FileUtils.readFileToString(saved);
         assertFalse(content.isEmpty());
@@ -98,7 +108,7 @@ public class ConfigUtilTest {
     public void saveDefaultResourcesIgnoresEmptyString() throws IOException {
         ConfigUtil.saveDefaultResources(plugin, "", TEST_FILE_WITHOUT_DIR_PATH);
         File saved = FileUtils.getDatafolderFile(plugin, TEST_FILE_WITHOUT_DIR_PATH);
-        Assert.assertTrue(saved.isFile());
+        assertTrue(saved.isFile());
 
         String content = FileUtils.read(saved);
         assertNotNull(content);

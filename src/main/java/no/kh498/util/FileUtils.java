@@ -399,9 +399,36 @@ public final class FileUtils {
      */
     @Nullable
     public static InputStream getInternalFileStream(@NotNull String... absPath) {
+        return getInternalFileStream(FileUtils.class, absPath);
+    }
+
+    /**
+     * Get a file from within the jar.
+     * <p>
+     * NOTE: If the file cannot be found (ie this returns null) but you're 100% sure the path is correct (see logged
+     * path) then you need to shade this class into your jar. See
+     * <a href="https://github.com/kh498/BukkitUtil#install">github
+     * repo</a> for more information
+     *
+     * @param absPath
+     *     The absolute path to the file within the jar
+     * @param resourceClazz
+     *     The class to load the resource from
+     *
+     * @return The file at {@code absPath} as an InputStream or {@code null} if the file is not found
+     */
+    @Nullable
+    public static InputStream getInternalFileStream(@NotNull Class<?> resourceClazz, @NotNull String... absPath) {
         String path = "/" + String.join("/", absPath);
-        logger.debug("path: " + path);
-        return FileUtils.class.getResourceAsStream(path);
+        if (logger.isDebugEnabled()) {
+            String jar = resourceClazz.
+                                          getProtectionDomain().
+                                          getCodeSource().
+                                          getLocation().
+                                          toExternalForm();
+            logger.debug("path '{}' jar '{}'", path, jar);
+        }
+        return resourceClazz.getResourceAsStream(path);
     }
 
 

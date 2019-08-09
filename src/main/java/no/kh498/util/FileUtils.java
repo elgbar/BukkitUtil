@@ -123,7 +123,7 @@ public final class FileUtils {
      * @throws FileNotFoundException
      *     If the internal file was not found
      */
-    public static boolean writeFromInternal(Plugin plugin, String[] internalPath, String... externalPath)
+    public static boolean writeFromInternal(Plugin plugin, String[] externalPath, String... internalPath)
     throws IOException {
         return writeFromInternal(plugin, externalPath, FileUtils.class, internalPath);
     }

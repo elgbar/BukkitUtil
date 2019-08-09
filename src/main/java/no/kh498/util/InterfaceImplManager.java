@@ -48,7 +48,6 @@ import java.util.*;
  */
 public class InterfaceImplManager<I> {
 
-
     public static Logger logger = LoggerFactory.getLogger(InterfaceImplManager.class);
     @NotNull
     private final Class<I> interfaceClass;

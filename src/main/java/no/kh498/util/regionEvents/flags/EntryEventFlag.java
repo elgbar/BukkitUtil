@@ -20,14 +20,13 @@ public class EntryEventFlag extends RegionMoveEventFlag {
 
     public static final EntryEventFlag.Factory FACTORY = new Factory();
 
-    EntryEventFlag(final Session session) {
+    private EntryEventFlag(final Session session) {
         super(session);
     }
 
-
     @Override
     public boolean testNewRegion(@NotNull final Set<ProtectedRegion> entered, final Set<ProtectedRegion> exited) {
-        return entered.size() > 0;
+        return !entered.isEmpty();
     }
 
     /**

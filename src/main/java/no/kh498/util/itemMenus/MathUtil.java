@@ -7,11 +7,6 @@ package no.kh498.util.itemMenus;
 public class MathUtil {
 
     /**
-     * @param i
-     *     first number
-     * @param j
-     *     second number
-     *
      * @return If any parameter is less than 1 returns 1. If not it returns the rounded number up how many times j fit
      * in i
      */

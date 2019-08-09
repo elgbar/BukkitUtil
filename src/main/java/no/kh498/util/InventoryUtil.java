@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public final class InventoryUtil {
 
     /**
-     * Remove an ItemStack (from a inventory even if the items are spread out
+     * Remove an ItemStack from a inventory even if the items are spread out
      * <p>
      * Based on <a href="https://bukkit.org/threads/remove-items-from-an-inventory.27853/#post-1790751">this</a> bukkit
      * thread

@@ -29,6 +29,10 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 @RunWith(PowerMockRunner.class)
 public class FileUtilsTest {
 
+    private static final String[] TEST_BIN_FILE_WITH_DIR_PATH = {"folde1", "bro.png"};
+    private static final String[] TEST_FILE_WITHOUT_DIR_PATH = {"testfile.txt"};
+    private static final String[] TEST_FILE_WITH_DIR_PATH = {"folde1", "testfile.txt"};
+
     private Plugin plugin;
 
     @Rule
@@ -240,6 +244,28 @@ public class FileUtilsTest {
         assertTrue(FileUtils.write(outContent, outFile));
         assertEquals(outContent, FileUtils.read(outFile));
     }
+
+
+    ///////////////////
+    // writeInternal //
+    ///////////////////
+
+
+    @Test
+    public void writeFromInternalUsingFileDirectly() throws IOException {
+        String out = "file.txt";
+        //get pointer to the outfile (does not exists yet)
+        File outFile = FileUtils.getDatafolderFile(plugin, out);
+
+        //write the internal file to the outfile (then created)
+        assertTrue(FileUtils.writeFromInternal(outFile, TEST_FILE_WITHOUT_DIR_PATH));
+
+        //read the outfile//check that the content of the internal and the output file are equal
+        String content = FileUtils.read(plugin, out);
+        assertNotNull(content);
+        assertEquals(FileUtils.readInternalFile(TEST_FILE_WITHOUT_DIR_PATH), content);
+    }
+
     //////////
     // save //
     //////////
@@ -469,7 +495,6 @@ public class FileUtilsTest {
         Random random = new Random();
         List<File> createdFiles = new ArrayList<>();
         int nrOfFiles = random.nextInt(5) + 40;
-        createdFiles.clear();
 
         for (int i = 0; i < nrOfFiles; i++) {
 
@@ -542,9 +567,6 @@ public class FileUtilsTest {
     // getInternalFileStream //
     ///////////////////////////
 
-
-    private static final String[] TEST_BIN_FILE_WITH_DIR_PATH = {"folde1", "bro.png"};
-
     @Test
     public void getInternalFileStreamBinFileEquals() throws IOException {
         String s = "/" + String.join("/", TEST_BIN_FILE_WITH_DIR_PATH);
@@ -561,9 +583,6 @@ public class FileUtilsTest {
     //////////////////////
     // readInternalFile //
     //////////////////////
-
-    private static final String[] TEST_FILE_WITHOUT_DIR_PATH = {"testfile.txt"};
-    private static final String[] TEST_FILE_WITH_DIR_PATH = {"folde1", "testfile.txt"};
 
     @Test
     public void readInternalFileReadsTestFileCorrectly() throws IOException {

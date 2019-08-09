@@ -106,6 +106,96 @@ public final class FileUtils {
         return true;
     }
 
+    /**
+     * Write from an internal file found to a plugin's data folder
+     *
+     * @param plugin
+     *     The plugin's datafolder to be used
+     * @param externalPath
+     *     The relative path within the plugin's datafolder
+     * @param internalPath
+     *     The internal path in the jar
+     *
+     * @return If file was written successfully
+     *
+     * @throws IOException
+     *     {@link FileUtils#write(String, Plugin, String...)} }
+     * @throws FileNotFoundException
+     *     If the internal file was not found
+     */
+    public static boolean writeFromInternal(Plugin plugin, String[] internalPath, String... externalPath)
+    throws IOException {
+        return writeFromInternal(plugin, externalPath, FileUtils.class, internalPath);
+    }
+
+    /**
+     * Write from an internal file found to a plugin's data folder
+     *
+     * @param plugin
+     *     The plugin's datafolder to be used
+     * @param externalPath
+     *     The relative path within the plugin's datafolder
+     * @param resourceClass
+     *     The jar file to read the internal file from
+     * @param internalPath
+     *     The internal path in the jar
+     *
+     * @return If file was written successfully
+     *
+     * @throws IOException
+     *     {@link FileUtils#write(String, Plugin, String...)} }
+     * @throws FileNotFoundException
+     *     If the internal file was not found
+     */
+    public static boolean writeFromInternal(Plugin plugin, String[] externalPath, Class<?> resourceClass,
+                                            String... internalPath) throws IOException {
+        return writeFromInternal(getDatafolderFile(plugin, externalPath), resourceClass, internalPath);
+    }
+
+    /**
+     * Write from an internal file found to a plugin's data folder
+     *
+     * @param outFile
+     *     The file to write to
+     * @param internalPath
+     *     The internal path in the jar
+     *
+     * @return If file was written successfully
+     *
+     * @throws IOException
+     *     {@link FileUtils#write(String, Plugin, String...)} }
+     * @throws FileNotFoundException
+     *     If the internal file was not found
+     */
+    public static boolean writeFromInternal(File outFile, String... internalPath) throws IOException {
+        return writeFromInternal(outFile, FileUtils.class, internalPath);
+    }
+
+    /**
+     * Write from an internal file found to a plugin's data folder
+     *
+     * @param outFile
+     *     The file to write to
+     * @param resourceClass
+     *     The jar file to read the internal file from
+     * @param internalPath
+     *     The internal path in the jar
+     *
+     * @return If file was written successfully
+     *
+     * @throws IOException
+     *     {@link FileUtils#write(String, Plugin, String...)} }
+     * @throws FileNotFoundException
+     *     If the internal file was not found
+     */
+    public static boolean writeFromInternal(File outFile, Class<?> resourceClass, String... internalPath)
+    throws IOException {
+        String cont = FileUtils.readInternalFile(resourceClass, internalPath);
+        if (cont == null) {
+            throw new FileNotFoundException("Failed to find the internal file " + joinPath(internalPath));
+        }
+        return FileUtils.write(cont, outFile);
+    }
 
     /**
      * Write a UTF-8 String to a file in a plugin's datafolder. If the file does not exists, it will be created a long
@@ -123,7 +213,6 @@ public final class FileUtils {
     public static boolean write(@NotNull String string, @NotNull Plugin plugin, @NotNull String... path)
     throws IOException {
         return write(string, createDatafolderFile(plugin, path));
-
     }
 
     /**
@@ -183,7 +272,6 @@ public final class FileUtils {
      *     The InputStream to read from. This stream will not be closed when this method returns.
      */
     public static boolean save(@NotNull InputStream in, @NotNull File file) {
-
         try (final FileOutputStream out = new FileOutputStream(file)) {
             final byte[] buffer = new byte[16 * 1024];
             int read;
@@ -426,7 +514,6 @@ public final class FileUtils {
             files.add(file);
         }
     }
-
 
     /**
      * Get a file from within the jar.

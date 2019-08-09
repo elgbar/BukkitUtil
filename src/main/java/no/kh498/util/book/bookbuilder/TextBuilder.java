@@ -9,11 +9,11 @@ import org.jetbrains.annotations.Nullable;
 public class TextBuilder {
 
     @Nullable
-    private String text = null;
+    private String text;
     @Nullable
-    private ClickAction click = null;
+    private ClickAction click;
     @Nullable
-    private HoverAction hover = null;
+    private HoverAction hover;
 
     private boolean underlined;
     private boolean bold;

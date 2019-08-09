@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class MultiPage {
 
-    public final static int DEFAULT_MAX_PER_PAGE = 10;
-    public final static String DEFAULT_HEADER = "&7&m\t&r&7 Page %d/%d&m\t";
-    public final static String DEFAULT_FOOTER = "&7Type /%s %d to view next page";
+    public static final int DEFAULT_MAX_PER_PAGE = 10;
+    public static final String DEFAULT_HEADER = "&7&m\t&r&7 Page %d/%d&m\t";
+    public static final String DEFAULT_FOOTER = "&7Type /%s %d to view next page";
 
     public int maxPerPage;
     public List<String> content;

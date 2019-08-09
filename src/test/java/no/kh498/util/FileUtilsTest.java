@@ -74,7 +74,7 @@ public class FileUtilsTest {
 
         assertNotNull(folder);
 
-        assertFalse(FileUtils.createParentFolder(file));
+        assertFalse(FileUtils.createParentFolders(file));
         assertTrue(folder.isDirectory());
         assertFalse(file.exists());
     }
@@ -86,7 +86,7 @@ public class FileUtilsTest {
 
         assertNotNull(folder);
 
-        assertTrue(FileUtils.createParentFolder(file));
+        assertTrue(FileUtils.createParentFolders(file));
         assertTrue(folder.isFile());
         assertFalse(file.isFile());
     }

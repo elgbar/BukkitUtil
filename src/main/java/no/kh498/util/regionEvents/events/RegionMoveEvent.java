@@ -20,7 +20,7 @@ abstract class RegionMoveEvent extends Event implements Cancellable {
     private final MoveType moveType;
     private final boolean bypass;
 
-    private boolean cancelled = false;
+    private boolean cancelled;
 
     RegionMoveEvent(final Player player, final Location from, final Location to, final MoveType moveType,
                     final boolean bypass) {

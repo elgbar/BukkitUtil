@@ -36,18 +36,16 @@ public final class FileUtils {
 
     /**
      * @param file
-     *     The child of the parent dir to create
+     *     The child of the parent dirs to create
      *
      * @return {@code true} if an error occurred when creating the folder
      */
-    public static boolean createParentFolder(@NotNull File file) {
+    public static boolean createParentFolders(@NotNull File file) {
         if (file.exists()) { return false; }
 
-        if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
-            logger.error("Failed to create the parent folder '{}'", file.getParentFile().getPath());
-            return true;
-        }
-        return false;
+        if (file.getParentFile().isDirectory() || file.getParentFile().mkdirs()) {return false;}
+        logger.error("Failed to create the parent folder '{}'", file.getParentFile().getPath());
+        return true;
     }
 
 
@@ -76,7 +74,7 @@ public final class FileUtils {
      */
     public static void createFileSafely(@NotNull File file) throws IOException {
         if (file.exists()) { return; }
-        createParentFolder(file);
+        createParentFolders(file);
         //noinspection ResultOfMethodCallIgnored
         file.createNewFile();
     }

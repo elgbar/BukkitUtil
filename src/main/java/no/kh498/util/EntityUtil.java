@@ -14,7 +14,8 @@ public class EntityUtil {
     /**
      * @return The Metadata set by the given plugin
      */
-    public static @Nullable
+    @Nullable
+    public static
     MetadataValue getPluginMetadata(@NotNull Entity entity, @Nullable String metadataKey, @NotNull Plugin plugin) {
         for (MetadataValue metadata : entity.getMetadata(metadataKey)) {
             if (metadata.getOwningPlugin() == plugin) {

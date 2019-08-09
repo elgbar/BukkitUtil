@@ -197,6 +197,50 @@ public final class FileUtils {
         return true;
     }
 
+    /**
+     * @param path
+     *     The string to split
+     *
+     * @return The given string split by both '/' and '\'
+     */
+    public static String[] splitAtSlash(String path) {
+        return path.split("[/\\\\]");
+    }
+
+    /**
+     * @param path
+     *     The absolute path to join to a single string
+     *
+     * @return A string joined together with '/' an '/' is added at the beginning of the string
+     */
+    public static String joinPath(String... path) {return joinPath(true, path);}
+
+    /**
+     * @param abs
+     *     If this path should be abs, (ie start with the delimiter)
+     * @param path
+     *     The path to join to a single string
+     *
+     * @return A string joined together with '/'
+     */
+    public static String joinPath(boolean abs, String... path) {
+        return joinPath('/', abs, path);
+    }
+
+    /**
+     * @param delimiter
+     *     The character to link together the path
+     * @param abs
+     *     If this path should be abs, (ie start with the delimiter)
+     * @param path
+     *     The path to join to a single string
+     *
+     * @return A string joined with the given delimiter
+     */
+    public static String joinPath(char delimiter, boolean abs, String... path) {
+        return (abs ? delimiter : "") + String.join(delimiter + "", path);
+    }
+
 
     //////////////////////
     // Reading of files //
@@ -216,7 +260,7 @@ public final class FileUtils {
             return Paths.get(plugin.getDataFolder().getAbsolutePath(), children).toFile();
         } catch (NullPointerException e) {
             throw new IllegalArgumentException(
-                "One of the children given is null. children: " + String.join(File.separator, children));
+                "One of the children given is null. children: " + joinPath(File.separatorChar, false, children));
         }
     }
 
@@ -419,7 +463,7 @@ public final class FileUtils {
      */
     @Nullable
     public static InputStream getInternalFileStream(@NotNull Class<?> resourceClazz, @NotNull String... absPath) {
-        String path = "/" + String.join("/", absPath);
+        String path = joinPath(absPath);
         if (logger.isDebugEnabled()) {
             String jar = resourceClazz.
                                           getProtectionDomain().

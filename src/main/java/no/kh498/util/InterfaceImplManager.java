@@ -118,8 +118,6 @@ public class InterfaceImplManager<I> {
         }
         else if (Modifier.isAbstract(clazz.getModifiers())) {
             logger.debug("Did not register " + clazz.getSimpleName() + " as it is abstract");
-            logger.warn("No IgnoreImplementation annotation was found on the abstract class '" + clazz.getSimpleName() +
-                        "', please add it for extra clarity");
             return false;
         }
 

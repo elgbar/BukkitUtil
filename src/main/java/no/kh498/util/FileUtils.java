@@ -136,7 +136,7 @@ public final class FileUtils {
      * @param externalPath
      *     The relative path within the plugin's datafolder
      * @param resourceClass
-     *     The jar file to read the internal file from
+     *     A class from the jar the wanted internal file is
      * @param internalPath
      *     The internal path in the jar
      *
@@ -177,7 +177,7 @@ public final class FileUtils {
      * @param outFile
      *     The file to write to
      * @param resourceClass
-     *     The jar file to read the internal file from
+     *     A class from the jar the wanted internal file is
      * @param internalPath
      *     The internal path in the jar
      *
@@ -543,23 +543,23 @@ public final class FileUtils {
      *
      * @param absPath
      *     The absolute path to the file within the jar
-     * @param resourceClazz
-     *     The class to load the resource from
+     * @param resourceClass
+     *     A class from the jar the wanted internal file is
      *
      * @return The file at {@code absPath} as an InputStream or {@code null} if the file is not found
      */
     @Nullable
-    public static InputStream getInternalFileStream(@NotNull Class<?> resourceClazz, @NotNull String... absPath) {
+    public static InputStream getInternalFileStream(@NotNull Class<?> resourceClass, @NotNull String... absPath) {
         String path = joinPath(absPath);
         if (logger.isDebugEnabled()) {
-            String jar = resourceClazz.
+            String jar = resourceClass.
                                           getProtectionDomain().
                                           getCodeSource().
                                           getLocation().
                                           toExternalForm();
             logger.debug("path '{}' jar '{}'", path, jar);
         }
-        return resourceClazz.getResourceAsStream(path);
+        return resourceClass.getResourceAsStream(path);
     }
 
 
@@ -580,6 +580,8 @@ public final class FileUtils {
     /**
      * Read a file within the jar to a string
      *
+     * @param resourceClass
+     *      A class from the jar the wanted internal file is
      * @param absPath
      *     The absolute path to the file within the jar
      *
@@ -587,8 +589,8 @@ public final class FileUtils {
      * not found
      */
     @Nullable
-    public static String readInternalFile(@NotNull Class<?> resourceClazz, @NotNull String... absPath) {
-        InputStream is = getInternalFileStream(resourceClazz, absPath);
+    public static String readInternalFile(@NotNull Class<?> resourceClass, @NotNull String... absPath) {
+        InputStream is = getInternalFileStream(resourceClass, absPath);
         if (is == null) {
             logger.debug("Failed to find the internal file");
             return null;

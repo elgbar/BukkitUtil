@@ -6,12 +6,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Create a readable book, each page is created with {@link PageBuilder}
+ */
 public abstract class BookBuilder {
-
 
     private String title = "";
     private String author = "";
-    private List<String> pages = new ArrayList<>();
+    private List<PageBuilder> pages = new ArrayList<>();
 
     /**
      * Build the book into an itemstack
@@ -41,19 +43,33 @@ public abstract class BookBuilder {
         return author;
     }
 
+    /**
+     * <b>NOTE</b> Do not use if the page was obtained through {@link #createPageBuilder()}
+     *
+     * @param page
+     *     The page to add
+     */
     @NotNull
-    public BookBuilder addPage(@NotNull String page) {
+    public BookBuilder addPage(@NotNull PageBuilder page) {
         pages.add(page);
         return this;
     }
 
-    public List<String> getPages() {
+    @NotNull
+    public List<PageBuilder> getPages() {
         return pages;
     }
 
+    /**
+     * Create a new page builder and add it to the book
+     *
+     * @return A new page builder
+     */
     @NotNull
     public PageBuilder createPageBuilder() {
-        return new PageBuilder(this);
+        PageBuilder pb = new PageBuilder();
+        addPage(pb);
+        return pb;
     }
 
 }

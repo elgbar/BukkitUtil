@@ -5,6 +5,7 @@ import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.NBTTagList;
 import net.minecraft.server.v1_8_R3.NBTTagString;
 import no.kh498.util.book.bookbuilder.BookBuilder;
+import no.kh498.util.book.bookbuilder.PageBuilder;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,9 @@ public class BookBuilder18R3 extends BookBuilder {
         tag.setString("author", getAuthor());
         tag.setString("title", getTitle());
         NBTTagList pages = new NBTTagList();
-        for (String page : getPages()) { pages.add(new NBTTagString(page)); }
+        for (PageBuilder page : getPages()) {
+            pages.add(new NBTTagString(page.build()));
+        }
         tag.set("pages", pages);
         book.setTag(tag);
         return CraftItemStack.asBukkitCopy(book);

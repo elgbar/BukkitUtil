@@ -6,7 +6,7 @@
 
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>4.0.0-beta.4</version>
+    <version>4.0.0-beta.5</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -106,8 +106,6 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
-                                    <!--<include>info.ronjenkins:slf4bukkit</include>-->
-                                    <!--<include>org.slf4j:slf4j-api</include>-->
                                     <include>no.kh498.util:CommonUtil:1.0.1</include>
                                     <include>io.github.classgraph:classgraph</include>
                                 </includes>

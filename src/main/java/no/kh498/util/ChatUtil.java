@@ -89,7 +89,8 @@ public class ChatUtil {
      *
      * @return A formatted string
      */
-    public static String colorString(final ChatColor pri, final ChatColor sec, @NotNull final Object[] args) {
+    @NotNull
+    public static String colorString(final ChatColor pri, final ChatColor sec, @NotNull final Iterable<?> args) {
         return colorString(pri, sec, "", args);
     }
 
@@ -117,8 +118,9 @@ public class ChatUtil {
      *
      * @return A formatted string
      */
+    @NotNull
     public static String colorString(final ChatColor pri, final ChatColor sec, final String prefix,
-                                     @NotNull final Object[] args) {
+                                     @NotNull final Iterable<?> args) {
         return colorString(pri, sec, prefix, ", ", args);
     }
 
@@ -148,8 +150,9 @@ public class ChatUtil {
      *
      * @return A formatted string
      */
+    @NotNull
     public static String colorString(final ChatColor pri, final ChatColor sec, final String prefix,
-                                     final String divider, final Object[] args) {
+                                     final String divider, @NotNull final Iterable<?> args) {
         final StringBuilder sb = new StringBuilder(pri + prefix);
         final String formattedDiv = pri + divider;
 

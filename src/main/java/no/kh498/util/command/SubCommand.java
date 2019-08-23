@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class SubCommand implements CommandExecutor {
 
@@ -125,7 +126,7 @@ public abstract class SubCommand implements CommandExecutor {
      */
     public boolean onSubCommand(@NotNull CommandSender sender, Command command, String label, @NotNull String[] args) {
 
-        if (getSubCommands() == null || getSubCommands().size() == 0) {
+        if (getSubCommands() == null || getSubCommands().isEmpty()) {
             return false;
         }
 
@@ -134,7 +135,7 @@ public abstract class SubCommand implements CommandExecutor {
             sender.sendMessage(ChatUtil
                                    .colorString(ChatColor.RED, ChatColor.DARK_RED, "Invalid sub-command, valid are ",
                                                 getSubCommands().stream().map(subCmd -> subCmd.getAliases().get(0))
-                                                                .distinct().toArray()));
+                                                                .distinct().collect(Collectors.toList())));
             return true;
         }
 

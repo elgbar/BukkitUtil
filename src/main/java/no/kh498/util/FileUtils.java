@@ -3,6 +3,7 @@ package no.kh498.util;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -11,11 +12,10 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Simplify the writing of IO with this utility. If you are using {@link Configuration} then you might want to take a
@@ -301,6 +301,7 @@ public final class FileUtils {
      *
      * @return A string joined together with '/' an '/' is added at the beginning of the string
      */
+    @NotNull
     public static String joinPath(String... path) {return joinPath(true, path);}
 
     /**
@@ -311,6 +312,7 @@ public final class FileUtils {
      *
      * @return A string joined together with '/'
      */
+    @NotNull
     public static String joinPath(boolean abs, String... path) {
         return joinPath('/', abs, path);
     }
@@ -325,8 +327,47 @@ public final class FileUtils {
      *
      * @return A string joined with the given delimiter
      */
+    @NotNull
     public static String joinPath(char delimiter, boolean abs, String... path) {
         return (abs ? delimiter : "") + String.join(delimiter + "", path);
+    }
+
+    /**
+     * Extract files from a folder to disk. Will overwrite anything that was there
+     *
+     * @param plugin
+     *     The plugin to extract the files to
+     * @param file
+     *     The file to extract from (if it's the plugin jar use {@link JavaPlugin#getFile()}
+     * @param folderPath
+     *     The internal folder path to the folder
+     */
+    public static void extractInternalFolder(@NotNull Plugin plugin, @NotNull File file, @NotNull String... folderPath)
+    throws IOException {
+
+        String prefixPath = joinPath(false, folderPath);
+
+        File exampleFolder = FileUtils.getDatafolderFile(plugin, prefixPath);
+        if (!exampleFolder.exists()) {
+            if (!exampleFolder.mkdirs()) {
+                throw new IOException("Could not create the directory " + exampleFolder);
+            }
+        }
+
+        try (ZipFile f = new ZipFile(file)) {
+            for (final ZipEntry e : Collections.list(f.entries())) {
+                if (e.isDirectory()) {
+                    continue;
+                }
+                if (e.getName().startsWith(prefixPath + "/")) {
+                    File saveTo = FileUtils.getDatafolderFile(plugin, FileUtils.splitAtSlash(e.getName()));
+                    FileUtils.createParentFolders(saveTo);
+                    try (InputStream in = f.getInputStream(e)) {
+                        FileUtils.save(in, saveTo);
+                    }
+                }
+            }
+        }
     }
 
 
@@ -581,7 +622,7 @@ public final class FileUtils {
      * Read a file within the jar to a string
      *
      * @param resourceClass
-     *      A class from the jar the wanted internal file is
+     *     A class from the jar the wanted internal file is
      * @param absPath
      *     The absolute path to the file within the jar
      *

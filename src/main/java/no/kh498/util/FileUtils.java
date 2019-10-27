@@ -532,11 +532,16 @@ public final class FileUtils {
      *     The file to start at, if this is not a folder it will be the only element
      */
     private static void getRecursiveFiles(@NotNull List<File> files, boolean excludeHyphenPrefix, @NotNull File file) {
+        if (!file.exists()) {
+            logger.warn("Cannot find the file '{}'", file.getPath());
+            return;
+        }
         if (!file.canRead()) {
             logger.warn("Require reading permissions to read '{}'", file.getPath());
             return;
         }
         else if (excludeHyphenPrefix && file.getName().startsWith("-")) {
+            logger.trace("File '{}' starts with an hyphen and we are excluding them", file.getPath());
             return;
         }
         if (file.isDirectory()) {

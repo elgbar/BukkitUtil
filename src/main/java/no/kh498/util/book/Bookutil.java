@@ -19,7 +19,13 @@ import static no.kh498.util.VersionUtil.v1_8_R3;
  */
 public class Bookutil {
 
-    public static final int MAX_BOOK_LINES = 14;
+    /**
+     * Maximum number of unicode code units there can be on a book page
+     *
+     * @see org.bukkit.inventory.meta.BookMeta#addPage(String...)
+     */
+    public static final int MAX_BOOK_PAGE_LENGTH = 256;
+
     private static final Logger logger = LoggerFactory.getLogger(Bookutil.class);
 
     /**

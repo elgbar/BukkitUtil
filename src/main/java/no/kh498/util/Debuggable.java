@@ -73,7 +73,7 @@ public interface Debuggable {
             sb.gold("\t" + debuggable.getClass().getSimpleName());
             if (debuggable instanceof Nameable) {
                 String name = ((Nameable) debuggable).getName();
-                sb.gold(" " + (name != null ? name : "{{UNNAMED}}"));
+                sb.gold(" " + name);
             }
             sb.none("\n");
 

@@ -14,15 +14,15 @@ public final class MCConstants {
      * <p>
      * {@code 20 (nr of ticks in a second) * 50 = 1000 (nr of millis in a second)}
      */
-    public final static int TICK_TO_MILLIS_FACTOR = 50;
+    public static final int TICK_TO_MILLIS_FACTOR = 50;
 
-    public final static int ONE_MINECRAFT_DAY_IN_TICKS = 24000;
-    public final static int ONE_MINECRAFT_DAY_IN_MILLIS = ONE_MINECRAFT_DAY_IN_TICKS * TICK_TO_MILLIS_FACTOR;
+    public static final int ONE_MINECRAFT_DAY_IN_TICKS = 24000;
+    public static final int ONE_MINECRAFT_DAY_IN_MILLIS = ONE_MINECRAFT_DAY_IN_TICKS * TICK_TO_MILLIS_FACTOR;
 
 
-    public final static int ONE_SECOND_IN_TICKS = 20;
-    public final static int ONE_MINUTE_IN_TICKS = ONE_SECOND_IN_TICKS * 60;
-    public final static int ONE_HOUR_IN_TICKS = ONE_MINUTE_IN_TICKS * 60;
+    public static final int ONE_SECOND_IN_TICKS = 20;
+    public static final int ONE_MINUTE_IN_TICKS = ONE_SECOND_IN_TICKS * 60;
+    public static final int ONE_HOUR_IN_TICKS = ONE_MINUTE_IN_TICKS * 60;
 
     public static final int ONE_SECOND_IN_MILLIS = 1000;
     public static final int ONE_MINUTE_IN_MILLIS = ONE_SECOND_IN_MILLIS * 60;

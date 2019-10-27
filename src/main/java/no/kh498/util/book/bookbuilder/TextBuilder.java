@@ -9,11 +9,11 @@ import org.jetbrains.annotations.Nullable;
 public class TextBuilder {
 
     @Nullable
-    private String text = null;
+    private String text;
     @Nullable
-    private ClickAction click = null;
+    private ClickAction click;
     @Nullable
-    private HoverAction hover = null;
+    private HoverAction hover;
 
     private boolean underlined;
     private boolean bold;
@@ -24,10 +24,6 @@ public class TextBuilder {
     @NotNull
     private StringBuilder hoverLines = new StringBuilder();
     private String clickValue;
-
-    private PageBuilder builder;
-
-    TextBuilder(PageBuilder builder) { this.builder = builder; }
 
     @NotNull
     public TextBuilder setText(String text) {
@@ -64,39 +60,34 @@ public class TextBuilder {
         return this;
     }
 
-    public PageBuilder build() {
-        String extra = "{text:\"" + text + "\"";
+    public String build() {
+        StringBuilder extra = new StringBuilder("{text:\"" + text + "\"");
 
         if (click != null) {
-            extra += ", clickEvent:{action:" + click.getString() + ", value:\"" + clickValue + "\"}";
+            extra.append(", clickEvent:{action:").append(click.getString()).append(", value:\"").append(clickValue)
+                 .append("\"}");
         }
         if (hover != null) {
-            extra += ", hoverEvent:{action:" + hover.getString() + ", value:[\"\"" + hoverLines.toString() + "]}";
+            extra.append(", hoverEvent:{action:").append(hover.getString()).append(", value:[\"\"").append(
+                hoverLines.toString()).append("]}");
         }
 
         if (bold) {
-            extra += ",bold:true";
+            extra.append(",bold:true");
         }
         if (underlined) {
-            extra += ",underlined:true";
+            extra.append(",underlined:true");
         }
         if (italic) {
-            extra += ",italic:true";
+            extra.append(",italic:true");
         }
         if (strikethrough) {
-            extra += ",strikethrough:true";
+            extra.append(",strikethrough:true");
         }
         if (obfuscated) {
-            extra += ",obfuscated:true";
+            extra.append(",obfuscated:true");
         }
-
-        extra += "}";
-
-        if (builder.first) { builder.first = false; }
-        else { extra = ", " + extra; }
-
-        builder.page += extra;
-        return builder;
+        return extra.append("}").toString();
     }
 
     public boolean isUnderlined() {

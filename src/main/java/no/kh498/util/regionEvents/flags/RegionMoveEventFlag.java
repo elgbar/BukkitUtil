@@ -27,7 +27,6 @@ public abstract class RegionMoveEventFlag extends Handler {
         final boolean allowed = toSet.testState(localPlayer, getFlagType());
         final boolean hasBypass = getSession().getManager().hasBypass(player, to.getWorld());
 
-        //noinspection SimplifiableIfStatement do not simplify as this is way more readable
         if (testNewRegion(entered, exited) && (hasBypass || allowed || !moveType.isCancellable())) {
             final boolean isCancelled = callEvent(player, from, to, entered, exited, moveType, hasBypass);
             return !isCancelled;

@@ -29,6 +29,10 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 @RunWith(PowerMockRunner.class)
 public class FileUtilsTest {
 
+    private static final String[] TEST_BIN_FILE_WITH_DIR_PATH = {"folde1", "bro.png"};
+    private static final String[] TEST_FILE_WITHOUT_DIR_PATH = {"testfile.txt"};
+    private static final String[] TEST_FILE_WITH_DIR_PATH = {"folde1", "testfile.txt"};
+
     private Plugin plugin;
 
     @Rule
@@ -74,7 +78,7 @@ public class FileUtilsTest {
 
         assertNotNull(folder);
 
-        assertFalse(FileUtils.createParentFolder(file));
+        assertFalse(FileUtils.createParentFolders(file));
         assertTrue(folder.isDirectory());
         assertFalse(file.exists());
     }
@@ -86,7 +90,7 @@ public class FileUtilsTest {
 
         assertNotNull(folder);
 
-        assertTrue(FileUtils.createParentFolder(file));
+        assertTrue(FileUtils.createParentFolders(file));
         assertTrue(folder.isFile());
         assertFalse(file.isFile());
     }
@@ -151,7 +155,7 @@ public class FileUtilsTest {
 
         Assert.assertFalse(file.isDirectory());
 
-        assertTrue(FileUtils.createFolders(plugin, "folder"));
+        assertTrue(FileUtils.createFolder(plugin, "folder"));
         Assert.assertTrue(file.isDirectory());
     }
 
@@ -160,7 +164,7 @@ public class FileUtilsTest {
         File file = FileUtils.createDatafolderFile(plugin, "folder");
 
         Assert.assertTrue(file.isFile());
-        Assert.assertFalse(FileUtils.createFolders(plugin, "folder"));
+        Assert.assertFalse(FileUtils.createFolder(plugin, "folder"));
         Assert.assertTrue(file.isFile());
     }
 
@@ -228,6 +232,38 @@ public class FileUtilsTest {
     @Test
     public void writeFailsWhenGivenFileIsFolder() throws IOException {
         assertFalse(FileUtils.write("whatever", plugin));
+    }
+
+    @Test
+    public void writeSucceedsWhenWritingToNonExistingFile() throws IOException {
+        String outName = "file.txt";
+        String outContent = "test123123";
+        //get pointer to the outfile (does not exists yet)
+        File outFile = FileUtils.getDatafolderFile(plugin, outName);
+        //write the internal file to the outfile (then created)
+        assertTrue(FileUtils.write(outContent, outFile));
+        assertEquals(outContent, FileUtils.read(outFile));
+    }
+
+
+    ///////////////////
+    // writeInternal //
+    ///////////////////
+
+
+    @Test
+    public void writeFromInternalUsingFileDirectly() throws IOException {
+        String out = "file.txt";
+        //get pointer to the outfile (does not exists yet)
+        File outFile = FileUtils.getDatafolderFile(plugin, out);
+
+        //write the internal file to the outfile (then created)
+        assertTrue(FileUtils.writeFromInternal(outFile, TEST_FILE_WITHOUT_DIR_PATH));
+
+        //read the outfile//check that the content of the internal and the output file are equal
+        String content = FileUtils.read(plugin, out);
+        assertNotNull(content);
+        assertEquals(FileUtils.readInternalFile(TEST_FILE_WITHOUT_DIR_PATH), content);
     }
 
     //////////
@@ -459,7 +495,6 @@ public class FileUtilsTest {
         Random random = new Random();
         List<File> createdFiles = new ArrayList<>();
         int nrOfFiles = random.nextInt(5) + 40;
-        createdFiles.clear();
 
         for (int i = 0; i < nrOfFiles; i++) {
 
@@ -532,9 +567,6 @@ public class FileUtilsTest {
     // getInternalFileStream //
     ///////////////////////////
 
-
-    private static final String[] TEST_BIN_FILE_WITH_DIR_PATH = {"folde1", "bro.png"};
-
     @Test
     public void getInternalFileStreamBinFileEquals() throws IOException {
         String s = "/" + String.join("/", TEST_BIN_FILE_WITH_DIR_PATH);
@@ -551,9 +583,6 @@ public class FileUtilsTest {
     //////////////////////
     // readInternalFile //
     //////////////////////
-
-    private static final String[] TEST_FILE_WITHOUT_DIR_PATH = {"testfile.txt"};
-    private static final String[] TEST_FILE_WITH_DIR_PATH = {"folde1", "testfile.txt"};
 
     @Test
     public void readInternalFileReadsTestFileCorrectly() throws IOException {

@@ -24,13 +24,13 @@ public class RegionExitEvent extends RegionMoveEvent {
      * @return List of all the regions the player exited
      */
     public Set<ProtectedRegion> getExitedSet() {
-        return this.exited;
+        return exited;
     }
 
     /**
-     * @return The first region the player exited, usually this is correct
+     * @return The first region the player exited
      */
     public ProtectedRegion getFirstExited() {
-        return this.exited.iterator().next();
+        return exited.iterator().next();
     }
 }

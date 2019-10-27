@@ -10,7 +10,7 @@ import no.kh498.util.regionEvents.flags.ExitEventFlag;
 public class RegionEvents {
 
     /**
-     * Called for the region enter/exit events to be called
+     * Called for the region enter/exit events to be called. Must be called for the events to be called
      */
     public static void initiate() {
         WorldGuardPlugin.inst().getSessionManager().registerHandler(EntryEventFlag.FACTORY, null);

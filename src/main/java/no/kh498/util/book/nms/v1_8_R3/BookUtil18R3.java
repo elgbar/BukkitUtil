@@ -1,9 +1,10 @@
-package no.kh498.util.nms.v1_8_R3;
+package no.kh498.util.book.nms.v1_8_R3;
 
 import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
+import no.kh498.util.book.BookUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,16 +13,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Elg
  */
-public class Bookutil {
+public class BookUtil18R3 {
 
     /**
-     * @deprecated Use {@link no.kh498.util.book.Bookutil#openBook(Player, ItemStack)}
+     * Use {@link BookUtil#openBook(Player, ItemStack)}
      */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
     public static void openBook(@NotNull Player player, @NotNull ItemStack book) {
-        Preconditions.checkNotNull(player);
-        Preconditions.checkNotNull(book);
         Preconditions.checkArgument(book.getType() == Material.WRITTEN_BOOK);
 
         ByteBuf buf = Unpooled.buffer(256);

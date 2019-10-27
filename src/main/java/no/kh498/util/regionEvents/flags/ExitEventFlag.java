@@ -21,13 +21,13 @@ public class ExitEventFlag extends RegionMoveEventFlag {
 
     public static final ExitEventFlag.Factory FACTORY = new Factory();
 
-    ExitEventFlag(final Session session) {
+    private ExitEventFlag(final Session session) {
         super(session);
     }
 
     @Override
     public boolean testNewRegion(final Set<ProtectedRegion> entered, @NotNull final Set<ProtectedRegion> exited) {
-        return exited.size() > 0;
+        return !exited.isEmpty();
     }
 
     /**
@@ -46,10 +46,7 @@ public class ExitEventFlag extends RegionMoveEventFlag {
         return DefaultFlag.EXIT;
     }
 
-    public static class Factory extends com.sk89q.worldguard.session.handler.Handler.Factory<ExitEventFlag> {
-
-        Factory() {
-        }
+    private static class Factory extends com.sk89q.worldguard.session.handler.Handler.Factory<ExitEventFlag> {
 
         @NotNull
         @Override

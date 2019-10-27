@@ -86,7 +86,7 @@ public class ItemMenu {
      * @param items
      *     The items that this menu contains
      */
-    public ItemMenu(Plugin plugin, final String name, final Size size, final ItemMenu parent,
+    public ItemMenu(Plugin plugin, @Nullable final String name, @Nullable final Size size, @Nullable final ItemMenu parent,
                     @Nullable final MenuItem[] items) {
         this.plugin = plugin;
         this.name = name;
@@ -155,9 +155,8 @@ public class ItemMenu {
      */
     @NotNull
     public ItemMenu setItem(final int position, final MenuItem menuItem) {
-        Preconditions
-            .checkArgument(position >= 0 && position < size.getSize(), "Position must be between zero and %s. was ",
-                           size.getSize(), position);
+        Preconditions.checkArgument(position >= 0 && position < size.getSize(), "Position must be between zero and %s. was ",
+                                    size.getSize(), position);
         items[position] = menuItem;
         return this;
     }
@@ -398,8 +397,7 @@ public class ItemMenu {
         }
 
         final Inventory inventory = Bukkit
-            .createInventory(new ItemMenuHolder(this, Bukkit.createInventory(player, size.getSize())), size.getSize(),
-                             name);
+            .createInventory(new ItemMenuHolder(this, Bukkit.createInventory(player, size.getSize())), size.getSize(), name);
         apply(inventory, player);
         player.openInventory(inventory);
         return this;

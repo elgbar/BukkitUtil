@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
+import no.kh498.util.book.BookUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,10 +13,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Elg
  */
-public class Bookutil18R3 {
+public class BookUtil18R3 {
 
     /**
-     * Use {@link no.kh498.util.book.Bookutil#openBook(Player, ItemStack)}
+     * Use {@link BookUtil#openBook(Player, ItemStack)}
      */
     public static void openBook(@NotNull Player player, @NotNull ItemStack book) {
         Preconditions.checkArgument(book.getType() == Material.WRITTEN_BOOK);

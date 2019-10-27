@@ -2,7 +2,7 @@ package no.kh498.util.book;
 
 import no.kh498.util.book.bookbuilder.BookBuilder;
 import no.kh498.util.book.nms.v1_8_R3.BookBuilder18R3;
-import no.kh498.util.book.nms.v1_8_R3.Bookutil18R3;
+import no.kh498.util.book.nms.v1_8_R3.BookUtil18R3;
 import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,7 +17,7 @@ import static no.kh498.util.VersionUtil.v1_8_R3;
 /**
  * @author Elg
  */
-public class Bookutil {
+public class BookUtil {
 
     /**
      * Maximum number of unicode code units there can be on a book page
@@ -26,7 +26,7 @@ public class Bookutil {
      */
     public static final int MAX_BOOK_PAGE_LENGTH = 256;
 
-    private static final Logger logger = LoggerFactory.getLogger(Bookutil.class);
+    private static final Logger logger = LoggerFactory.getLogger(BookUtil.class);
 
     /**
      * Open a book for a player
@@ -45,7 +45,7 @@ public class Bookutil {
     public static void openBook(@NotNull Player player, @NotNull ItemStack book) {
         switch (getNmsVersion()) {
             case v1_8_R3:
-                Bookutil18R3.openBook(player, book);
+                BookUtil18R3.openBook(player, book);
                 break;
             default:
                 throw new NotImplementedException("This version of minecraft is not supported yet.");

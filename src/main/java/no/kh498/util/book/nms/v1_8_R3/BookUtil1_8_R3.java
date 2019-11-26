@@ -3,7 +3,6 @@ package no.kh498.util.book.nms.v1_8_R3;
 import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import no.kh498.util.book.BookUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Elg
  */
-public class BookUtil18R3 {
+public class BookUtil1_8_R3 {
 
     /**
      * Use {@link BookUtil#openBook(Player, ItemStack)}
@@ -25,7 +24,8 @@ public class BookUtil18R3 {
         buf.setByte(0, (byte) 0);
         buf.writerIndex(1);
 
-        PacketDataSerializer pds = new PacketDataSerializer(buf);
+        net.minecraft.server.v1_8_R3.PacketDataSerializer pds = new net.minecraft.server.v1_8_R3.PacketDataSerializer(
+            buf);
         net.minecraft.server.v1_8_R3.PacketPlayOutCustomPayload packet =
             new net.minecraft.server.v1_8_R3.PacketPlayOutCustomPayload("MC|BOpen", pds);
 

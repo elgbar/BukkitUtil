@@ -1,8 +1,10 @@
 package no.kh498.util.book;
 
+import no.kh498.util.VersionUtil;
 import no.kh498.util.book.bookbuilder.BookBuilder;
-import no.kh498.util.book.nms.v1_8_R3.BookBuilder18R3;
-import no.kh498.util.book.nms.v1_8_R3.BookUtil18R3;
+import no.kh498.util.book.nms.v1_12_R1.BookUtil1_12_R1;
+import no.kh498.util.book.nms.v1_8_R3.BookBuilder1_8_R3;
+import no.kh498.util.book.nms.v1_8_R3.BookUtil1_8_R3;
 import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,9 +46,11 @@ public class BookUtil {
     //TODO make it work with more versions
     public static void openBook(@NotNull Player player, @NotNull ItemStack book) {
         switch (getNmsVersion()) {
-            case v1_8_R3:
-                BookUtil18R3.openBook(player, book);
+            case VersionUtil.v1_8_R3:
+                BookUtil1_8_R3.openBook(player, book);
                 break;
+            case VersionUtil.v1_12_R1:
+                BookUtil1_12_R1.openBook(player, book);
             default:
                 throw new NotImplementedException("This version of minecraft is not supported yet.");
         }
@@ -61,7 +65,7 @@ public class BookUtil {
     public static BookBuilder createBookBuilder() {
         switch (getNmsVersion()) {
             case v1_8_R3:
-                return new BookBuilder18R3();
+                return new BookBuilder1_8_R3();
             default:
                 throw new NotImplementedException("This version of minecraft is not supported yet.");
         }

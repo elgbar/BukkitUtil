@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Elg
  */
-public class BookBuilder18R3 extends BookBuilder {
+public class BookBuilder1_8_R3 extends BookBuilder {
 
     @NotNull
     @Override

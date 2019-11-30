@@ -45,10 +45,7 @@ public class EntryEventFlag extends RegionMoveEventFlag {
         return DefaultFlag.ENTRY;
     }
 
-    public static class Factory extends com.sk89q.worldguard.session.handler.Handler.Factory<EntryEventFlag> {
-
-        Factory() {
-        }
+    private static class Factory extends com.sk89q.worldguard.session.handler.Handler.Factory<EntryEventFlag> {
 
         @NotNull
         @Override

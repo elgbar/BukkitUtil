@@ -66,6 +66,7 @@ public class RegionEvents {
         //make sure we dont use this method when WorldGuard 6 is loaded (or is loaded before WorldGuard 7)
         if (!bsm.isInterface()) {
             logger.error("SessionManager is not an interface, are you running WorldGuard 6.x?");
+            return;
         }
 
         WorldGuardPlatform wgp = WorldGuard.getInstance().getPlatform();

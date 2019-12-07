@@ -13,18 +13,9 @@ Add bukkit events for entry and exit of WorldGuard protected regions.
 
 ## Initiate
 
-To register the events you need to call the method below.
+To register the events you need to call the method below in your `onEnable` method.
 ```
 no.kh498.util.regionEvents.RegionEvents.initiate();
-```
-
-If you only want to enable this for either WorldGuard 6 or 7 you can call the individual methods.
-```
-no.kh498.util.regionEvents.RegionEvents.initiate6x();
-```
-or
-```
-no.kh498.util.regionEvents.RegionEvents.initiate7x();
 ```
 
 

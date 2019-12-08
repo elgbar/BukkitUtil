@@ -225,10 +225,22 @@ public class ConfigUtil {
         return conf;
     }
 
+    /**
+     * @param conf
+     *     to check
+     *
+     * @return If the given conf is {@code null} or has no keys
+     */
     public static boolean isEmpty(@Nullable ConfigurationSection conf) {
         return conf == null || conf.getKeys(false).isEmpty();
     }
 
+    /**
+     * @param conf
+     *     The conf to convert
+     *
+     * @return A YamlConfiguration version of the given conf
+     */
     @NotNull
     public static FileConfiguration toFileConf(@NotNull ConfigurationSection conf) {
         FileConfiguration fileConf = new YamlConfiguration();
@@ -236,5 +248,15 @@ public class ConfigUtil {
             fileConf.set(entry.getKey(), entry.getValue());
         }
         return fileConf;
+    }
+
+    /**
+     * @param conf
+     *     The config to convert
+     *
+     * @return YAML string version of the given config
+     */
+    public static String saveToString(@NotNull ConfigurationSection conf) {
+        return toFileConf(conf).saveToString();
     }
 }

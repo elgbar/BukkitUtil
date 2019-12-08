@@ -24,7 +24,7 @@ public final class RegionEvents {
             v6Class.getMethod("initiate6x").invoke(null);
             return;
         } catch (NoSuchMethodError | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            logger.debug("Failed to initiate wg 6", e);
+            logger.trace("Failed to initiate wg 6", e);
         }
 
         try {
@@ -32,7 +32,7 @@ public final class RegionEvents {
             v7Class.getMethod("initiate7x").invoke(null);
             return;
         } catch (NoSuchMethodError | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            logger.debug("Failed to initiate wg 7", e);
+            logger.trace("Failed to initiate wg 7", e);
         }
 
         logger.error("Failed to initiate WorldGuard for both 6.x and 7.x WorldGuard events will not work.");

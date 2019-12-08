@@ -16,3 +16,7 @@ target/
 *.iml
 
 \.idea/
+
+BukkitUtil-core/dependency-reduced-pom.xml
+
+BukkitUtil/dependency-reduced-pom.xml

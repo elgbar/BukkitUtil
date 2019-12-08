@@ -5,12 +5,12 @@
     <parent>
         <groupId>no.kh498.util</groupId>
         <artifactId>BukkitUtil-parent</artifactId>
-        <version>1.0.0</version>
+        <version>internal</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>BukkitUtil-wg-7</artifactId>
-    <version>1.0.0</version>
+    <version>internal</version>
 
     <repositories>
         <repository>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>1.0.0</version>
+            <version>internal</version>
             <scope>compile</scope>
         </dependency>
 

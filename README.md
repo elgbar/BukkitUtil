@@ -39,6 +39,8 @@ For more general java utilities see [CommonUtilsJava](https://github.com/kh498/C
 
 ## Install
 
+If BukkitUtil fails to to build because it can not find `org.bukkit:bukkit:1.14.4-R0.1-SNAPSHOT` (or something similar) you need to locally build the spigot using its [BuildTools](https://www.spigotmc.org/wiki/buildtools/) you can either do this manually (remember to build the correct version) or run the script `setup.sh` found in the root folder.
+
 ### About the versions
 
 Although the current version, 4.0.0-beta.7, has a beta tag, it does not mean that the older versions are more stable. The 3.x versions is not longer maintained and, due to some class renaming, is not compatible with the current version. 4.x versions are tagged as beta, so I may refactor any part as I see fit in the future. Though if I decide to remove/rename a class/method I will deprecate it for one version, before removing it.

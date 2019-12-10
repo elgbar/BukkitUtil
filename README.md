@@ -97,10 +97,10 @@ The following is a skeleton gradle.build file. **NOTE** the order of the methods
 
 ```groovy
 
-//setup shade
+//setup shade (ie include the whole of this lib in your jar)
 configurations {
     shade
-    compile.extendsFrom shade
+    implementation.extendsFrom shade
 }
 
 repositories {
@@ -119,6 +119,7 @@ repositories {
 dependencies {
     //your other decencies goes here
     
+    //do implementation if you do not want to 
     shade group: 'no.kh498.util', name: 'BukkitUtil', version: '4.0.0-beta.7'
 }
 

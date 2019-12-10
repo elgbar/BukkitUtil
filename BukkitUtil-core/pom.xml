@@ -131,14 +131,14 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.47</version>
+            <version>4.8.58</version>
         </dependency>
 
         <!-- IntelliJ static analysis -->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>16.0.3</version>
+            <version>18.0.0</version>
         </dependency>
 
         <!-- Testing -->

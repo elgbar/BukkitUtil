@@ -521,7 +521,14 @@ public final class FileUtils {
     @NotNull
     public static List<File> getRecursiveFiles(boolean excludeHyphenPrefix, @NotNull File file) {
         List<File> files = new LinkedList<>();
-        getRecursiveFiles(files, excludeHyphenPrefix, file);
+        if (file.exists()) {
+            if (file.isFile()) {
+                files.add(file);
+            }
+            else {
+                getRecursiveFiles(files, excludeHyphenPrefix, file);
+            }
+        }
         return files;
     }
 

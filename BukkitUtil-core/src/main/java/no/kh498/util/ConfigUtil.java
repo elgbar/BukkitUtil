@@ -118,7 +118,9 @@ public class ConfigUtil {
 
 
     /**
-     * @return A FileConfiguration from the relative plugin path or {@code null} if invalid yaml or no file found found
+     * A warning will be printed if the given YAML is invalid.
+     *
+     * @return A FileConfiguration from the given file or {@code null} if invalid yaml or no file found found
      */
     @Nullable
     public static FileConfiguration getYaml(@NotNull Plugin plugin, String... filename) {
@@ -126,22 +128,50 @@ public class ConfigUtil {
     }
 
     /**
+     * A warning will be printed if the given YAML is invalid.
+     *
      * @return A FileConfiguration from the given file or {@code null} if invalid yaml or no file found found
      */
     @Nullable
     public static FileConfiguration getYaml(@NotNull File file) {
-        YamlConfiguration conf = new YamlConfiguration();
         try {
+            YamlConfiguration conf = new YamlConfiguration();
             conf.load(file);
+            return conf;
         } catch (InvalidConfigurationException e) {
             logger.warn("YAML in file '{}' is invalid.\n{}", file, e.getMessage());
-            return null;
+        } catch (FileNotFoundException e) {
+            logger.debug("Failed to find given file '{}'", file.getPath());
         } catch (IOException e) {
-            logger.error("Failed to find the file '{}'", file);
-            return null;
+            logger.debug("An IO exception occurred when trying to load file '{}'", file.getPath());
         }
-        return conf;
+        return null;
     }
+
+    /**
+     * A warning will be printed if the given YAML is invalid.
+     *
+     * @return A FileConfiguration of the given file or the default argument if the YAML in the file is invalid or an
+     * {@link IOException} occurred
+     */
+    @NotNull
+    public static FileConfiguration getYamlOrDefault(@NotNull Plugin plugin, @NotNull FileConfiguration def,
+                                                     String... filename) {
+        return getYamlOrDefault(FileUtils.getDatafolderFile(plugin, filename), def);
+    }
+
+    /**
+     * A warning will be printed if the given YAML is invalid.
+     *
+     * @return A FileConfiguration of the given file or the default argument if the YAML in the file is invalid or an
+     * {@link IOException} occurred
+     */
+    @NotNull
+    public static FileConfiguration getYamlOrDefault(@NotNull File file, @NotNull FileConfiguration def) {
+        FileConfiguration conf = getYaml(file);
+        return conf == null ? def : conf;
+    }
+
 
     /**
      * Save a FileConfiguration to the datafolder of a plugin

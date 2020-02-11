@@ -86,7 +86,7 @@
                             <minimizeJar>false</minimizeJar>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
                             <createSourcesJar>true</createSourcesJar>
-                            <finalName>${project.parent.artifactId}-${version}</finalName>
+                            <finalName>${project.parent.artifactId}-${project.version}</finalName>
                             <artifactSet>
                                 <includes>
                                     <include>no.kh498.util:BukkitUtil-core</include>

@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
  */
 public class VersionUtil {
 
+    public static final String v1_15_R1 = "v1_15_R1";
+
     public static final String v1_14_R1 = "v1_14_R1";
 
     public static final String v1_13_R2 = "v1_13_R2";

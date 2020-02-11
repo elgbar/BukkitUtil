@@ -12,7 +12,6 @@
             <list>
               <option value="clean" />
               <option value="test" />
-              <option value="source:jar" />
               <option value="deploy" />
             </list>
           </option>

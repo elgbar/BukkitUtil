@@ -20,7 +20,6 @@
         <github.global.server>github</github.global.server>
 
         <maven2.repo.dir>${project.build.directory}/mvn-repo</maven2.repo.dir>
-        <jar.finalName>${project.parent.artifactId}-${version}</jar.finalName>
     </properties>
 
     <distributionManagement>
@@ -86,6 +85,8 @@
                         <configuration>
                             <minimizeJar>false</minimizeJar>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <createSourcesJar>true</createSourcesJar>
+                            <finalName>${project.parent.artifactId}-${version}</finalName>
                             <artifactSet>
                                 <includes>
                                     <include>no.kh498.util:BukkitUtil-core</include>

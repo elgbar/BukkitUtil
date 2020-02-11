@@ -1,4 +1,7 @@
 # Default ignored files
 *
 !.gitignore
-!/runConfigurations/*
+!runConfigurations/*
+
+workspace.xml
+dictionaries

@@ -119,7 +119,7 @@ repositories {
 dependencies {
     //your other decencies goes here
     
-    //do implementation if you do not want to 
+    //use implementation if you do not want to include it in your jar
     shade group: 'no.kh498.util', name: 'BukkitUtil', version: '4.0.0-beta.7'
 }
 

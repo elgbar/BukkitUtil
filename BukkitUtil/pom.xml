@@ -78,6 +78,7 @@
                         </goals>
                         <configuration>
                             <minimizeJar>false</minimizeJar>
+                            <createSourcesJar>true</createSourcesJar>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>

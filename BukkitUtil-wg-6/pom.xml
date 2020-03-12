@@ -12,6 +12,10 @@
     <artifactId>BukkitUtil-wg-6</artifactId>
     <version>internal</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <repositories>
         <repository>
             <id>sk89q-repo</id>

@@ -12,6 +12,10 @@
     <artifactId>BukkitUtil-core</artifactId>
     <version>internal</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>

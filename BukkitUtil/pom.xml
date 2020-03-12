@@ -2,15 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>BukkitUtil-parent</artifactId>
-        <groupId>no.kh498.util</groupId>
-        <version>1.0.0</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>4.0.0-beta.6</version>
+    <version>4.0.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,29 +25,13 @@
     </distributionManagement>
 
     <build>
-        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <sourceDirectory>/src/main/java</sourceDirectory>
         <plugins>
-            <plugin>
-                <!-- Do clean source:jar install/deploy -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.2</version>
                 <configuration>
-                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo
-                    </altDeploymentRepository>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
                 </configuration>
             </plugin>
             <plugin>
@@ -97,11 +77,10 @@
                         </goals>
                         <configuration>
                             <minimizeJar>false</minimizeJar>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <createSourcesJar>true</createSourcesJar>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
-                                    <include>no.kh498.util:CommonUtil</include>
-                                    <include>io.github.classgraph:classgraph</include>
                                     <include>no.kh498.util:BukkitUtil-core</include>
                                     <include>no.kh498.util:BukkitUtil-wg-6</include>
                                     <include>no.kh498.util:BukkitUtil-wg-7</include>
@@ -118,17 +97,20 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>1.0.0</version>
+            <version>internal</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-6</artifactId>
-            <version>1.0.0</version>
+            <version>internal</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-7</artifactId>
-            <version>1.0.0</version>
+            <version>internal</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -9,9 +9,11 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author Elg
  */
-public class RegionEvents {
+public final class RegionEvents {
 
     private static final Logger logger = LoggerFactory.getLogger(RegionEvents.class);
+
+    private RegionEvents() {}
 
     /**
      * Initiate calling of entry/exit world guard events for both WorldGuard 6.2+ and 7.0+
@@ -22,7 +24,7 @@ public class RegionEvents {
             v6Class.getMethod("initiate6x").invoke(null);
             return;
         } catch (NoSuchMethodError | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            logger.debug("Failed to initiate wg 6", e);
+            logger.trace("Failed to initiate wg 6", e);
         }
 
         try {
@@ -30,7 +32,7 @@ public class RegionEvents {
             v7Class.getMethod("initiate7x").invoke(null);
             return;
         } catch (NoSuchMethodError | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            logger.error("Failed to initiate WorldGuard 7, Are you using the correct jar?", e);
+            logger.trace("Failed to initiate wg 7", e);
         }
 
         logger.error("Failed to initiate WorldGuard for both 6.x and 7.x WorldGuard events will not work.");

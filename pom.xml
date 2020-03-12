@@ -7,7 +7,11 @@
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>internal</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -21,6 +25,21 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <!-- Do clean source:jar install/deploy -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <testResources>

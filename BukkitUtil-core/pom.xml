@@ -2,15 +2,48 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>BukkitUtil-parent</artifactId>
         <groupId>no.kh498.util</groupId>
-        <version>1.0.0</version>
+        <version>internal</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>BukkitUtil-core</artifactId>
-    <version>1.0.0</version>
+    <version>internal</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>false</minimizeJar>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>no.kh498.util:CommonUtil</include>
+                                    <include>io.github.classgraph:classgraph</include>
+                                    <include>info.ronjenkins:slf4bukkit</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <repositories>
         <repository>
@@ -22,7 +55,7 @@
             <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
         </repository>
         <repository>
-            <id>CommonUtil</id>
+            <id>github-kh498</id>
             <url>https://raw.githubusercontent.com/kh498/maven2/repo/</url>
         </repository>
         <repository>
@@ -40,20 +73,6 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.bukkit.</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- ProtocolLib -->
@@ -102,14 +121,14 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.47</version>
+            <version>4.8.58</version>
         </dependency>
 
         <!-- IntelliJ static analysis -->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>16.0.3</version>
+            <version>18.0.0</version>
         </dependency>
 
         <!-- Testing -->

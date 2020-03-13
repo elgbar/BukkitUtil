@@ -32,7 +32,9 @@ public class VersionUtil {
     public static final String v1_7_R2 = "v1_7_R2";
     public static final String v1_7_R1 = "v1_7_R1";
 
-    public static final String CB_PACKAGE = "org.bukkit.craftbukkit";
+    public static final String BUKKIT_PACKAGE = "org.bukkit";
+    public static final String CB_PACKAGE = BUKKIT_PACKAGE + ".craftbukkit";
+    public static final String NMS_PACKAGE = "net.minecraft.server";
 
     /**
      * @return The net minecraft server version running this code in the form of 'v1_x_y_Rz'

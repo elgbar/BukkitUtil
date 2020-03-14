@@ -1,7 +1,9 @@
 package no.kh498.util.jackson;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.bukkit.util.Vector;
+import org.bukkit.Color;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -10,34 +12,33 @@ import static org.junit.Assert.fail;
 /**
  * @author Elg
  */
-public class VectorTest extends BukkitSerTestHelper {
+public class PotionEffectTest extends BukkitSerTestHelper {
+
 
     @Test
-    public void vectorSerializable() {
+    public void serializeLocation() {
+
         String json;
-        Vector item = new Vector(2f, 1f, -1.5f);
+        PotionEffect pot = new PotionEffect(PotionEffectType.CONFUSION, Integer.MAX_VALUE, 10, true, true, Color.RED);
         try {
-            json = mapper.writeValueAsString(item);
+            json = mapper.writeValueAsString(pot);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             fail();
             return;
         }
-
-        System.out.println(item.serialize());
+        System.out.println(pot.serialize());
         System.out.println(json);
 
-//        assertEquals("{\"==\":\"Vector\",\"x\":2.0,\"y\":1.0,\"z\":-1.5}", json);
-
-        Vector is;
+        PotionEffect read;
         try {
-            is = mapper.readValue(json, Vector.class);
+            read = mapper.readValue(json, PotionEffect.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             fail();
             return;
         }
 
-        assertEquals(item, is);
+        assertEquals(pot, read);
     }
 }

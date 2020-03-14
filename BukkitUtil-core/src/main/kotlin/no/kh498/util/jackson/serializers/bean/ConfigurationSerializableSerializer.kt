@@ -3,8 +3,10 @@ package no.kh498.util.jackson.serializers.bean
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import no.kh498.util.ConfigUtil
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.yaml.snakeyaml.Yaml
 import java.io.IOException
 
@@ -13,24 +15,13 @@ import java.io.IOException
  */
 object ConfigurationSerializableSerializer : StdSerializer<ConfigurationSerializable>(ConfigurationSerializable::class.java) {
 
+    const val ROOT_PATH = "root"
+
     @Throws(IOException::class)
     override fun serialize(ser: ConfigurationSerializable, gen: JsonGenerator, provider: SerializerProvider) {
-        val yaml: Yaml
-        try {
-            val yamlField = YamlConfiguration::class.java.getDeclaredField("yaml")
-            yamlField.isAccessible = true
-            yaml = yamlField[YamlConfiguration()] as Yaml
-        } catch (e: NoSuchFieldException) {
-            throw IllegalStateException("Failed to get internal yaml field of YamlConfig", e)
-        } catch (e: IllegalAccessException) {
-            throw IllegalStateException("Failed to get internal yaml field of YamlConfig", e)
-        } catch (e: ClassCastException) {
-            throw IllegalStateException("Failed to get internal yaml field of YamlConfig", e)
-        }
-        ser.serialize()
-
-
-//        YamlConfiguration.
-//        gen.writeObject(map);
+        val yaml = YamlConfiguration()
+        yaml.set(ROOT_PATH, ser)
+        
+        gen.writeString(yaml.saveToString())
     }
 }

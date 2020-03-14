@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import no.kh498.util.ConfigUtil
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.configuration.file.YamlConfiguration
 import java.io.IOException
 
 /**
@@ -12,14 +14,7 @@ import java.io.IOException
  */
 object ConfigurationSectionSerializer : StdSerializer<ConfigurationSection>(ConfigurationSection::class.java) {
 
-    @Throws(IOException::class)
     override fun serialize(value: ConfigurationSection, gen: JsonGenerator, provider: SerializerProvider) {
-        gen.writeObject(value.getValues(false))
-    }
-
-    @Throws(IOException::class)
-    override fun serializeWithType(value: ConfigurationSection, gen: JsonGenerator, serializers: SerializerProvider,
-                                   typeSer: TypeSerializer) {
-        gen.writeObject(value.getValues(false))
+        gen.writeString(ConfigUtil.saveToString(value))
     }
 }

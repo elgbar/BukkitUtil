@@ -1,7 +1,7 @@
 package no.kh498.util.jackson;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.bukkit.util.Vector;
+import org.bukkit.Location;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -10,34 +10,32 @@ import static org.junit.Assert.fail;
 /**
  * @author Elg
  */
-public class VectorTest extends BukkitSerTestHelper {
+public class LocationTest extends BukkitSerTestHelper {
 
     @Test
-    public void vectorSerializable() {
+    public void serializeLocation() {
+
         String json;
-        Vector item = new Vector(2f, 1f, -1.5f);
+        Location loc = new Location(world, 1, 2, -1, 2.5f, 3.3f);
         try {
-            json = mapper.writeValueAsString(item);
+            json = mapper.writeValueAsString(loc);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             fail();
             return;
         }
-
-        System.out.println(item.serialize());
+        System.out.println(loc.serialize());
         System.out.println(json);
 
-//        assertEquals("{\"==\":\"Vector\",\"x\":2.0,\"y\":1.0,\"z\":-1.5}", json);
-
-        Vector is;
+        Location read;
         try {
-            is = mapper.readValue(json, Vector.class);
+            read = mapper.readValue(json, Location.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             fail();
             return;
         }
 
-        assertEquals(item, is);
+        assertEquals(loc, read);
     }
 }

@@ -25,7 +25,6 @@
     </distributionManagement>
 
     <build>
-        <sourceDirectory>/src/main/java</sourceDirectory>
         <plugins>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>

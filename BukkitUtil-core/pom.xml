@@ -165,7 +165,7 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>test</scope>
+            <scope>system</scope>
             <systemPath>${project.basedir}/../libs/spigot-1.8.8.jar</systemPath>
         </dependency>
 

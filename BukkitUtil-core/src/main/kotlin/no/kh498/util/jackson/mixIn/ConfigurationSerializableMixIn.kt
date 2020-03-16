@@ -7,5 +7,5 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization
 /**
  * @author Elg
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = ConfigurationSerialization.SERIALIZED_TYPE_KEY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = ConfigurationSerialization.SERIALIZED_TYPE_KEY)
 interface ConfigurationSerializableMixIn {}

@@ -1,19 +1,24 @@
 package no.kh498.util.jackson.mixIn
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.bukkit.Color
 
 /**
  * @author Elg
  */
-interface ColorMixIn {
+abstract class ColorMixIn @JsonCreator constructor(@JsonProperty("RED") red: Int,
+                                                   @JsonProperty("GREEN") green: Int,
+                                                   @JsonProperty("BLUE") blue: Int) {
 
     @get:JsonProperty("RED", index = 0)
-    val red: Int
+    abstract val red: Int
 
     @get:JsonProperty("GREEN", index = 1)
-    val green: Int
+    abstract val green: Int
 
     @get:JsonProperty("BLUE", index = 2)
-    val blue: Int
+    abstract val blue: Int
+
 }

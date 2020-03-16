@@ -21,26 +21,6 @@ constructor(@JsonProperty("world") world: World,
             @JsonProperty("yaw") yaw: Float,
             @JsonProperty("pitch") pitch: Float) {
 
-    @get:JsonProperty("world", index = 0)
-    abstract val world: World
-
-    @get:JsonProperty("x", index = 1)
-    abstract val x: Double
-
-    @get:JsonProperty("y", index = 2)
-    abstract val y: Double
-
-    @get:JsonProperty("z", index = 3)
-    abstract val z: Double
-
-    @get:JsonProperty("yaw", index = 4)
-    abstract val yaw: Float
-
-    @get:JsonProperty("pitch", index = 5)
-    abstract val pitch: Float
-
-    //Ignored properties
-
     @get:JsonIgnore
     abstract val direction: Vector
 

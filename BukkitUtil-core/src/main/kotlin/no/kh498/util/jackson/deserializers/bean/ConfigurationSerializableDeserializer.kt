@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer
+import no.kh498.util.ConfigUtil
 import no.kh498.util.jackson.serializers.bean.ConfigurationSerializableSerializer.ROOT_PATH
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -28,8 +29,14 @@ object ConfigurationSerializableDeserializer : StdDeserializer<ConfigurationSeri
     }
 
     private fun deserializeConfSection(parser: JsonParser, context: DeserializationContext): ConfigurationSerializable? {
-        val content = context.readValue(parser, String::class.java)
-        val conf = YamlConfiguration().also { it.loadFromString(content) }
+
+        //as it was saved as a map we read it back as a map then let the internal bukkit yaml serialization
+        // handle the converting of the map to config section to a string then to the wantend object
+        //
+        val map: Map<String, Any> = context.readValue(parser, Map::class.java) as Map<String, Any>
+//        val content = ConfigUtil.saveToString(ConfigUtil.getSectionFromMap(map))
+
+        val conf = YamlConfiguration().also { it.set(ROOT_PATH, map) }
         return conf.get(ROOT_PATH) as ConfigurationSerializable
     }
 }

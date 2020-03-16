@@ -18,13 +18,14 @@ class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializer
                                       beanDesc: BeanDescription): JsonDeserializer<*>? {
         //If the class implement the serialization interface directly
         // or if the class has a delegate we can reasonably safely use the ConfigurationSerializable deserializer
-        return if (ConfigurationSerializable::class.java.isAssignableFrom(type.rawClass) ||
-                type.rawClass.isAnnotationPresent(DelegateDeserialization::class.java)) {
-            ConfigurationSerializableDeserializer
-        } else if (bukkitModule.colorizeStringsByDefault && String::class.java.isAssignableFrom(type.rawClass)) {
-            ColoredStringDeserializer
+//        return if (ConfigurationSerializable::class.java.isAssignableFrom(type.rawClass) ||
+//                type.rawClass.isAnnotationPresent(DelegateDeserialization::class.java)) {
+//            ConfigurationSerializableDeserializer
+//        } else
+        if (bukkitModule.colorizeStringsByDefault && String::class.java.isAssignableFrom(type.rawClass)) {
+            return ColoredStringDeserializer
         } else {
-            null
+            return null
         }
     }
 }

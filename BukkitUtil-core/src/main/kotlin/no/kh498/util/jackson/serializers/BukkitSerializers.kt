@@ -16,9 +16,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable
 object BukkitSerializers : Serializers.Base() {
     override fun findSerializer(config: SerializationConfig, type: JavaType, beanDesc: BeanDescription): JsonSerializer<*>? {
         return when {
-            ConfigurationSerializable::class.java.isAssignableFrom(type.rawClass) -> {
-                ConfigurationSerializableSerializer
-            }
+//            ConfigurationSerializable::class.java.isAssignableFrom(type.rawClass) -> {
+//                ConfigurationSerializableSerializer
+//            }
             ConfigurationSection::class.java.isAssignableFrom(type.rawClass) -> {
                 ConfigurationSectionSerializer
             }

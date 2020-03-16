@@ -1,12 +1,20 @@
 package no.kh498.util.jackson.serializers.bean
 
 import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.TSFBuilder
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import no.kh498.util.ConfigUtil
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactoryBuilder
+import com.fasterxml.jackson.dataformat.yaml.YAMLParser
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.configuration.file.YamlConstructor
+import org.bukkit.configuration.file.YamlRepresenter
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import java.io.IOException
 
@@ -19,9 +27,10 @@ object ConfigurationSerializableSerializer : StdSerializer<ConfigurationSerializ
 
     @Throws(IOException::class)
     override fun serialize(ser: ConfigurationSerializable, gen: JsonGenerator, provider: SerializerProvider) {
-        val yaml = YamlConfiguration()
-        yaml.set(ROOT_PATH, ser)
-        
-        gen.writeString(yaml.saveToString())
+        gen.writeObject(ser.serialize())
+    }
+
+    override fun serializeWithType(value: ConfigurationSerializable?, gen: JsonGenerator?, serializers: SerializerProvider?, typeSer: TypeSerializer?) {
+        super.serializeWithType(value, gen, serializers, typeSer)
     }
 }

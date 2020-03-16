@@ -8,9 +8,11 @@ import org.bukkit.Color
 /**
  * @author Elg
  */
-abstract class ColorMixIn @JsonCreator constructor(@JsonProperty("RED") red: Int,
-                                                   @JsonProperty("GREEN") green: Int,
-                                                   @JsonProperty("BLUE") blue: Int) {
+abstract class ColorMixIn
+@JsonCreator
+constructor(@JsonProperty("RED") red: Int,
+            @JsonProperty("GREEN") green: Int,
+            @JsonProperty("BLUE") blue: Int) {
 
     @get:JsonProperty("RED", index = 0)
     abstract val red: Int

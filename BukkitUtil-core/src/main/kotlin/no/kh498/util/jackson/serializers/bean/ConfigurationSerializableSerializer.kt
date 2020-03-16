@@ -1,21 +1,10 @@
 package no.kh498.util.jackson.serializers.bean
 
 import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.core.TSFBuilder
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactoryBuilder
-import com.fasterxml.jackson.dataformat.yaml.YAMLParser
-import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.configuration.file.YamlConstructor
-import org.bukkit.configuration.file.YamlRepresenter
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import org.yaml.snakeyaml.DumperOptions
-import org.yaml.snakeyaml.Yaml
 import java.io.IOException
 
 /**

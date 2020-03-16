@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.Repairable;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -16,6 +17,7 @@ import static org.junit.Assert.fail;
 /**
  * @author Elg
  */
+@Ignore
 public class ItemStackTest extends BukkitSerTestHelper {
 
 

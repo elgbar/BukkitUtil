@@ -23,7 +23,6 @@ public class WorldTest extends BukkitSerTestHelper {
             fail();
             return;
         }
-//        System.out.println(world.serialize());
         System.out.println(json);
 
         World read;

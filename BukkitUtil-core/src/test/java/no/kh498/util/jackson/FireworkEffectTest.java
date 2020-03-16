@@ -3,6 +3,7 @@ package no.kh498.util.jackson;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +12,7 @@ import static org.junit.Assert.fail;
 /**
  * @author Elg
  */
+@Ignore
 public class FireworkEffectTest extends BukkitSerTestHelper {
 
     @Test

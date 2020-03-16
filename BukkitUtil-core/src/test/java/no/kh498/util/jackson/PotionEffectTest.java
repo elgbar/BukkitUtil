@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.bukkit.Color;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -12,8 +13,8 @@ import static org.junit.Assert.fail;
 /**
  * @author Elg
  */
+@Ignore
 public class PotionEffectTest extends BukkitSerTestHelper {
-
 
     @Test
     public void serializeLocation() {

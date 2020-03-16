@@ -88,6 +88,14 @@ public abstract class BukkitSerTestHelper {
 
 
     public <T extends ConfigurationSerializable> void testSer(T org) {
+
+        try {
+            System.out.println(org.serialize());
+        } catch (Throwable ignored) { }
+        testSerAll(org);
+    }
+
+    public <T> void testSerAll(T org) {
         String json;
         try {
             json = mapper.writeValueAsString(org);
@@ -96,9 +104,6 @@ public abstract class BukkitSerTestHelper {
             fail();
             return;
         }
-        try {
-            System.out.println(org.serialize());
-        } catch (Throwable ignored) { }
         System.out.println(json);
 
         T read;

@@ -1,7 +1,6 @@
 package no.kh498.util.jackson
 
 import com.fasterxml.jackson.core.Version
-import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 import no.kh498.util.jackson.deserializers.BukkitDeserializers
@@ -14,6 +13,9 @@ import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.block.banner.Pattern
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.BlockVector
 import org.bukkit.util.Vector
 
@@ -43,6 +45,12 @@ class BukkitModule(
         context.setMixInAnnotations(Location::class.java, LocationMixIn::class.java)
         context.setMixInAnnotations(FireworkEffect::class.java, FireworkEffectMixIn::class.java)
         context.setMixInAnnotations(Pattern::class.java, PatternMixIn::class.java)
+        context.setMixInAnnotations(PotionEffect::class.java, PotionEffectMixIn::class.java)
+
+        context.setMixInAnnotations(PotionEffectType::class.java, GetNameMixIn::class.java)
+        context.setMixInAnnotations(Enchantment::class.java, GetNameMixIn::class.java)
+
+
     }
 
     override fun getDependencies(): List<GuavaModule> {

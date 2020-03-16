@@ -10,6 +10,8 @@ import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.DelegateDeserialization
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.potion.PotionEffectType
 import java.util.*
 
 /**
@@ -18,17 +20,25 @@ import java.util.*
 class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializers.Base() {
     override fun findBeanDeserializer(type: JavaType, config: DeserializationConfig,
                                       beanDesc: BeanDescription): JsonDeserializer<*>? {
-        //If the class implement the serialization interface directly
-        // or if the class has a delegate we can reasonably safely use the ConfigurationSerializable deserializer
-//        return if (ConfigurationSerializable::class.java.isAssignableFrom(type.rawClass) ||
-//                type.rawClass.isAnnotationPresent(DelegateDeserialization::class.java)) {
-//            ConfigurationSerializableDeserializer
-//        } else
         return if (World::class.java.isAssignableFrom(type.rawClass)) {
             object : StdDeserializer<World>(World::class.java) {
                 override fun deserialize(p: JsonParser, ctxt: DeserializationContext): World {
                     val uuid = ctxt.readValue(p, UUID::class.java)
                     return Bukkit.getWorld(uuid)
+                }
+            }
+        } else if (PotionEffectType::class.java.isAssignableFrom(type.rawClass)) {
+            object : StdDeserializer<PotionEffectType>(PotionEffectType::class.java) {
+                override fun deserialize(p: JsonParser, ctxt: DeserializationContext): PotionEffectType {
+                    val name = ctxt.readValue(p, String::class.java)
+                    return PotionEffectType.getByName(name)
+                }
+            }
+        } else if (Enchantment::class.java.isAssignableFrom(type.rawClass)) {
+            object : StdDeserializer<Enchantment>(Enchantment::class.java) {
+                override fun deserialize(p: JsonParser, ctxt: DeserializationContext): Enchantment {
+                    val name = ctxt.readValue(p, String::class.java)
+                    return Enchantment.getByName(name)
                 }
             }
         } else if (bukkitModule.colorizeStringsByDefault && String::class.java.isAssignableFrom(type.rawClass)) {

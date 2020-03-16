@@ -10,6 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -61,8 +62,23 @@ public abstract class BukkitSerTestHelper {
 
         PotionEffectType[] potEffTypesIdMap = (PotionEffectType[]) Whitebox.getField(PotionEffectType.class, "byId")
                                                                            .get(null);
+        Map<String, PotionEffectType> potEffTypesNameMap = (Map<String, PotionEffectType>) Whitebox.getField(
+            PotionEffectType.class, "byName").get(null);
 
-        potEffTypesIdMap[PotionEffectType.CONFUSION.getId()] = PotionEffectType.CONFUSION;
+        PotionEffectType pet = new PotionEffectTypeWrapper(PotionEffectType.CONFUSION.getId()) {
+            @Override
+            public String getName() {
+                return "CONFUSION";
+            }
+
+            @Override
+            public PotionEffectType getType() {
+                return super.getType();
+            }
+        };
+
+        potEffTypesIdMap[pet.getId()] = pet;
+        potEffTypesNameMap.put(pet.getName().toLowerCase(), pet);
     }
 
     @Before

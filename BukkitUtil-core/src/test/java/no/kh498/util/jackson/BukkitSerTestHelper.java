@@ -1,8 +1,10 @@
 package no.kh498.util.jackson;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemFactory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
@@ -20,6 +22,8 @@ import org.powermock.reflect.Whitebox;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
@@ -80,5 +84,32 @@ public abstract class BukkitSerTestHelper {
     public void before() {
         mapper = new ObjectMapper();
         mapper.registerModule(new BukkitModule());
+    }
+
+
+    public <T extends ConfigurationSerializable> void testSer(T org) {
+        String json;
+        try {
+            json = mapper.writeValueAsString(org);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            fail();
+            return;
+        }
+        try {
+            System.out.println(org.serialize());
+        } catch (Throwable ignored) { }
+        System.out.println(json);
+
+        T read;
+        try {
+            read = mapper.readValue(json, (Class<T>) org.getClass());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            fail();
+            return;
+        }
+
+        assertEquals(org, read);
     }
 }

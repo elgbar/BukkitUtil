@@ -12,6 +12,7 @@ import org.bukkit.Color
 import org.bukkit.FireworkEffect
 import org.bukkit.Location
 import org.bukkit.World
+import org.bukkit.block.banner.Pattern
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.util.BlockVector
 import org.bukkit.util.Vector
@@ -41,6 +42,7 @@ class BukkitModule(
         context.setMixInAnnotations(World::class.java, WorldMixIn::class.java)
         context.setMixInAnnotations(Location::class.java, LocationMixIn::class.java)
         context.setMixInAnnotations(FireworkEffect::class.java, FireworkEffectMixIn::class.java)
+        context.setMixInAnnotations(Pattern::class.java, PatternMixIn::class.java)
     }
 
     override fun getDependencies(): List<GuavaModule> {

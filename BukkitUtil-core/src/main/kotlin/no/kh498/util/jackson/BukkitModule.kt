@@ -8,6 +8,7 @@ import no.kh498.util.jackson.serializers.BukkitSerializers
 import no.kh498.util.jackson.deserializers.ColoredStringDeserializer
 import no.kh498.util.jackson.mixIn.*
 import org.bukkit.Color
+import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.util.BlockVector
@@ -35,5 +36,6 @@ class BukkitModule(
         context.setMixInAnnotations(BlockVector::class.java, VectorMixIn::class.java)
         context.setMixInAnnotations(Color::class.java, ColorMixIn::class.java)
         context.setMixInAnnotations(World::class.java, WorldMixIn::class.java)
+        context.setMixInAnnotations(Location::class.java, LocationMixIn::class.java)
     }
 }

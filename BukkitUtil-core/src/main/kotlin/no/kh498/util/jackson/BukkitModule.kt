@@ -39,7 +39,6 @@ class BukkitModule(
 
         context.setMixInAnnotations(ConfigurationSerializable::class.java, ConfigurationSerializableMixIn::class.java)
         context.setMixInAnnotations(Vector::class.java, VectorMixIn::class.java)
-        context.setMixInAnnotations(BlockVector::class.java, VectorMixIn::class.java)
         context.setMixInAnnotations(Color::class.java, ColorMixIn::class.java)
         context.setMixInAnnotations(World::class.java, WorldMixIn::class.java)
         context.setMixInAnnotations(Location::class.java, LocationMixIn::class.java)

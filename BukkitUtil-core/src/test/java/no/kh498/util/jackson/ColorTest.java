@@ -10,6 +10,6 @@ public class ColorTest extends BukkitSerTestHelper {
 
     @Test
     public void colorSerializable() {
-        testSer(Color.GREEN);
+        testSer(Color.WHITE);
     }
 }

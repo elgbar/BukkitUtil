@@ -9,11 +9,13 @@ import no.kh498.util.jackson.deserializers.ColoredStringDeserializer
 import no.kh498.util.jackson.mixIn.*
 import no.kh498.util.jackson.serializers.BukkitSerializers
 import org.bukkit.Color
+import org.bukkit.FireworkEffect
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.util.BlockVector
 import org.bukkit.util.Vector
+
 
 /**
  * @author Elg
@@ -38,6 +40,7 @@ class BukkitModule(
         context.setMixInAnnotations(Color::class.java, ColorMixIn::class.java)
         context.setMixInAnnotations(World::class.java, WorldMixIn::class.java)
         context.setMixInAnnotations(Location::class.java, LocationMixIn::class.java)
+        context.setMixInAnnotations(FireworkEffect::class.java, FireworkEffectMixIn::class.java)
     }
 
     override fun getDependencies(): List<GuavaModule> {

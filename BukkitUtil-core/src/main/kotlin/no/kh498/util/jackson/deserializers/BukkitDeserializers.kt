@@ -75,19 +75,9 @@ class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializer
             }
             ItemMeta::class.java.isAssignableFrom(type.rawClass) -> {
 
-                data class PropertyMetadata(
-                        val name: String,
-                        val type: JavaType,
-                        val defaultValue: String,
-                        val required: Boolean,
-                        val description: String,
-                        val virtual: Boolean
-                ) {}
-
                 class ItemMetaDeserializer : StdDeserializer<ItemMeta>(ItemMeta::class.java) {
 
                     val mapper: ObjectMapper = ObjectMapper().registerModule(BukkitModule(bukkitModule.colorizeStringsByDefault, true))
-
                     val mapType: MapType = mapper.typeFactory.constructMapType(MutableMap::class.java, String::class.java, Any::class.java)
 
                     /////////////////////////////////

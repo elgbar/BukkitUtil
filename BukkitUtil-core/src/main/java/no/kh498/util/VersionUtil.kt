@@ -30,12 +30,12 @@ object VersionUtil {
      * @return The net minecraft server version running this code in the form of 'v1_x_y_Rz'
      */
     @JvmStatic
-    fun getNmsVersion(): String = Bukkit.getServer().javaClass.getPackage().name.replace(CB_PACKAGE, "").replaceFirst(".".toRegex(), "")
+    val nmsVersion: String = Bukkit.getServer().javaClass.getPackage().name.replace(CB_PACKAGE, "").replaceFirst(".".toRegex(), "")
 
     @JvmStatic
     @Throws(ClassNotFoundException::class)
     fun getVersionedClass(packageName: String, className: String): Class<*> {
-        val fullClassPath = "$packageName.${getNmsVersion()}.$className"
+        val fullClassPath = "$packageName.$nmsVersion.$className"
         return Class.forName(fullClassPath)
     }
 

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider
 import com.fasterxml.jackson.databind.ser.PropertyWriter
 import com.fasterxml.jackson.databind.type.MapType
 import no.kh498.util.jackson.BukkitModule
+import no.kh498.util.jackson.mixIn.ItemMetaMixIn
 import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.TYPE_FIELD
 import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.classMap
 import org.bukkit.Bukkit
@@ -20,6 +21,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.potion.PotionEffectType
 import java.util.*
+import kotlin.collections.HashSet
 import kotlin.collections.LinkedHashMap
 
 /**
@@ -133,7 +135,14 @@ class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializer
 
                             if (value == null) continue //no null values allowed!
                             val subtype = typeInfo[key]!!
-                            convertedMap[key] = (p.codec as ObjectMapper).convertValue(value, subtype)
+
+                            convertedMap[key] = when (key) {
+                                //do not convert enchantment, it is done internally for whatever reason
+                                ItemMetaMixIn.ENCHANTMENT -> value
+                                //flags is expected to be a set
+                                ItemMetaMixIn.FLAGS -> HashSet<String>(value as Collection<String>)
+                                else -> (p.codec as ObjectMapper).convertValue(value, subtype)
+                            }
                         }
                         val constructor = metaClass.getDeclaredConstructor(MutableMap::class.java)
                         constructor.isAccessible = true

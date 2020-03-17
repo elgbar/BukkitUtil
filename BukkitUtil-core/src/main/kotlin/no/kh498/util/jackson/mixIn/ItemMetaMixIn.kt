@@ -15,19 +15,24 @@ abstract class ItemMetaMixIn
 @JsonCreator
 constructor(@JsonIgnore open val map: Map<String, Any?>? = null) {
 
+
     @get:JsonProperty("repair-cost")
     abstract var repairCost: Int
 
-    @get:JsonProperty("enchants")
+    @get:JsonProperty(ENCHANTMENT)
     abstract var enchants: Map<Enchantment, Int>
+
+    @get:JsonProperty(FLAGS)
+    abstract val itemFlags: Collection<String>
 
     @JsonProperty("display-name")
     abstract fun getDisplayName(): String
 
-
     companion object {
         val classMap: Map<Class<out ItemMeta>, String>
         const val TYPE_FIELD = "meta-type"
+        const val ENCHANTMENT = "enchants"
+        const val FLAGS = "ItemFlags"
 
         init {
             val serializableMetaClass = VersionUtil.getCBClass("inventory.CraftMetaItem\$SerializableMeta")

@@ -2,11 +2,9 @@ package no.kh498.util
 
 import no.kh498.util.VersionUtil.CB_PACKAGE
 import no.kh498.util.VersionUtil.getCBClass
+import no.kh498.util.VersionUtil.getNmsVersion
 import no.kh498.util.VersionUtil.getVersionedClass
-import no.kh498.util.VersionUtil.nmsVersion
-import no.kh498.util.VersionUtil.v1_8_R3
 import org.bukkit.Bukkit
-import org.bukkit.Server
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -32,13 +30,13 @@ class VersionUtilTest {
 
     @Test
     fun nmsClass() {
-        assertNotNull(nmsVersion)
+        assertNotNull(getNmsVersion())
     }
 
     @Throws(ClassNotFoundException::class)
     @Test
     fun versionedClass() {
-        val expectedClass = Class.forName("$CB_PACKAGE.$nmsVersion.CraftServer")
+        val expectedClass = Class.forName("$CB_PACKAGE.${getNmsVersion()}.CraftServer")
         assertNotNull(expectedClass)
         assertEquals(expectedClass, getVersionedClass(CB_PACKAGE, "CraftServer"))
     }
@@ -46,7 +44,7 @@ class VersionUtilTest {
     @Throws(ClassNotFoundException::class)
     @Test
     fun cBClass() {
-        val expectedClass = Class.forName("$CB_PACKAGE.$nmsVersion.CraftServer")
+        val expectedClass = Class.forName("$CB_PACKAGE.${getNmsVersion()}.CraftServer")
         assertNotNull(expectedClass)
         assertEquals(expectedClass, getCBClass("CraftServer"))
     }

@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import no.kh498.util.jackson.BukkitModule
+import no.kh498.util.jackson.BukkitSerTestHelper
 import org.junit.Test
 import kotlin.test.assertEquals
 
 /**
  * @author Elg
  */
-class ColoredStringDeserializerTest {
+class ColoredStringDeserializerTest : BukkitSerTestHelper() {
 
     class ExplicitDeserTestClass {
         @JsonProperty(PROP_PATH)

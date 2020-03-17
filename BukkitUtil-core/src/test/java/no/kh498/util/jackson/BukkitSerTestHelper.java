@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemFactory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
@@ -20,6 +21,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,7 +33,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * @author Elg
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Bukkit.class)
+@PrepareForTest({Bukkit.class, CraftServer.class})
 public abstract class BukkitSerTestHelper {
 
     protected ObjectMapper mapper;
@@ -43,26 +45,32 @@ public abstract class BukkitSerTestHelper {
     public static void registerThingsBeforeClass() throws Exception {
 
         //noinspection unchecked
-        Map<Integer, Enchantment> idMap = (Map<Integer, Enchantment>) Whitebox.getField(Enchantment.class, "byId").get(
-            null);
+        Map<Integer, Enchantment> enchIdMap = (Map<Integer, Enchantment>) Whitebox.getField(Enchantment.class, "byId")
+                                                                                  .get(null);
+        //noinspection unchecked
+        Map<String, Enchantment> enchByName = (HashMap<String, Enchantment>) Whitebox.getField(Enchantment.class,
+                                                                                               "byName").get(null);
 
-        idMap.put(Enchantment.DURABILITY.getId(), new EnchantmentWrapper(Enchantment.DURABILITY.getId()) {
+        Enchantment ench = new EnchantmentWrapper(Enchantment.DURABILITY.getId()) {
             //prevent infinite loop
             @Override
             public String getName() {
                 return "DURABILITY";
             }
-        });
+        };
+
+        enchIdMap.put(Enchantment.DURABILITY.getId(), ench);
+        enchByName.put(Enchantment.DURABILITY.getName(), ench);
         //these will also create infinite loops, but it's not really necessary to overwrite them, just use Durability
         // when a name is needed
-        idMap.put(Enchantment.DIG_SPEED.getId(), Enchantment.DIG_SPEED);
-        idMap.put(Enchantment.ARROW_FIRE.getId(), Enchantment.ARROW_FIRE);
+        enchIdMap.put(Enchantment.DIG_SPEED.getId(), Enchantment.DIG_SPEED);
+        enchIdMap.put(Enchantment.ARROW_FIRE.getId(), Enchantment.ARROW_FIRE);
 
         //PotionEffectType must also be registered to be deserialized
 
-        PotionEffectType[] potEffTypesIdMap = (PotionEffectType[]) Whitebox.getField(PotionEffectType.class, "byId")
-                                                                           .get(null);
-        Map<String, PotionEffectType> potEffTypesNameMap = (Map<String, PotionEffectType>) Whitebox.getField(
+        PotionEffectType[] potIdMap = (PotionEffectType[]) Whitebox.getField(PotionEffectType.class, "byId").get(null);
+        //noinspection unchecked
+        Map<String, PotionEffectType> potNameMap = (Map<String, PotionEffectType>) Whitebox.getField(
             PotionEffectType.class, "byName").get(null);
 
         PotionEffectType pet = new PotionEffectTypeWrapper(PotionEffectType.CONFUSION.getId()) {
@@ -77,8 +85,8 @@ public abstract class BukkitSerTestHelper {
             }
         };
 
-        potEffTypesIdMap[pet.getId()] = pet;
-        potEffTypesNameMap.put(pet.getName().toLowerCase(), pet);
+        potIdMap[pet.getId()] = pet;
+        potNameMap.put(pet.getName().toLowerCase(), pet);
     }
 
     @Before
@@ -94,6 +102,8 @@ public abstract class BukkitSerTestHelper {
 
         when(Bukkit.getWorld(Mockito.anyString())).thenReturn(world);
         when(Bukkit.getWorld(Mockito.any(UUID.class))).thenReturn(world);
+
+        when(Bukkit.getServer()).thenReturn(PowerMockito.mock(CraftServer.class));
     }
 
     @Before

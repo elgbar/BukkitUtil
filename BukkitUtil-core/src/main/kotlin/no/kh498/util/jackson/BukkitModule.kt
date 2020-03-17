@@ -5,11 +5,10 @@ import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 import com.fasterxml.jackson.module.mrbean.MrBeanModule
-import no.kh498.util.jackson.serializers.BukkitSerializers
 import no.kh498.util.jackson.deserializers.BukkitDeserializers
 import no.kh498.util.jackson.deserializers.BukkitKeyDeserializers
-import no.kh498.util.jackson.deserializers.ColoredStringDeserializer
 import no.kh498.util.jackson.mixIn.*
+import no.kh498.util.jackson.serializers.BukkitSerializers
 import org.bukkit.*
 import org.bukkit.block.banner.Pattern
 import org.bukkit.configuration.serialization.ConfigurationSerializable

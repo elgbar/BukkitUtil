@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.Version
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 import no.kh498.util.jackson.deserializers.BukkitDeserializers
+import no.kh498.util.jackson.deserializers.BukkitKeyDeserializers
 import no.kh498.util.jackson.deserializers.ColoredStringDeserializer
 import no.kh498.util.jackson.mixIn.*
 import no.kh498.util.jackson.serializers.BukkitSerializers
-import org.bukkit.Color
-import org.bukkit.FireworkEffect
-import org.bukkit.Location
-import org.bukkit.World
+import org.bukkit.*
 import org.bukkit.block.banner.Pattern
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.enchantments.Enchantment
@@ -36,6 +34,7 @@ class BukkitModule(
 
         context.addSerializers(BukkitSerializers)
         context.addDeserializers(BukkitDeserializers(this))
+        context.addKeyDeserializers(BukkitKeyDeserializers)
 
         context.setMixInAnnotations(ConfigurationSerializable::class.java, ConfigurationSerializableMixIn::class.java)
         context.setMixInAnnotations(Vector::class.java, VectorMixIn::class.java)
@@ -45,11 +44,10 @@ class BukkitModule(
         context.setMixInAnnotations(FireworkEffect::class.java, FireworkEffectMixIn::class.java)
         context.setMixInAnnotations(Pattern::class.java, PatternMixIn::class.java)
         context.setMixInAnnotations(PotionEffect::class.java, PotionEffectMixIn::class.java)
+        context.setMixInAnnotations(OfflinePlayer::class.java, OfflinePlayerMixIn::class.java)
 
         context.setMixInAnnotations(PotionEffectType::class.java, GetNameMixIn::class.java)
         context.setMixInAnnotations(Enchantment::class.java, GetNameMixIn::class.java)
-
-
     }
 
     override fun getDependencies(): List<GuavaModule> {

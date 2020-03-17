@@ -15,6 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.10.3</jackson.version>
+        <powermock.version>1.7.4</powermock.version>
     </properties>
 
     <build>
@@ -162,14 +163,14 @@
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>
-            <version>1.6.4</version>
+            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito</artifactId>
-            <version>1.6.4</version>
+            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
 

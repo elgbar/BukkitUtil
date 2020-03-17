@@ -23,6 +23,16 @@ public class ItemStackTest extends BukkitSerTestHelper {
     }
 
     @Test
+    public void unbreakableItemStack() {
+        ItemStack item = new ItemStack(Material.IRON_AXE);
+        ItemMeta meta = item.getItemMeta();
+        meta.spigot().setUnbreakable(true);
+        item.setItemMeta(meta);
+
+        testSer(item);
+    }
+
+    @Test
     public void ItemStackWithSimpleMetaSerializable() {
         ItemStack item = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = item.getItemMeta();

@@ -30,6 +30,10 @@ class BukkitSerializers(val bukkitModule: BukkitModule) : Serializers.Base() {
 
                         map[ItemMetaMixIn.TYPE_FIELD] = ItemMetaMixIn.classMap[value::class.java]
                                 ?: error("Unknown item meta ${value::class.java}. Perhaps you are using an unsupported version of BukkitUtil?")
+
+
+                        //the spigot class is weird so we add it as an extra class
+                        map.putAll(mapper.convertValue<MutableMap<String, Any?>>(value.spigot(), mapType))
                         map.putAll(mapper.convertValue<MutableMap<String, Any?>>(value, mapType))
 
                         gen.writeObject(map)

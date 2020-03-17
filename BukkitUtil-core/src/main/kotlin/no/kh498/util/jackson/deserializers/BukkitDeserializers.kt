@@ -11,7 +11,8 @@ import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider
 import com.fasterxml.jackson.databind.ser.PropertyWriter
 import com.fasterxml.jackson.databind.type.MapType
 import no.kh498.util.jackson.BukkitModule
-import no.kh498.util.jackson.mixIn.ItemMetaMixIn
+import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.ENCHANTMENT
+import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.FLAGS
 import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.TYPE_FIELD
 import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.classMap
 import org.bukkit.Bukkit
@@ -129,18 +130,20 @@ class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializer
 
                         val metaClass = metaClasses.first()
                         val typeInfo = serializableProperties(metaClass)
+                        val typeInfoSpigot = serializableProperties(ItemMeta.Spigot::class.java)
 
                         val convertedMap = LinkedHashMap<String, Any>()
                         for ((key, value) in map) {
 
                             if (value == null) continue //no null values allowed!
-                            val subtype = typeInfo[key]!!
+                            val subtype = typeInfo[key] ?: typeInfoSpigot[key]
+                            ?: error("Failed to find type of key '$key'")
 
                             convertedMap[key] = when (key) {
                                 //do not convert enchantment, it is done internally for whatever reason
-                                ItemMetaMixIn.ENCHANTMENT -> value
+                                ENCHANTMENT -> value
                                 //flags is expected to be a set
-                                ItemMetaMixIn.FLAGS -> HashSet<String>(value as Collection<String>)
+                                FLAGS -> HashSet<String>(value as Collection<String>)
                                 else -> (p.codec as ObjectMapper).convertValue(value, subtype)
                             }
                         }

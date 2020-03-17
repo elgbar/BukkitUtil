@@ -7,6 +7,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization
 /**
  * @author Elg
  */
+//Do not save type information! We get that stuff from the bukkit deserializers
+@JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
 abstract class GetNameMixIn {
 
     @JsonValue

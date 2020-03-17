@@ -151,6 +151,12 @@
             <version>${jackson.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-mrbean</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
         <!-- Testing -->
 
         <dependency>

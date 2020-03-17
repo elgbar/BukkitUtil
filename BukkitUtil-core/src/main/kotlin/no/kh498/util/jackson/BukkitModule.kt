@@ -1,22 +1,23 @@
 package no.kh498.util.jackson
 
 import com.fasterxml.jackson.core.Version
+import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.guava.GuavaModule
+import com.fasterxml.jackson.module.mrbean.MrBeanModule
+import no.kh498.util.jackson.serializers.BukkitSerializers
 import no.kh498.util.jackson.deserializers.BukkitDeserializers
 import no.kh498.util.jackson.deserializers.BukkitKeyDeserializers
 import no.kh498.util.jackson.deserializers.ColoredStringDeserializer
 import no.kh498.util.jackson.mixIn.*
-import no.kh498.util.jackson.serializers.BukkitSerializers
 import org.bukkit.*
 import org.bukkit.block.banner.Pattern
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.inventory.meta.*
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
-import org.bukkit.util.BlockVector
 import org.bukkit.util.Vector
 
 
@@ -55,7 +56,7 @@ class BukkitModule(
         context.setMixInAnnotations(Enchantment::class.java, GetNameMixIn::class.java)
     }
 
-    override fun getDependencies(): List<GuavaModule> {
-        return listOf(GuavaModule())
+    override fun getDependencies(): List<Module> {
+        return listOf(GuavaModule(), MrBeanModule())
     }
 }

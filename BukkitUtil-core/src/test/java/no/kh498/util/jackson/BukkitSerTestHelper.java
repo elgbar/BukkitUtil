@@ -114,7 +114,7 @@ public abstract class BukkitSerTestHelper {
     public <T> void testSerAll(T org) {
         String json;
         try {
-            json = mapper.writeValueAsString(org);
+            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(org);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             fail();

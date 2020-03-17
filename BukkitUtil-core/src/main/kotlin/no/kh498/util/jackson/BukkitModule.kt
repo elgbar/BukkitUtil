@@ -12,6 +12,8 @@ import org.bukkit.*
 import org.bukkit.block.banner.Pattern
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.BlockVector
@@ -45,6 +47,9 @@ class BukkitModule(
         context.setMixInAnnotations(Pattern::class.java, PatternMixIn::class.java)
         context.setMixInAnnotations(PotionEffect::class.java, PotionEffectMixIn::class.java)
         context.setMixInAnnotations(OfflinePlayer::class.java, OfflinePlayerMixIn::class.java)
+
+        context.setMixInAnnotations(ItemStack::class.java, ItemStackMixIn::class.java)
+        context.setMixInAnnotations(ItemMeta::class.java, ItemMetaMixIn::class.java)
 
         context.setMixInAnnotations(PotionEffectType::class.java, GetNameMixIn::class.java)
         context.setMixInAnnotations(Enchantment::class.java, GetNameMixIn::class.java)

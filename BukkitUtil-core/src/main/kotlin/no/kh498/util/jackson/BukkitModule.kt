@@ -30,12 +30,20 @@ class BukkitModule(
          *
          * @see ColoredStringDeserializer
          */
-        var colorizeStringsByDefault: Boolean = false) : SimpleModule(Version(1, 0, 0, null, "no.kh498.util", "BukkitUtil")) {
+        val colorizeStringsByDefault: Boolean = false,
+        /**
+         * For internal use, disables custom serialization of [ItemMeta] to allow it to be serialized to a map
+         *
+         * @see BukkitSerializers
+         */
+        val noCustomItemMetaSerialization: Boolean = false
+
+) : SimpleModule(Version(1, 0, 0, null, "no.kh498.util", "BukkitUtil")) {
 
     override fun setupModule(context: SetupContext) {
         super.setupModule(context)
 
-        context.addSerializers(BukkitSerializers)
+        context.addSerializers(BukkitSerializers(this))
         context.addDeserializers(BukkitDeserializers(this))
         context.addKeyDeserializers(BukkitKeyDeserializers)
 

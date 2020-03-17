@@ -2,44 +2,49 @@ package no.kh498.util.jackson.serializers
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.*
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer
 import com.fasterxml.jackson.databind.ser.Serializers
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import no.kh498.util.jackson.mixIn.ItemStackMixIn
+import com.fasterxml.jackson.databind.type.MapType
+import no.kh498.util.jackson.BukkitModule
+import no.kh498.util.jackson.mixIn.ItemMetaMixIn
 import no.kh498.util.jackson.serializers.bean.ConfigurationSectionSerializer
-import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
-import org.bukkit.configuration.serialization.ConfigurationSerialization.SERIALIZED_TYPE_KEY
-import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
+
 
 /**
  * @author Elg
  */
-object BukkitSerializers : Serializers.Base() {
+class BukkitSerializers(val bukkitModule: BukkitModule) : Serializers.Base() {
     override fun findSerializer(config: SerializationConfig, type: JavaType, beanDesc: BeanDescription): JsonSerializer<*>? {
         return when {
-//            ItemStack::class.java.isAssignableFrom(type.rawClass) -> {
-//                object : StdSerializer<ItemStack>(ItemStack::class.java) {
-//                    override fun serialize(value: ItemStack, gen: JsonGenerator, provider: SerializerProvider) {
-//
-//                        //we have to serialize ItemStack with a custom serializer as it has some special rules that
-//                        // is hard or impossible to specify with mix ins
-//                        val map = LinkedHashMap<String, Any>()
-//                        map[SERIALIZED_TYPE_KEY] = "ItemStack"
-//                        map.putAll(value.serialize())
-//                        gen.writeObject(map)
-//                    }
-//
-//                    override fun serializeWithType(value: ItemStack, gen: JsonGenerator, serializers: SerializerProvider, typeSer: TypeSerializer?) {
-//                        serialize(value, gen, serializers)
-//                    }
-//                }
-//            }
+            ItemMeta::class.java.isAssignableFrom(type.rawClass) -> {
+
+                class ItemMetaSerializer : StdSerializer<ItemMeta>(ItemMeta::class.java) {
+
+                    val mapper: ObjectMapper = ObjectMapper().registerModule(BukkitModule(bukkitModule.colorizeStringsByDefault, true))
+                    val mapType: MapType = mapper.typeFactory.constructMapType(MutableMap::class.java, String::class.java, Any::class.java)
+
+                    override fun serialize(value: ItemMeta, gen: JsonGenerator, provider: SerializerProvider) {
+                        val map = LinkedHashMap<String, Any?>()
+
+                        map[ItemMetaMixIn.TYPE_FIELD] = ItemMetaMixIn.classMap[value::class.java]
+                                ?: error("Unknown item meta ${value::class.java}. Perhaps you are using an unsupported version of BukkitUtil?")
+                        map.putAll(mapper.convertValue<MutableMap<String, Any?>>(value, mapType))
+
+                        gen.writeObject(map)
+                    }
+                }
+
+                return if (bukkitModule.noCustomItemMetaSerialization) null
+                else ItemMetaSerializer()
+            }
             ConfigurationSection::class.java.isAssignableFrom(type.rawClass) -> {
                 ConfigurationSectionSerializer
             }
             else -> null
         }
     }
+
+
 }

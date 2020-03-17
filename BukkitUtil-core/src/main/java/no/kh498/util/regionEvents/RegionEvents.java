@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author Elg
  */
-public final class RegionEvents {
+public class RegionEvents {
 
     private static final Logger logger = LoggerFactory.getLogger(RegionEvents.class);
 

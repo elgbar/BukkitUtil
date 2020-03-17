@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Elg
  * @since 0.1.0
  */
-public final class ColoredPaneItem extends ActionMenuItem {
+public class ColoredPaneItem extends ActionMenuItem {
 
     /**
      * @param name

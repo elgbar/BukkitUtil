@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Elg
  * @since 0.1.0
  */
-public final class StaticColoredPaneItem extends StaticMenuItem {
+public class StaticColoredPaneItem extends StaticMenuItem {
 
     /**
      * Create a filler colored pane that has only a space as name and no lore

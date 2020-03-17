@@ -24,7 +24,7 @@ import java.util.zip.ZipFile;
  * @author Elg
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public final class FileUtils {
+public class FileUtils {
 
     // For a bukkit implementation you can use https://github.com/rjenkinsjr/slf4bukkit
     public static Logger logger = LoggerFactory.getLogger(FileUtils.class);

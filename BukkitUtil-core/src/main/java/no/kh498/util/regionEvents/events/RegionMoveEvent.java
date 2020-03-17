@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Elg
  */
-abstract class RegionMoveEvent extends Event implements Cancellable {
+public abstract class RegionMoveEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private final Player player;

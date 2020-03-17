@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.1.0
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
-public final class AdvancedChat {
+public class AdvancedChat {
 
     /**
      * Send a message to a player using the action bar.
@@ -82,8 +82,8 @@ public final class AdvancedChat {
         }
         try {
             //create a chat packet
-            final PacketContainer chatPacket =
-                new PacketContainer(PacketType.Play.Server.CHAT);//protocolManager.createPacket();
+            final PacketContainer chatPacket = new PacketContainer(
+                PacketType.Play.Server.CHAT);//protocolManager.createPacket();
 
             //create a wrapper for the text to send
             final WrappedChatComponent wcp = WrappedChatComponent.fromText(msg);

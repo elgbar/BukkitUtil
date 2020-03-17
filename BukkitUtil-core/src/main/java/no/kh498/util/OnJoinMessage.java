@@ -25,7 +25,7 @@ import java.util.UUID;
  * @author Elg
  * @since 0.1.0
  */
-public final class OnJoinMessage implements Listener {
+public class OnJoinMessage implements Listener {
 
     private static final String FILE_PATH = "";
     private static final String FILE_NAME = "JoinMessages";

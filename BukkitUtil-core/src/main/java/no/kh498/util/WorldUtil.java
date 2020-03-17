@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * @author Elg
  * @since 0.1.0
  */
-public final class WorldUtil {
+public class WorldUtil {
 
     public static final int INVALID_LOCATION = Integer.MIN_VALUE;
     public static final int LOCATION_ERR = -1;

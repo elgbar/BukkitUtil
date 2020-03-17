@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 0.1.0
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public final class InventoryUtil {
+public class InventoryUtil {
 
     /**
      * Remove an ItemStack from a inventory even if the items are spread out

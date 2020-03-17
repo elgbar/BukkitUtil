@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author Elg
  */
-public final class LocationUtil {
+public class LocationUtil {
 
     /**
      * Round the xyz values of a location
@@ -49,9 +49,8 @@ public final class LocationUtil {
         if (location == null) {
             return "null";
         }
-        String world =
-            displayWorld && location.getWorld() != null ? String.format(" in world '%s'", location.getWorld().getName())
-                                                        : "";
+        String world = displayWorld && location.getWorld() != null ? String.format(" in world '%s'",
+                                                                                   location.getWorld().getName()) : "";
         return String.format("%d, %d, %d%s", location.getBlockX(), location.getBlockY(), location.getBlockZ(), world);
     }
 

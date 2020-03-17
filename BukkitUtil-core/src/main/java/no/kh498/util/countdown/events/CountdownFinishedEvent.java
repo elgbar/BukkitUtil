@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Elg
  */
-public final class CountdownFinishedEvent extends Event {
+public class CountdownFinishedEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 

@@ -3,7 +3,7 @@ package no.kh498.util.countdown.api;
 /**
  * @author Elg
  */
-class Interrupt {
+public class Interrupt {
 
     private final String message;
     private final long startTime;

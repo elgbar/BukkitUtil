@@ -38,6 +38,10 @@
                                     <include>no.kh498.util:CommonUtil</include>
                                     <include>io.github.classgraph:classgraph</include>
                                     <include>info.ronjenkins:slf4bukkit</include>
+
+                                    <include>org.apache.commons:commons-lang3</include>
+                                    <include>commons-io:commons-io</include>
+
                                     <include>com.fasterxml.jackson.core:jackson-databind</include>
 
                                     <include>org.jetbrains.kotlin:kotlin-stdlib-jdk8</include>
@@ -90,11 +94,18 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Apache Commons IO -->
+        <!-- Apache -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
+        </dependency>
+
+        <!-- Needed for bukkit 1.14+-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
         </dependency>
 
         <dependency>

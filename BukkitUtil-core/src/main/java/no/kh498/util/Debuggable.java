@@ -33,8 +33,7 @@ public interface Debuggable {
      *
      * @return the given StringBuilder, {@code sb}, and the last appended item must be a newline (without the prefix)
      */
-    @NotNull
-    ColorString appendDebugInfo(@NotNull ColorString sb, @NotNull String prefix);
+    @NotNull ColorString appendDebugInfo(@NotNull ColorString sb, @NotNull String prefix);
 
     default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
                               boolean bool) {
@@ -60,10 +59,17 @@ public interface Debuggable {
     default void appendDebuggableList(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
                                       @Nullable Collection<? extends Debuggable> objects) {
 
-        sb.none(prefix).yellow(getClass().getSimpleName() + ": " + objectName + " = \n");
+        sb.none(prefix).yellow(getClass().getSimpleName() + ": " + objectName + " = ");
         if (objects == null) {
-            sb.none("null");
+            sb.none("(null)\n");
             return;
+        }
+        else if (objects.isEmpty()) {
+            sb.none("(empty)\n");
+            return;
+        }
+        else {
+            sb.none("\n");
         }
 
         String objPrefix = prefix + "\t";

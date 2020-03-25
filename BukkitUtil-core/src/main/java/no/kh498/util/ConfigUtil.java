@@ -175,22 +175,28 @@ public class ConfigUtil {
 
     /**
      * Save a FileConfiguration to the datafolder of a plugin
+     *
+     * @return If the config was saved successfully
      */
-    public static void saveYaml(@NotNull Plugin plugin, FileConfiguration conf, String... savePath) {
-        saveYaml(conf, FileUtils.getDatafolderFile(plugin, savePath));
+    public static boolean saveYaml(@NotNull Plugin plugin, FileConfiguration conf, String... savePath) {
+        return saveYaml(conf, FileUtils.getDatafolderFile(plugin, savePath));
     }
 
-    public static void saveYaml(@Nullable FileConfiguration conf, @Nullable File file) {
+    /**
+     * @return If the config was saved successfully
+     */
+    public static boolean saveYaml(@Nullable ConfigurationSection conf, @Nullable File file) {
         if (file == null || conf == null) {
             logger.error("Failed to save Yaml. Got invalid parameters: conf = '{}' file = = '{}'", conf, file);
-            return;
+            return false;
         }
         try {
-            conf.save(file);
+            toFileConf(conf).save(file);
         } catch (IOException e) {
-            logger.error("Failed to save file '{}' to '{}'", file.getName(), file.getPath());
-            e.printStackTrace();
+            logger.error("Failed to save file '{}' to '{}'", file.getName(), file.getPath(), e);
+            return false;
         }
+        return true;
     }
 
     /**

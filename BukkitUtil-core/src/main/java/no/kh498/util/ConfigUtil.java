@@ -273,6 +273,9 @@ public class ConfigUtil {
      */
     @NotNull
     public static FileConfiguration toFileConf(@NotNull ConfigurationSection conf) {
+        //it's already a file config so a simple cast will do it
+        if (conf instanceof FileConfiguration) return (FileConfiguration) conf;
+
         FileConfiguration fileConf = new YamlConfiguration();
         for (Map.Entry<String, Object> entry : getMapSection(conf, "").entrySet()) {
             fileConf.set(entry.getKey(), entry.getValue());

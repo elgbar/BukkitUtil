@@ -28,6 +28,9 @@ constructor(@JsonIgnore open val map: Map<String, Any?>? = null) {
     @JsonProperty("display-name")
     abstract fun getDisplayName(): String
 
+    @JsonProperty("Unbreakable")
+    abstract fun isUnbreakable(): Boolean
+
     companion object {
         val classMap: Map<Class<out ItemMeta>, String>
         const val TYPE_FIELD = "meta-type"

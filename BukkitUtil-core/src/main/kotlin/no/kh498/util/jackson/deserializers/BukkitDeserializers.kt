@@ -34,7 +34,7 @@ class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializer
         return when {
             World::class.java.isAssignableFrom(type.rawClass) -> {
                 object : StdDeserializer<World>(World::class.java) {
-                    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): World {
+                    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): World? {
                         val uuid = ctxt.readValue(p, UUID::class.java)
                         return Bukkit.getWorld(uuid)
                     }
@@ -51,7 +51,7 @@ class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializer
             }
             PotionEffectType::class.java.isAssignableFrom(type.rawClass) -> {
                 object : StdDeserializer<PotionEffectType>(PotionEffectType::class.java) {
-                    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): PotionEffectType {
+                    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): PotionEffectType? {
                         val name = ctxt.readValue(p, String::class.java)
                         return PotionEffectType.getByName(name)
                     }
@@ -59,7 +59,7 @@ class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializer
             }
             Enchantment::class.java.isAssignableFrom(type.rawClass) -> {
                 object : StdDeserializer<Enchantment>(Enchantment::class.java) {
-                    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): Enchantment {
+                    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): Enchantment? {
                         val name = ctxt.readValue(p, String::class.java)
                         return Enchantment.getByName(name)
                     }
@@ -120,14 +120,12 @@ class BukkitDeserializers(private val bukkitModule: BukkitModule) : Deserializer
 
                         val metaClass = metaClasses.first()
                         val typeInfo = serializableProperties(metaClass)
-                        val typeInfoSpigot = serializableProperties(ItemMeta.Spigot::class.java)
 
                         val convertedMap = LinkedHashMap<String, Any>()
                         for ((key, value) in map) {
 
                             if (value == null) continue //no null values allowed!
-                            val subtype = typeInfo[key] ?: typeInfoSpigot[key]
-                            ?: error("Failed to find type of key '$key'")
+                            val subtype = typeInfo[key] ?: error("Failed to find type of key '$key'")
 
                             convertedMap[key] = when (key) {
                                 //do not convert enchantment, it is done internally for whatever reason

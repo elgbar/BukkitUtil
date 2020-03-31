@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemFactory;
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemFactory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemFactory;
@@ -134,6 +134,7 @@ public abstract class BukkitSerTestHelper {
 
         T read;
         try {
+            //noinspection unchecked
             read = mapper.readValue(json, (Class<T>) org.getClass());
         } catch (JsonProcessingException e) {
             e.printStackTrace();

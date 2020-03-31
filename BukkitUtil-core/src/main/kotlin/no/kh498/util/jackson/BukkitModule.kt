@@ -35,7 +35,7 @@ class BukkitModule(
          *
          * @see BukkitSerializers
          */
-        val noCustomItemMetaSerialization: Boolean = false
+        internal val noCustomItemMetaSerialization: Boolean = false
 
 ) : SimpleModule(Version(1, 0, 0, null, "no.kh498.util", "BukkitUtil")) {
 
@@ -58,7 +58,6 @@ class BukkitModule(
 
         context.setMixInAnnotations(ItemStack::class.java, ItemStackMixIn::class.java)
         context.setMixInAnnotations(ItemMeta::class.java, ItemMetaMixIn::class.java)
-        context.setMixInAnnotations(ItemMeta.Spigot::class.java, ItemMetaSpigotMixIn::class.java)
 
         context.setMixInAnnotations(PotionEffectType::class.java, GetNameMixIn::class.java)
         context.setMixInAnnotations(Enchantment::class.java, GetNameMixIn::class.java)

@@ -4,7 +4,7 @@ import no.kh498.util.VersionUtil.CB_PACKAGE
 import no.kh498.util.VersionUtil.getCBClass
 import no.kh498.util.VersionUtil.getVersionedClass
 import org.bukkit.Bukkit
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before

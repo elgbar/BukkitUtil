@@ -35,12 +35,12 @@ object BukkitKeyDeserializers : KeyDeserializers {
                 }
             }
             PotionEffectType::class.java.isAssignableFrom(type.rawClass) -> object : KeyDeserializer() {
-                override fun deserializeKey(key: String, ctxt: DeserializationContext?): Any {
+                override fun deserializeKey(key: String, ctxt: DeserializationContext?): PotionEffectType? {
                     return PotionEffectType.getByName(key)
                 }
             }
             Enchantment::class.java.isAssignableFrom(type.rawClass) -> object : KeyDeserializer() {
-                override fun deserializeKey(key: String, ctxt: DeserializationContext?): Any {
+                override fun deserializeKey(key: String, ctxt: DeserializationContext?): Enchantment? {
                     return Enchantment.getByName(key)
                 }
             }

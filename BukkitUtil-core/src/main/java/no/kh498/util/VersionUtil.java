@@ -45,11 +45,20 @@ public final class VersionUtil {
         return Bukkit.getServer().getClass().getPackage().getName().replace(CB_PACKAGE, "").replaceFirst(".", "");
     }
 
+
     public static Class<?> getVersionedClass(String packageName, String className) throws ClassNotFoundException {
         return Class.forName(packageName + "." + getNmsVersion() + "." + className);
     }
 
     public static Class<?> getCBClass(String className) throws ClassNotFoundException {
         return getVersionedClass(CB_PACKAGE, className);
+    }
+
+    public static Class<?> getNMSClass(String className) throws ClassNotFoundException {
+        return getVersionedClass(NMS_PACKAGE, className);
+    }
+
+    public static Class<?> getBukkitClass(String className) throws ClassNotFoundException {
+        return getVersionedClass(BUKKIT_PACKAGE, className);
     }
 }

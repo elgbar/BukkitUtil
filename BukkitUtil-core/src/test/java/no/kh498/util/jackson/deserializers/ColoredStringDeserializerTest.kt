@@ -38,7 +38,7 @@ class ColoredStringDeserializerTest : BukkitSerTestHelper() {
 
 
     @Test
-    fun colorizeIfSpesified() {
+    fun colorizeIfSpecified() {
         val mapper = ObjectMapper().apply {
             registerModule(BukkitModule(true))
         }
@@ -50,9 +50,21 @@ class ColoredStringDeserializerTest : BukkitSerTestHelper() {
     }
 
     @Test
-    fun noColorChangeByDefault() {
+    fun colorChangeByDefault() {
         val mapper = ObjectMapper().apply {
-            registerModule(BukkitModule())
+            registerModule(BukkitModule(true))
+        }
+
+        val json = mapper.writeValueAsString(ImplicitDeserTestClass().apply { test = "&cMuch!" })
+
+        val obj = mapper.readValue(json, ImplicitDeserTestClass::class.java)
+        assertEquals("§cMuch!", obj.test)
+    }
+
+    @Test
+    fun noColorizeIfSpecified() {
+        val mapper = ObjectMapper().apply {
+            registerModule(BukkitModule(false))
         }
 
         val str = "&cColor!"

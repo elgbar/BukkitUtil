@@ -12,6 +12,8 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * @author Elg
  */
@@ -26,6 +28,8 @@ public class ItemStackTest extends BukkitSerTestHelper {
     public void unbreakableItemStack() {
         ItemStack item = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = item.getItemMeta();
+        assertNotNull(meta);
+
         meta.setUnbreakable(true);
         item.setItemMeta(meta);
 
@@ -34,8 +38,11 @@ public class ItemStackTest extends BukkitSerTestHelper {
 
     @Test
     public void ItemStackWithSimpleMetaSerializable() {
+
+
         ItemStack item = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = item.getItemMeta();
+        assertNotNull(meta);
         meta.setDisplayName("Perun's axe");
         meta.setLore(Arrays.asList("epic lore!", "wow much old memes"));
         ((Repairable) meta).setRepairCost(10);
@@ -48,6 +55,7 @@ public class ItemStackTest extends BukkitSerTestHelper {
     public void ItemStackWithUnspesificFullMetaSerializable() {
         ItemStack item = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = item.getItemMeta();
+        assertNotNull(meta);
         meta.setDisplayName("Perun's axe");
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.setLore(Arrays.asList("epic lore!", "wow much old memes"));
@@ -62,6 +70,7 @@ public class ItemStackTest extends BukkitSerTestHelper {
     public void LeatherMetaWithColorSerializable() {
         ItemStack wantedItem = new ItemStack(Material.LEATHER_CHESTPLATE);
         ItemMeta meta = wantedItem.getItemMeta();
+        assertNotNull(meta);
         meta.setDisplayName("Moldy Tunic");
         ((LeatherArmorMeta) meta).setColor(Color.fromRGB(102, 127, 51));
         ((Repairable) meta).setRepairCost(1);

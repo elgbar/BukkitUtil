@@ -20,8 +20,6 @@ import org.bukkit.ChatColor
  */
 object ColoredStringDeserializer : StringDeserializer() {
 
-    override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): String? {
-        val str: String = super.deserialize(p, ctxt) ?: return null
-        return ChatUtil.toBukkitColor(str)
-    }
+    override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): String? =
+            ChatUtil.toBukkitColor(super.deserialize(p, ctxt))
 }

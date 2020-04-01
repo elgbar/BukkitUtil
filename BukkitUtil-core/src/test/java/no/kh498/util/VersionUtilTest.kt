@@ -1,50 +1,41 @@
 package no.kh498.util
 
-import no.kh498.util.VersionUtil.CB_PACKAGE
-import no.kh498.util.VersionUtil.getCBClass
-import no.kh498.util.VersionUtil.getVersionedClass
-import org.bukkit.Bukkit
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer
+import no.kh498.util.VersionUtil.*
+import org.bukkit.craftbukkit.v1_x_Ry.JacksonMockServer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.powermock.api.mockito.PowerMockito
-import org.powermock.api.mockito.PowerMockito.`when`
-import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 
 /**
  * @author Elg
  */
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(Bukkit::class, CraftServer::class)
 class VersionUtilTest {
-    @Before
-    fun setUp() {
-        PowerMockito.mockStatic(Bukkit::class.java)
-        `when`(Bukkit.getServer()).thenReturn(PowerMockito.mock(CraftServer::class.java))
+
+    init {
+        JacksonMockServer
     }
 
     @Test
     fun nmsClass() {
-        assertNotNull(VersionUtil.getNmsVersion())
+        assertNotNull(getNmsVersion())
     }
 
     @Throws(ClassNotFoundException::class)
     @Test
     fun versionedClass() {
-        val expectedClass = Class.forName("$CB_PACKAGE.${VersionUtil.getNmsVersion()}.CraftServer")
+        val expectedClass = Class.forName("$CB_PACKAGE.${getNmsVersion()}.${JacksonMockServer::class.simpleName}")
         assertNotNull(expectedClass)
-        assertEquals(expectedClass, getVersionedClass(CB_PACKAGE, "CraftServer"))
+        assertEquals(expectedClass, getVersionedClass(CB_PACKAGE, JacksonMockServer::class.simpleName))
     }
 
     @Throws(ClassNotFoundException::class)
     @Test
     fun cBClass() {
-        val expectedClass = Class.forName("$CB_PACKAGE.${VersionUtil.getNmsVersion()}.CraftServer")
+        val expectedClass = Class.forName("$CB_PACKAGE.${getNmsVersion()}.${JacksonMockServer::class.simpleName}")
         assertNotNull(expectedClass)
-        assertEquals(expectedClass, getCBClass("CraftServer"))
+        assertEquals(expectedClass, getCBClass(JacksonMockServer::class.simpleName))
     }
 }

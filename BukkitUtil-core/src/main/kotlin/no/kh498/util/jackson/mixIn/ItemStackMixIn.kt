@@ -15,7 +15,7 @@ interface ItemStackMixIn {
     @JsonProperty(TYPE, index = 0)
     fun getType(): Material
 
-    @JsonProperty(AMOUNT, index = 1)
+    @JsonProperty(AMOUNT, index = 1, defaultValue = "1")
     fun getAmount(): Int
 
     @JsonProperty(DAMAGE, index = 2)

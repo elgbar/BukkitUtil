@@ -39,7 +39,7 @@ public final class VersionUtil {
 
 
     /**
-     * @return The net minecraft server version running this code in the form of 'v1_x_y_Rz'
+     * @return The net minecraft server version running this code in the form of 'v1_x_Ry'
      */
     public static String getNmsVersion() {
         return Bukkit.getServer().getClass().getPackage().getName().replace(CB_PACKAGE, "").replaceFirst(".", "");

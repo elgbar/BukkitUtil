@@ -2,38 +2,27 @@ package no.kh498.util.jackson;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemFactory;
+import org.bukkit.craftbukkit.v1_x_Ry.JacksonMockServer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
-import org.bukkit.inventory.ItemFactory;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionEffectTypeWrapper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
  * @author Elg
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Bukkit.class, CraftServer.class})
 public abstract class BukkitSerTestHelper {
 
     protected ObjectMapper mapper;
@@ -89,21 +78,9 @@ public abstract class BukkitSerTestHelper {
         potNameMap.put(pet.getName().toLowerCase(), pet);
     }
 
-    @Before
-    public void fixBukkitMethods() throws Exception {
-
-        world = Mockito.mock(World.class);
-        Mockito.when(world.getName()).thenReturn("World");
-        Mockito.when(world.getUID()).thenReturn(UUID.nameUUIDFromBytes(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
-
-        PowerMockito.mockStatic(Bukkit.class);
-        when(Bukkit.getItemFactory()).thenReturn(
-            (ItemFactory) Whitebox.getField(CraftItemFactory.class, "instance").get(null));
-
-        when(Bukkit.getWorld(Mockito.anyString())).thenReturn(world);
-        when(Bukkit.getWorld(Mockito.any(UUID.class))).thenReturn(world);
-
-        when(Bukkit.getServer()).thenReturn(PowerMockito.mock(CraftServer.class));
+    @After
+    public void tearDown() throws Exception {
+        JacksonMockServer.INSTANCE.reload();
     }
 
     @Before
@@ -116,7 +93,7 @@ public abstract class BukkitSerTestHelper {
     public <T extends ConfigurationSerializable> void testSer(T org) {
 
         try {
-            System.out.println(org.serialize());
+            System.out.println("bukkit ser=" + org.serialize());
         } catch (Throwable ignored) { }
         testSerAll(org);
     }
@@ -130,7 +107,7 @@ public abstract class BukkitSerTestHelper {
             fail();
             return;
         }
-        System.out.println(json);
+        System.out.println("jackson ser=" + json);
 
         T read;
         try {

@@ -13,6 +13,10 @@ import no.kh498.util.ConfigUtil
 import no.kh498.util.jackson.deserializers.BukkitDeserializers
 import no.kh498.util.jackson.deserializers.BukkitKeyDeserializers
 import no.kh498.util.jackson.mixIn.*
+import no.kh498.util.jackson.mixIn.meta.BannerMetaMixIn
+import no.kh498.util.jackson.mixIn.meta.BookMetaMixIn
+import no.kh498.util.jackson.mixIn.meta.EnchantmentStorageMetaMixIn
+import no.kh498.util.jackson.mixIn.meta.LeatherArmorMetaMixIn
 import no.kh498.util.jackson.serializers.bean.ItemMetaSerializer
 import org.bukkit.*
 import org.bukkit.block.banner.Pattern
@@ -21,7 +25,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.craftbukkit.v1_x_Ry.JacksonMockServer
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.inventory.meta.*
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
@@ -54,8 +58,14 @@ class BukkitModule(
         setMixInAnnotation(ItemStack::class.java, ItemStackMixIn::class.java)
         setMixInAnnotation(ItemMeta::class.java, ItemMetaMixIn::class.java)
 
+        setMixInAnnotation(LeatherArmorMeta::class.java, LeatherArmorMetaMixIn::class.java)
+        setMixInAnnotation(BookMeta::class.java, BookMetaMixIn::class.java)
+        setMixInAnnotation(BannerMeta::class.java, BannerMetaMixIn::class.java)
+        setMixInAnnotation(EnchantmentStorageMeta::class.java, EnchantmentStorageMetaMixIn::class.java)
+
         setMixInAnnotation(PotionEffectType::class.java, GetNameMixIn::class.java)
         setMixInAnnotation(Enchantment::class.java, GetNameMixIn::class.java)
+
 
     }
 

@@ -45,7 +45,6 @@ public final class VersionUtil {
         return Bukkit.getServer().getClass().getPackage().getName().replace(CB_PACKAGE, "").replaceFirst(".", "");
     }
 
-
     public static Class<?> getVersionedClass(String packageName, String className) throws ClassNotFoundException {
         return Class.forName(packageName + "." + getNmsVersion() + "." + className);
     }

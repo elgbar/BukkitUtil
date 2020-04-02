@@ -10,6 +10,12 @@ import org.bukkit.block.banner.PatternType
  */
 abstract class PatternMixIn
 @JsonCreator
-constructor(@JsonProperty("color") color: DyeColor,
-            @JsonProperty("pattern") pattern: PatternType) {
+constructor(@JsonProperty(COLOR) color: DyeColor,
+            @JsonProperty(PATTERN) pattern: PatternType) {
+    
+    companion object {
+
+        const val COLOR = "color"
+        const val PATTERN = "pattern"
+    }
 }

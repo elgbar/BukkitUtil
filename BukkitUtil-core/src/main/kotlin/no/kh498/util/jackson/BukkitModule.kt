@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerModifier
 import com.fasterxml.jackson.databind.ser.Serializers
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.fasterxml.jackson.datatype.guava.GuavaModule
-import com.fasterxml.jackson.module.mrbean.MrBeanModule
 import no.kh498.util.ConfigUtil
 import no.kh498.util.jackson.deserializers.BukkitDeserializers
 import no.kh498.util.jackson.deserializers.BukkitKeyDeserializers
@@ -37,13 +36,7 @@ class BukkitModule(
          *
          * @see no.kh498.util.jackson.deserializers.ColoredStringDeserializer
          */
-        val colorizeStringsByDefault: Boolean = true,
-        /**
-         * For internal use, disables custom serialization of [ItemMeta] to allow it to be serialized to a map
-         *
-         * @see BukkitSerializers
-         */
-        internal val noCustomItemMetaSerialization: Boolean = false) : SimpleModule(Version(1, 0, 0, null, "no.kh498.util", "BukkitUtil")) {
+        val colorizeStringsByDefault: Boolean = true) : SimpleModule(Version(1, 0, 0, null, "no.kh498.util", "BukkitUtil")) {
 
     private val createServer = Bukkit.getServer() == null
 
@@ -105,9 +98,6 @@ class BukkitModule(
     override fun getDependencies(): List<Module> {
         val deps = ArrayList<Module>()
         deps.add(GuavaModule())
-        if (createServer) {
-            deps.add(MrBeanModule())
-        }
         return deps
     }
 }

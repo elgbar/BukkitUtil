@@ -56,7 +56,7 @@ constructor(@JsonIgnore open val map: Map<String, Any?>? = null) {
             "CraftMetaCrossbow.class -> \"CROSSBOW\"\n" +
             "CraftMetaSuspiciousStew.class -> \"SUSPICIOUS_STEW\"\n" +
             "")
-    @JsonProperty(TYPE_FIELD)
+    @JsonProperty(TYPE_FIELD, defaultValue = "\"UNSPECIFIC\"")
     abstract fun getMetaType(): String
 
     @JsonProperty(UNBREAKABLE)

@@ -24,16 +24,4 @@ abstract class BookMetaMixIn : ItemMetaMixIn() {
 
     @JsonProperty
     abstract fun getPages(): List<String>
-
-//    "title" to String::class.type(),
-//                "author" to String::class.type(),
-//                "pages" to mapper.typeFactory.constructCollectionType(List::class.java, String::class.java)
-
-//    @JsonIgnore
-//    abstract fun getPageCount(): Int
-
-
-//    @JacksonInject(TYPE_FIELD)
-//    @JsonProperty(TYPE_FIELD)
-//    abstract override fun getMetaType(): String
 }

@@ -13,10 +13,7 @@ import no.kh498.util.ConfigUtil
 import no.kh498.util.jackson.deserializers.BukkitDeserializers
 import no.kh498.util.jackson.deserializers.BukkitKeyDeserializers
 import no.kh498.util.jackson.mixIn.*
-import no.kh498.util.jackson.mixIn.meta.BannerMetaMixIn
-import no.kh498.util.jackson.mixIn.meta.BookMetaMixIn
-import no.kh498.util.jackson.mixIn.meta.EnchantmentStorageMetaMixIn
-import no.kh498.util.jackson.mixIn.meta.LeatherArmorMetaMixIn
+import no.kh498.util.jackson.mixIn.meta.*
 import no.kh498.util.jackson.serializers.bean.ItemMetaSerializer
 import org.bukkit.*
 import org.bukkit.block.banner.Pattern
@@ -62,6 +59,13 @@ class BukkitModule(
         setMixInAnnotation(BookMeta::class.java, BookMetaMixIn::class.java)
         setMixInAnnotation(BannerMeta::class.java, BannerMetaMixIn::class.java)
         setMixInAnnotation(EnchantmentStorageMeta::class.java, EnchantmentStorageMetaMixIn::class.java)
+        setMixInAnnotation(FireworkEffectMeta::class.java, FireworkEffectMetaMixIn::class.java)
+        setMixInAnnotation(FireworkMeta::class.java, FireworkMetaMixIn::class.java)
+        setMixInAnnotation(KnowledgeBookMeta::class.java, KnowledgeBookMetaMixIn::class.java)
+        setMixInAnnotation(MapMeta::class.java, MapMetaMixIn::class.java)
+        setMixInAnnotation(PotionMeta::class.java, PotionMetaMixIn::class.java)
+        setMixInAnnotation(SkullMeta::class.java, SkullMetaMixIn::class.java)
+        setMixInAnnotation(SpawnEggMeta::class.java, SpawnEggMetaMixIn::class.java)
 
         setMixInAnnotation(PotionEffectType::class.java, GetNameMixIn::class.java)
         setMixInAnnotation(Enchantment::class.java, GetNameMixIn::class.java)

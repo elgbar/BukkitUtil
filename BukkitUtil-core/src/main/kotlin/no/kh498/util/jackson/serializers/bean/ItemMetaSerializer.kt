@@ -3,6 +3,7 @@ package no.kh498.util.jackson.serializers.bean
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer
 import com.fasterxml.jackson.databind.ser.PropertyWriter
 import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
@@ -41,6 +42,14 @@ class ItemMetaSerializer(private val serializer: BeanSerializerBase) : StdSerial
         map.putAll(mapper.convertValue<MutableMap<String, Any?>>(meta, mapType))
 
         gen.writeObject(map)
+    }
+
+    override fun serializeWithType(value: ItemMeta, gen: JsonGenerator, serializers: SerializerProvider, typeSer: TypeSerializer) {
+        serialize(value, gen, serializers)
+    }
+
+    override fun handledType(): Class<ItemMeta> {
+        return ItemMeta::class.java
     }
 
     override fun properties(): Iterator<PropertyWriter> {

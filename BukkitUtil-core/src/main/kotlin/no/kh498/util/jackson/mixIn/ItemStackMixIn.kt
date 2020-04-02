@@ -10,31 +10,37 @@ import org.bukkit.material.MaterialData
 /**
  * @author Elg
  */
-interface ItemStackMixIn {
+abstract class ItemStackMixIn {
 
     @JsonProperty(TYPE, index = 0)
-    fun getType(): Material
+    abstract fun getType(): Material
 
     @JsonProperty(AMOUNT, index = 1, defaultValue = "1")
-    fun getAmount(): Int
+    abstract fun getAmount(): Int
 
     @JsonProperty(DAMAGE, index = 2)
-    fun getDurability(): Short
+    abstract fun getDurability(): Short
 
-    @JsonProperty(META, index = 3)
-    fun getItemMeta(): ItemMeta
+    //For some bizarre reason we must have the property directly on the field
+    // for the meta to changed
+    @JsonProperty(META)
+    private lateinit var meta: ItemMeta
+
+    //So we must ignore this getter to not get duplicate meta with different keys
+    @JsonIgnore
+    abstract fun getItemMeta(): ItemMeta
 
     @JsonIgnore
-    fun getData(): MaterialData
+    abstract fun getData(): MaterialData
 
     @JsonIgnore
-    fun getTypeId(): Int
+    abstract fun getTypeId(): Int
 
     @JsonIgnore
-    fun getMaxStackSize(): Int
+    abstract fun getMaxStackSize(): String
 
     @JsonIgnore
-    fun getEnchantments(): MutableMap<Enchantment?, Int?>
+    abstract fun getEnchantments(): MutableMap<Enchantment?, Int?>
 
     companion object {
         const val TYPE: String = "type"

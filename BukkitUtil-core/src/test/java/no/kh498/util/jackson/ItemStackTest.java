@@ -1,5 +1,6 @@
 package no.kh498.util.jackson;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -12,7 +13,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * @author Elg
@@ -29,7 +30,6 @@ public class ItemStackTest extends BukkitSerTestHelper {
         ItemStack item = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = item.getItemMeta();
         assertNotNull(meta);
-
         meta.setUnbreakable(true);
         item.setItemMeta(meta);
 
@@ -38,8 +38,6 @@ public class ItemStackTest extends BukkitSerTestHelper {
 
     @Test
     public void ItemStackWithSimpleMetaSerializable() {
-
-
         ItemStack item = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = item.getItemMeta();
         assertNotNull(meta);
@@ -52,7 +50,30 @@ public class ItemStackTest extends BukkitSerTestHelper {
     }
 
     @Test
-    public void ItemStackWithUnspesificFullMetaSerializable() {
+    public void ItemStackFromHOT() throws JsonProcessingException {
+        String json = "{\"==\":\"ItemStack\",\"damage\":0,\"amount\":1,\"meta\":{\"meta-type\":\"UNSPECIFIC\"," +
+                      "\"enchants\":null,\"Unbreakable\":true,\"display-name\":null,\"ItemFlags\":null," +
+                      "\"repair-cost\":0},\"type\":\"IRON_AXE\"}";
+        ItemStack item = mapper.readValue(json, ItemStack.class);
+        assertNotNull("Item is null", item);
+        assertEquals(item.getType(), Material.IRON_AXE);
+        assertNotNull("item meta is null", item.getItemMeta());
+        assertTrue("Item not unbreakable", item.getItemMeta().isUnbreakable());
+    }
+
+    @Test
+    public void ItemStackFromHOTMinimal() throws JsonProcessingException {
+        String json = "{\"==\":\"ItemStack\",\"meta\":{\"meta-type\":\"UNSPECIFIC\",\"Unbreakable\":true}," +
+                      "\"type\":\"IRON_AXE\"}";
+        ItemStack item = mapper.readValue(json, ItemStack.class);
+        assertNotNull("Item is null", item);
+        assertEquals(item.getType(), Material.IRON_AXE);
+        assertNotNull("item meta is null", item.getItemMeta());
+        assertTrue("Item not unbreakable", item.getItemMeta().isUnbreakable());
+    }
+
+    @Test
+    public void ItemStackWithUnspecificFullMetaSerializable() {
         ItemStack item = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = item.getItemMeta();
         assertNotNull(meta);

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
+import com.fasterxml.jackson.databind.jsontype.TypeDeserializer
 import com.fasterxml.jackson.databind.ser.PropertyWriter
 import com.fasterxml.jackson.databind.type.MapType
 import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.ENCHANTMENT
@@ -39,6 +40,7 @@ object ItemMetaDeserializer : StdDeserializer<ItemMeta>(ItemMeta::class.java) {
 
         val typeName = map[TYPE_FIELD] ?: error("Failed to find the type name field")
 
+
         //remove the type field so we do not need `@JsonIgnoreProperties(ignoreUnknown = true)` for ItemMetaMixIn
         map.remove(TYPE_FIELD)
 
@@ -46,7 +48,9 @@ object ItemMetaDeserializer : StdDeserializer<ItemMeta>(ItemMeta::class.java) {
         val metaClasses = classMap.filter { (_, name) -> name == typeName }.keys
 
         //sanity check
-        require(metaClasses.size == 1) { "Found multiple potential classes! $metaClasses" }
+        require(metaClasses.size == 1) {
+            "Found ${if (metaClasses.isEmpty()) "no" else "multiple"} potential classes! $metaClasses"
+        }
 
         //use the type information to find what class the meta is expecting at different properties
         val metaClass = metaClasses.first()
@@ -78,5 +82,9 @@ object ItemMetaDeserializer : StdDeserializer<ItemMeta>(ItemMeta::class.java) {
         val constructor = metaClass.getDeclaredConstructor(MutableMap::class.java)
         constructor.isAccessible = true
         return constructor.newInstance(convertedMap)
+    }
+
+    override fun deserializeWithType(p: JsonParser, ctxt: DeserializationContext, typeDeserializer: TypeDeserializer?): Any {
+        return deserialize(p, ctxt)
     }
 }

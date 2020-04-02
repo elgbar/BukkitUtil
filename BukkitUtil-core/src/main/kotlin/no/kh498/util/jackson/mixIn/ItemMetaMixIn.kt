@@ -1,11 +1,9 @@
 package no.kh498.util.jackson.mixIn
 
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.annotation.*
 import no.kh498.util.VersionUtil
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.meta.ItemMeta
 
 /**
@@ -21,7 +19,7 @@ constructor(@JsonIgnore open val map: Map<String, Any?>? = null) {
     abstract var enchants: Map<Enchantment, Int>
 
     @get:JsonProperty(FLAGS)
-    abstract val itemFlags: Set<String>
+    abstract var itemFlags: Set<ItemFlag>
 
     @JsonProperty(DISPLAY_NAME)
     abstract fun getDisplayName(): String
@@ -30,12 +28,42 @@ constructor(@JsonIgnore open val map: Map<String, Any?>? = null) {
     abstract fun getRepairCost(): Int
 
     //not really here used as type annotation
-    @JsonProperty(TYPE_FIELD, required = true)
-    abstract fun getType(): String
+    @JsonPropertyDescription("Different subtypes of ItemMeta require different values to let bukkit know the type of meta to deserialize as. For each new version of the game specific meta class might be added or removed so only use items that are available to the minimum version you're targeting.\n" +
+            "\n" +
+            "MC 1.8+\n" +
+            "CraftMetaBanner.class -> \"BANNER\"\n" +
+            "CraftMetaBlockState.class -> \"TILE_ENTITY\n" +
+            "CraftMetaBook.class -> \"BOOK\"\n" +
+            "CraftMetaBookSigned.class -> \"BOOK_SIGNED\"\n" +
+            "CraftMetaSkull.class -> \"SKULL\"\n" +
+            "CraftMetaLeatherArmor.class -> \"LEATHER_ARMOR\"\n" +
+            "CraftMetaMap.class -> \"MAP\"\n" +
+            "CraftMetaPotion.class -> \"POTION\"\n" +
+            "CraftMetaEnchantedBook.class -> \"ENCHANTED\"\n" +
+            "CraftMetaFirework.class -> \"FIREWORK\"\n" +
+            "CraftMetaCharge.class -> \"FIREWORK_EFFECT\"\n" +
+            "CraftMetaItem.class -> \"UNSPECIFIC\"\n" +
+            "\n" +
+            "MC 1.12+\n" +
+            "\n" +
+            "CraftMetaSpawnEgg.class -> \"SPAWN_EGG\"\n" +
+            "CraftMetaKnowledgeBook.class -> \"KNOWLEDGE_BOOK\"\n" +
+            "\n" +
+            "mc 1.15 (latest as of writing)\n" +
+            "\n" +
+            "CraftMetaArmorStand.class -> \"ARMOR_STAND\"\n" +
+            "CraftMetaTropicalFishBucket.class -> \"TROPICAL_FISH_BUCKET\"\n" +
+            "CraftMetaCrossbow.class -> \"CROSSBOW\"\n" +
+            "CraftMetaSuspiciousStew.class -> \"SUSPICIOUS_STEW\"\n" +
+            "")
+    @JsonProperty(TYPE_FIELD)
+    abstract fun getMetaType(): String
 
-    //from ItemMeta.Spigot (present in 1.12+)
     @JsonProperty(UNBREAKABLE)
     abstract fun isUnbreakable(): Boolean
+
+    @JsonProperty(LORE)
+    abstract fun getLore(): List<String>
 
     @JsonIgnore
     abstract fun getLocalizedName(): String

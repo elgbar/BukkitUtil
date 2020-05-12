@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+
 /**
  * @author Elg
  */
@@ -122,6 +124,36 @@ public class ChatUtil {
     public static String colorString(final ChatColor pri, final ChatColor sec, final String prefix,
                                      @NotNull final Iterable<?> args) {
         return colorString(pri, sec, prefix, ", ", args);
+    }
+
+    /**
+     * Create a list of string that is easier to ready than a mono colored text. Each object is colored by the secondary
+     * color while the rest is colored by the primary color
+     * <p>
+     * Example:
+     * <p>
+     * {@code colorString(ChatColor.RED, ChatColor.GRAY, "Test list: ", "test1","test2")}
+     * <p>
+     * returns
+     * <p>
+     * {@code ChatColor.RED + "Test list: " + ChatColor.GRAY + "test1" + ChatColor.RED + ", " + ChatColor.GRAY +
+     * "test1"}
+     *
+     * @param pri
+     *     The primary color
+     * @param sec
+     *     The secondary color
+     * @param prefix
+     *     The prefix of the list
+     * @param args
+     *     The objects to insert into the list
+     *
+     * @return A formatted string
+     */
+    @NotNull
+    public static String colorString(final ChatColor pri, final ChatColor sec, final String prefix,
+                                     @NotNull final Object[] args) {
+        return colorString(pri, sec, prefix, ", ", Arrays.asList(args));
     }
 
     /**

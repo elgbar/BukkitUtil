@@ -37,7 +37,9 @@
                                 <includes>
                                     <include>no.kh498.util:CommonUtil</include>
                                     <include>io.github.classgraph:classgraph</include>
+                                    
                                     <include>info.ronjenkins:slf4bukkit</include>
+                                    <include>org.slf4j:slf4j-api</include>
 
                                     <include>org.apache.commons:commons-lang3</include>
                                     <include>commons-io:commons-io</include>

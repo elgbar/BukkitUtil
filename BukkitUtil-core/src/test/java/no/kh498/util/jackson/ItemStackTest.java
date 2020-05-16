@@ -30,7 +30,7 @@ public class ItemStackTest extends BukkitSerTestHelper {
         ItemStack item = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = item.getItemMeta();
         assertNotNull(meta);
-        meta.setUnbreakable(true);
+        meta.spigot().setUnbreakable(true);
         item.setItemMeta(meta);
 
         testSer(item);
@@ -58,7 +58,7 @@ public class ItemStackTest extends BukkitSerTestHelper {
         assertNotNull("Item is null", item);
         assertEquals(item.getType(), Material.IRON_AXE);
         assertNotNull("item meta is null", item.getItemMeta());
-        assertTrue("Item not unbreakable", item.getItemMeta().isUnbreakable());
+        assertTrue("Item not unbreakable", item.getItemMeta().spigot().isUnbreakable());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ItemStackTest extends BukkitSerTestHelper {
         assertNotNull("Item is null", item);
         assertEquals(item.getType(), Material.IRON_AXE);
         assertNotNull("item meta is null", item.getItemMeta());
-        assertTrue("Item not unbreakable", item.getItemMeta().isUnbreakable());
+        assertTrue("Item not unbreakable", item.getItemMeta().spigot().isUnbreakable());
     }
 
     @Test

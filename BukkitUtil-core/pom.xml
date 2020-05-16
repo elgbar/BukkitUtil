@@ -37,14 +37,15 @@
                                 <includes>
                                     <include>no.kh498.util:CommonUtil</include>
                                     <include>io.github.classgraph:classgraph</include>
-                                    
+
                                     <include>info.ronjenkins:slf4bukkit</include>
                                     <include>org.slf4j:slf4j-api</include>
 
-                                    <include>org.apache.commons:commons-lang3</include>
-                                    <include>commons-io:commons-io</include>
+                                    <!--                                    <include>commons-io:commons-io</include>-->
 
+                                    <include>com.fasterxml.jackson.core:jackson-core</include>
                                     <include>com.fasterxml.jackson.core:jackson-databind</include>
+                                    <include>com.fasterxml.jackson.core:jackson-annotations</include>
                                     <include>com.fasterxml.jackson.datatype:jackson-datatype-guava</include>
 
                                     <include>org.jetbrains.kotlin:kotlin-stdlib-jdk8</include>

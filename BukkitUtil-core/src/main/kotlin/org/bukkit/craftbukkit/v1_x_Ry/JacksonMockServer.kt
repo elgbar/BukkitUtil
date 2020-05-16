@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.v1_x_Ry
 
 //import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemFactory
+import com.avaje.ebean.config.ServerConfig
 import org.bukkit.*
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarFlag
@@ -27,7 +28,7 @@ object JacksonMockServer : Server {
 
     private val itemFactor: ItemFactory = CraftItemFactory.instance()
     private val backingWorlds = ArrayList<World>()
-    
+
     val offlinePlayers = ArrayList<OfflinePlayer>()
 
     init {
@@ -47,20 +48,24 @@ object JacksonMockServer : Server {
     override fun getName() = "Jackson Mock Server"
     override fun getServerName() = name
 
-    override fun getBukkitVersion() = "Mock of v1.12 R1"
+    override fun getBukkitVersion() = "Mock of v1.9 R1"
     override fun getVersion() = bukkitVersion
 
     override fun getLogger(): Logger = Logger.getGlobal()
 
 
     override fun getIp() = "localhost"
-    override fun getEntity(p0: UUID?) = null
+//    override fun getEntity(p0: UUID?) = null
 
     /////////////////////////////////////////////
     // Methods that actually holds information //
     /////////////////////////////////////////////
 
     override fun getWorlds() = backingWorlds
+    override fun configureDbConfig(config: ServerConfig?) {
+        TODO("not implemented")
+    }
+
     override fun getWorld(name: String?) = backingWorlds.firstOrNull { it.name == name }
     override fun getWorld(uid: UUID?) = backingWorlds.firstOrNull { it.uid == uid }
 
@@ -108,13 +113,17 @@ object JacksonMockServer : Server {
     override fun getPort() = 0
     override fun getBanList(type: BanList.Type?) = null
     override fun getMap(id: Short) = null
+    override fun useExactLoginLocation() = false
+
     override fun getMonsterSpawnLimit() = 0
-    override fun createMerchant(p0: String?) = null
+
+    //    override fun createMerchant(p0: String?) = null
     override fun getScoreboardManager() = null
     override fun createChunkData(world: World?) = null
     override fun setWhitelist(value: Boolean) {}
     override fun getIdleTimeout() = 0
     override fun getMaxPlayers() = 0
+    override fun _INVALID_getOnlinePlayers(): Array<Player> = emptyArray()
     override fun getViewDistance() = 0
     override fun unloadWorld(name: String?, save: Boolean) = false
     override fun unloadWorld(world: World?, save: Boolean) = false
@@ -124,7 +133,8 @@ object JacksonMockServer : Server {
     override fun dispatchCommand(sender: CommandSender?, commandLine: String?) = false
     override fun getIPBans() = emptySet<String>()
     override fun getWarningState() = Warning.WarningState.OFF
-    override fun advancementIterator() = null
+
+    //    override fun advancementIterator() = null
     override fun getAllowNether() = false
     override fun getAllowFlight() = false
     override fun getServicesManager() = null
@@ -148,7 +158,8 @@ object JacksonMockServer : Server {
     override fun getDefaultGameMode() = GameMode.SPECTATOR
     override fun getUnsafe() = null
     override fun setDefaultGameMode(mode: GameMode?) {}
-    override fun reloadData() {}
+
+    //    override fun reloadData() {}
     override fun createWorld(creator: WorldCreator?) = null
     override fun isPrimaryThread() = true
     override fun resetRecipes() {}
@@ -169,5 +180,5 @@ object JacksonMockServer : Server {
     override fun getMessenger() = null
     override fun getOnlineMode() = false
     override fun getWorldType() = null
-    override fun getAdvancement(p0: NamespacedKey?) = null
+//    override fun getAdvancement(p0: NamespacedKey?) = null
 }

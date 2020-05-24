@@ -140,6 +140,7 @@
         <module>BukkitUtil-core</module>
         <module>BukkitUtil-wg-7</module>
         <module>BukkitUtil-wg-6</module>
+        <module>BukkitUtil-jackson-module</module>
         <module>BukkitUtil</module>
     </modules>
 </project>

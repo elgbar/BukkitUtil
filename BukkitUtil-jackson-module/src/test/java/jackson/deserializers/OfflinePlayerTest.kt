@@ -1,4 +1,4 @@
-package no.kh498.util.jackson
+package jackson.deserializers
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import org.bukkit.OfflinePlayer

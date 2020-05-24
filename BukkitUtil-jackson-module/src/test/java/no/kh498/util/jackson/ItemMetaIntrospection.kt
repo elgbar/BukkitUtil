@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.ser.PropertyWriter
 import com.fasterxml.jackson.databind.type.CollectionType
 import com.fasterxml.jackson.databind.type.MapType
+import jackson.deserializers.BukkitSerTestHelper
 import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.DISPLAY_NAME
 import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.ENCHANTMENT
 import no.kh498.util.jackson.mixIn.ItemMetaMixIn.Companion.FLAGS

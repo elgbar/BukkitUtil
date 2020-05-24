@@ -1,4 +1,4 @@
-package no.kh498.util.jackson;
+package jackson.deserializers;
 
 import org.bukkit.potion.PotionEffectType;
 import org.junit.Test;

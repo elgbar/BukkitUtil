@@ -1,17 +1,13 @@
-package no.kh498.util
-
 import no.kh498.util.VersionUtil.*
 import org.bukkit.craftbukkit.v1_x_Ry.JacksonMockServer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.powermock.modules.junit4.PowerMockRunner
 
 /**
  * @author Elg
  */
-@RunWith(PowerMockRunner::class)
+//@RunWith(PowerMockRunner::class)
 class VersionUtilTest {
 
     init {

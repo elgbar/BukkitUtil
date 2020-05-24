@@ -85,6 +85,7 @@
                                     <include>no.kh498.util:BukkitUtil-core</include>
                                     <include>no.kh498.util:BukkitUtil-wg-6</include>
                                     <include>no.kh498.util:BukkitUtil-wg-7</include>
+                                    <include>no.kh498.util:BukkitUtil-jackson-module</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -110,6 +111,12 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-7</artifactId>
+            <version>internal</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.kh498.util</groupId>
+            <artifactId>BukkitUtil-jackson-module</artifactId>
             <version>internal</version>
             <scope>compile</scope>
         </dependency>

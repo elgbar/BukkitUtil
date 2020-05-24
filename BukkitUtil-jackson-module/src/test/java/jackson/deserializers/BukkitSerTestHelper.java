@@ -1,7 +1,8 @@
-package no.kh498.util.jackson;
+package jackson.deserializers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import no.kh498.util.jackson.BukkitModule;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.craftbukkit.v1_x_Ry.JacksonMockServer;

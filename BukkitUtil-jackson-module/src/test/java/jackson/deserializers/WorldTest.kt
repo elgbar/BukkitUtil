@@ -1,4 +1,4 @@
-package no.kh498.util.jackson
+package jackson.deserializers
 
 import org.bukkit.World
 import org.bukkit.craftbukkit.v1_x_Ry.JacksonMockServer

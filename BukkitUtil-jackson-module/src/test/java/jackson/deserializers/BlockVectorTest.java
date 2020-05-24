@@ -1,4 +1,4 @@
-package no.kh498.util.jackson;
+package jackson.deserializers;
 
 import org.bukkit.util.BlockVector;
 import org.junit.Test;

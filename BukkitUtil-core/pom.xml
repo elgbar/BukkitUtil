@@ -14,7 +14,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>2.10.3</jackson.version>
         <powermock.version>1.7.4</powermock.version>
     </properties>
 
@@ -40,17 +39,6 @@
 
                                     <include>info.ronjenkins:slf4bukkit</include>
                                     <include>org.slf4j:slf4j-api</include>
-
-                                    <!--                                    <include>commons-io:commons-io</include>-->
-
-                                    <include>com.fasterxml.jackson.core:jackson-core</include>
-                                    <include>com.fasterxml.jackson.core:jackson-databind</include>
-                                    <include>com.fasterxml.jackson.core:jackson-annotations</include>
-                                    <include>com.fasterxml.jackson.datatype:jackson-datatype-guava</include>
-
-                                    <include>org.jetbrains.kotlin:kotlin-stdlib-jdk8</include>
-                                    <include>org.jetbrains.kotlin:kotlin-stdlib-jdk7</include>
-                                    <include>org.jetbrains.kotlin:kotlin-stdlib</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -153,19 +141,6 @@
             <version>19.0.0</version>
         </dependency>
 
-        <!--Jackson-->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-guava</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
         <!-- Testing -->
 
         <dependency>
@@ -187,14 +162,6 @@
             <artifactId>powermock-api-mockito</artifactId>
             <version>${powermock.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../libs/spigot-1.12.2.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

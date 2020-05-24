@@ -3,8 +3,8 @@ package no.kh498.util.jackson.deserializers
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import jackson.deserializers.BukkitSerTestHelper
 import no.kh498.util.jackson.BukkitModule
-import no.kh498.util.jackson.BukkitSerTestHelper
 import org.junit.Test
 import kotlin.test.assertEquals
 

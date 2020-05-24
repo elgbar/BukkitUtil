@@ -1,4 +1,4 @@
-package no.kh498.util.jackson;
+package jackson.deserializers;
 
 import org.bukkit.Color;
 import org.junit.Test;

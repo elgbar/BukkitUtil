@@ -1,6 +1,5 @@
 package org.bukkit.craftbukkit.v1_x_Ry
 
-//import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemFactory
 import com.avaje.ebean.config.ServerConfig
 import org.bukkit.*
 import org.bukkit.boss.BarColor
@@ -52,7 +51,6 @@ object JacksonMockServer : Server {
     override fun getVersion() = bukkitVersion
 
     override fun getLogger(): Logger = Logger.getGlobal()
-
 
     override fun getIp() = "localhost"
 //    override fun getEntity(p0: UUID?) = null

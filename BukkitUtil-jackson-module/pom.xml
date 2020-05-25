@@ -6,27 +6,69 @@
     <parent>
         <groupId>no.kh498.util</groupId>
         <artifactId>BukkitUtil-parent</artifactId>
-        <version>internal</version>
+        <version>4.1.0-beta1</version>
     </parent>
 
     <artifactId>BukkitUtil-jackson-module</artifactId>
-    <version>internal</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.10.3</jackson.version>
         <powermock.version>1.7.4</powermock.version>
+
+        <github.global.server>github</github.global.server>
+        <maven2.repo.dir>${project.build.directory}/mvn-repo</maven2.repo.dir>
     </properties>
 
-    <repositories>
+    <distributionManagement>
         <repository>
-            <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
         </repository>
-    </repositories>
+    </distributionManagement>
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo
+                    </altDeploymentRepository>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
+                <executions>
+                    <!-- Push Maven artifacts to GitHub. -->
+                    <execution>
+                        <id>push-artifacts-to-github</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <configuration>
+                            <server>github</server><!-- settings.xml -->
+                            <repositoryName>maven2</repositoryName>
+                            <repositoryOwner>kh498</repositoryOwner>
+                            <branch>refs/heads/repo</branch>
+                            <message>${project.groupId}:${project.artifactId}:${project.version}</message>
+                            <outputDirectory>${maven2.repo.dir}</outputDirectory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/maven-metadata.xml*</exclude>
+                            </excludes>
+                            <merge>true</merge>
+                            <noJekyll>true</noJekyll>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -59,11 +101,18 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>internal</version>
+            <version>4.1.0-beta1</version>
             <scope>compile</scope>
         </dependency>
 

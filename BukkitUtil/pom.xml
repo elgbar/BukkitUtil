@@ -99,25 +99,25 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>internal</version>
+            <version>4.1.0-beta1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-6</artifactId>
-            <version>internal</version>
+            <version>4.1.0-beta1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-7</artifactId>
-            <version>internal</version>
+            <version>4.1.0-beta1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-jackson-module</artifactId>
-            <version>internal</version>
+            <version>4.1.0-beta1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

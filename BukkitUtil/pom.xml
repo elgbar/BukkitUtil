@@ -79,7 +79,7 @@
                         <configuration>
                             <minimizeJar>false</minimizeJar>
                             <createSourcesJar>true</createSourcesJar>
-                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
                                     <include>no.kh498.util:BukkitUtil-core</include>

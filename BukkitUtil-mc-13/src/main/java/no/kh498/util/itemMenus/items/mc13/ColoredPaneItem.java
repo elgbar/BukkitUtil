@@ -1,17 +1,18 @@
-package no.kh498.util.itemMenus.items;
+package no.kh498.util.itemMenus.items.mc13;
 
 import no.kh498.util.itemMenus.api.ItemClickHandler;
 import no.kh498.util.itemMenus.api.items.ActionMenuItem;
+import no.kh498.util.itemMenus.util.DyeColorUtils;
 import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Note that this version do <b>not</b> work on 1.13+
+ * Action version of {@link no.kh498.util.itemMenus.items.ColoredPaneItem} for minecraft 1.13+
  *
  * @author Elg
- * @since 0.1.0
+ * @see no.kh498.util.itemMenus.items.ColoredPaneItem
+ * @since 4.1.1
  */
 public class ColoredPaneItem extends ActionMenuItem {
 
@@ -27,7 +28,7 @@ public class ColoredPaneItem extends ActionMenuItem {
    */
   public ColoredPaneItem(final String name, final DyeColor color, final ItemClickHandler handler,
                          final String... lore) {
-    super(name, handler, new ItemStack(Material.STAINED_GLASS_PANE, 1, color.getWoolData()), lore);
+    super(name, handler, new ItemStack(DyeColorUtils.dyeColorToPaneMaterial(color)), lore);
   }
 
   /**

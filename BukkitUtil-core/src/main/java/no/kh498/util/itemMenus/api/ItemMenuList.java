@@ -1,6 +1,8 @@
 package no.kh498.util.itemMenus.api;
 
 import com.google.common.base.Preconditions;
+import java.util.ArrayList;
+import java.util.List;
 import no.kh498.util.itemMenus.MathUtil;
 import no.kh498.util.itemMenus.api.constants.CommonPos;
 import no.kh498.util.itemMenus.api.constants.Size;
@@ -16,9 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * View a {@link ArrayList ArrayList}{@code <}{@link MenuItem MenuItem}{@code
@@ -34,169 +34,178 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ItemMenuList {
 
-    public static final MenuItem DEFAULT_BOTTOM_PANE = new StaticColoredPaneItem(DyeColor.BLACK);
-    /* constants */
-    private static final int FIVE_LINES_SIZE = Size.FIVE.getSize();
-    /* set by the user */
-    @NotNull
-    private final List<MenuItem> menuItemList;
-    @NotNull
-    private final String title;
-    private final Plugin plugin;
-    /* generated */
-    private final int pages;
-    private boolean smoothUpdate;
-    private MenuItem bottomPane = DEFAULT_BOTTOM_PANE;
+  @Nullable
+  public static MenuItem DEFAULT_BOTTOM_PANE;
+  /* constants */
+  private static final int FIVE_LINES_SIZE = Size.FIVE.getSize();
+  /* set by the user */
+  @NotNull
+  private final List<MenuItem> menuItemList;
+  @NotNull
+  private final String title;
+  private final Plugin plugin;
+  /* generated */
+  private final int pages;
+  private boolean smoothUpdate;
+  @Nullable
+  private MenuItem bottomPane = DEFAULT_BOTTOM_PANE;
 
-    /**
-     * @param menuItemList
-     *     The list of MenuItems to include
-     * @param title
-     *     The title of the menu, <b>can maximum be 22 characters long</b>
-     *
-     * @throws IllegalArgumentException
-     *     if the title is longer than 22 characters
-     * @throws NullPointerException
-     *     if {@code plugin} or {@code menuItemList} is {@code null}
-     */
-    public ItemMenuList(Plugin plugin, @NotNull final List<MenuItem> menuItemList, @NotNull final String title) {
-        this(plugin, menuItemList, title, true);
+  static {
+    try {
+      DEFAULT_BOTTOM_PANE = new StaticColoredPaneItem(DyeColor.BLACK);
+    } catch (NoSuchFieldError ignore) {
+    }
+  }
+
+  /**
+   * @param menuItemList
+   *   The list of MenuItems to include
+   * @param title
+   *   The title of the menu, <b>can maximum be 22 characters long</b>
+   *
+   * @throws IllegalArgumentException
+   *   if the title is longer than 22 characters
+   * @throws NullPointerException
+   *   if {@code plugin} or {@code menuItemList} is {@code null}
+   */
+  public ItemMenuList(Plugin plugin, @NotNull final List<MenuItem> menuItemList, @NotNull final String title) {
+    this(plugin, menuItemList, title, true);
+  }
+
+  /**
+   * @param menuItemList
+   *   The list of MenuItems to include
+   * @param title
+   *   The title of the menu, <b>can maximum be 22 characters long</b>
+   * @param smoothUpdate
+   *   If page number should be traded for nicer page transitions
+   *
+   * @throws IllegalArgumentException
+   *   if the title is longer than 22 characters
+   * @throws NullPointerException
+   *   if {@code plugin} or {@code menuItemList} is {@code null}
+   */
+  @SuppressWarnings("WeakerAccess")
+  public ItemMenuList(Plugin plugin, @NotNull final List<MenuItem> menuItemList, @NotNull final String title,
+                      boolean smoothUpdate) {
+
+    Preconditions.checkArgument(smoothUpdate || title.length() <= 24,
+                                "Title must be shorter than 24 characters when displaying page number");
+    Preconditions.checkNotNull(plugin);
+    Preconditions.checkNotNull(menuItemList);
+
+    this.plugin = plugin;
+    this.menuItemList = menuItemList;
+    this.title = title;
+    pages = MathUtil.dividedRoundedUp(menuItemList.size(), FIVE_LINES_SIZE);
+    this.smoothUpdate = smoothUpdate;
+
+  }
+
+  public void open(@NotNull final Player player) {
+    ItemMenu menu = new ItemMenu(plugin, title, Size.SIX);
+    changePage(player, 0, menu);
+    menu.open(player);
+  }
+
+  private void changePage(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
+    if (!useSmoothUpdate()) {
+      menu.setName(title + " " + (page + 1) + "/" + pages);
     }
 
-    /**
-     * @param menuItemList
-     *     The list of MenuItems to include
-     * @param title
-     *     The title of the menu, <b>can maximum be 22 characters long</b>
-     * @param smoothUpdate
-     *     If page number should be traded for nicer page transitions
-     *
-     * @throws IllegalArgumentException
-     *     if the title is longer than 22 characters
-     * @throws NullPointerException
-     *     if {@code plugin} or {@code menuItemList} is {@code null}
-     */
-    @SuppressWarnings("WeakerAccess")
-    public ItemMenuList(Plugin plugin, @NotNull final List<MenuItem> menuItemList, @NotNull final String title,
-                        boolean smoothUpdate) {
-
-        Preconditions.checkArgument(smoothUpdate || title.length() <= 24,
-                                    "Title must be shorter than 24 characters when displaying page number");
-        Preconditions.checkNotNull(plugin);
-        Preconditions.checkNotNull(menuItemList);
-
-        this.plugin = plugin;
-        this.menuItemList = menuItemList;
-        this.title = title;
-        pages = MathUtil.dividedRoundedUp(menuItemList.size(), FIVE_LINES_SIZE);
-        this.smoothUpdate = smoothUpdate;
-
+    //clean menu for next page
+    menu.clearAllItems();
+    for (int m = 0; m < 9; m++) {
+      menu.setItem(Size.FIVE.getSize() + m, bottomPane);
     }
 
-    public void open(@NotNull final Player player) {
-        ItemMenu menu = new ItemMenu(plugin, title, Size.SIX);
-        changePage(player, 0, menu);
-        menu.open(player);
+    //apply this pages items
+    int index = FIVE_LINES_SIZE * page;
+    for (int i = 0; i < FIVE_LINES_SIZE; i++, index++) {
+      if (menuItemList.size() > index) { menu.setItem(i, menuItemList.get(index)); }
     }
 
-    private void changePage(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
-        if (!useSmoothUpdate()) {
-            menu.setName(title + " " + (page + 1) + "/" + pages);
-        }
+    //set items to go to next and previous pages, if any
+    if (page != 0) { menu.setItem(CommonPos.LEFT, Size.SIX, prevItem(player, page, menu)); }
+    if (page != pages - 1) { menu.setItem(CommonPos.RIGHT, Size.SIX, nextItem(player, page, menu)); }
+  }
 
-        //clean menu for next page
-        menu.clearAllItems();
-        for (int m = 0; m < 9; m++) {
-            menu.setItem(Size.FIVE.getSize() + m, bottomPane);
-        }
-
-        //apply this pages items
-        int index = FIVE_LINES_SIZE * page;
-        for (int i = 0; i < FIVE_LINES_SIZE; i++, index++) {
-            if (menuItemList.size() > index) { menu.setItem(i, menuItemList.get(index)); }
-        }
-
-        //set items to go to next and previous pages, if any
-        if (page != 0) { menu.setItem(CommonPos.LEFT, Size.SIX, prevItem(player, page, menu)); }
-        if (page != pages - 1) { menu.setItem(CommonPos.RIGHT, Size.SIX, nextItem(player, page, menu)); }
+  private void open(@NotNull final Player player, final int page, @NotNull ItemMenu menu,
+                    @NotNull ItemClickEvent event) {
+    //do not change page if there is no other page
+    if (page < 0 || page >= pages) {
+      return;
     }
 
-    private void open(@NotNull final Player player, final int page, @NotNull ItemMenu menu,
-                      @NotNull ItemClickEvent event) {
-        //do not change page if there is no other page
-        if (page < 0 || page >= pages) {
-            return;
-        }
-
-        changePage(player, page, menu);
-        if (useSmoothUpdate()) {
-            event.setWillUpdate(true);
-        }
-        else {
-            event.setWillClose(true);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> menu.open(player), 2L);
-        }
+    changePage(player, page, menu);
+    if (useSmoothUpdate()) {
+      event.setWillUpdate(true);
     }
-
-    private MenuItem nextItem(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
-        return new ActionMenuItem(ChatColor.WHITE + "Next page", event -> open(player, page + 1, menu, event),
-                                  new ItemStack(Material.SLIME_BALL));
+    else {
+      event.setWillClose(true);
+      Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> menu.open(player), 2L);
     }
+  }
 
-    private MenuItem prevItem(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
-        return new ActionMenuItem(ChatColor.WHITE + "Previous page", event -> open(player, page - 1, menu, event),
-                                  new ItemStack(Material.MAGMA_CREAM));
-    }
+  private MenuItem nextItem(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
+    return new ActionMenuItem(ChatColor.WHITE + "Next page", event -> open(player, page + 1, menu, event),
+                              new ItemStack(Material.SLIME_BALL));
+  }
 
-    /**
-     * @return the List of menuItem that will be displayed
-     */
-    @NotNull
-    public final List<MenuItem> getMenuItemList() {
-        return menuItemList;
-    }
+  private MenuItem prevItem(@NotNull final Player player, final int page, @NotNull ItemMenu menu) {
+    return new ActionMenuItem(ChatColor.WHITE + "Previous page", event -> open(player, page - 1, menu, event),
+                              new ItemStack(Material.MAGMA_CREAM));
+  }
 
-    /**
-     * @return the title
-     */
-    @NotNull
-    public final String getTitle() {
-        return title;
-    }
+  /**
+   * @return the List of menuItem that will be displayed
+   */
+  @NotNull
+  public final List<MenuItem> getMenuItemList() {
+    return menuItemList;
+  }
 
-    /**
-     * @return the pages
-     */
-    public final int getPages() {
-        return pages;
-    }
+  /**
+   * @return the title
+   */
+  @NotNull
+  public final String getTitle() {
+    return title;
+  }
 
-    public boolean useSmoothUpdate() {
-        return smoothUpdate;
-    }
+  /**
+   * @return the pages
+   */
+  public final int getPages() {
+    return pages;
+  }
 
-    @NotNull
-    public ItemMenuList setSmoothUpdate(boolean smoothUpdate) {
-        this.smoothUpdate = smoothUpdate;
-        return this;
-    }
+  public boolean useSmoothUpdate() {
+    return smoothUpdate;
+  }
 
-    public MenuItem getBottomPane() {
-        return bottomPane;
-    }
+  @NotNull
+  public ItemMenuList setSmoothUpdate(boolean smoothUpdate) {
+    this.smoothUpdate = smoothUpdate;
+    return this;
+  }
 
-    /**
-     * The filler items at the bottom of tha page.
-     * <p>
-     * default is a black {@link StaticColoredPaneItem}
-     */
-    public void setBottomPane(StaticMenuItem bottomPane) {
-        this.bottomPane = bottomPane;
-    }
+  public MenuItem getBottomPane() {
+    return bottomPane;
+  }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "ListItemMenu{" + ", title='" + title + '\'' + ", pages=" + pages + '}';
-    }
+  /**
+   * The filler items at the bottom of tha page.
+   * <p>
+   * default is a black {@link StaticColoredPaneItem}
+   */
+  public void setBottomPane(StaticMenuItem bottomPane) {
+    this.bottomPane = bottomPane;
+  }
+
+  @NotNull
+  @Override
+  public String toString() {
+    return "ListItemMenu{" + ", title='" + title + '\'' + ", pages=" + pages + '}';
+  }
 }

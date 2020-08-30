@@ -7,7 +7,7 @@
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil-parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.1.0</version>
+    <version>4.1.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -141,6 +141,7 @@
         <module>BukkitUtil-wg-7</module>
         <module>BukkitUtil-wg-6</module>
         <module>BukkitUtil-jackson-module</module>
+        <module>BukkitUtil-mc-13</module>
         <module>BukkitUtil</module>
     </modules>
 </project>

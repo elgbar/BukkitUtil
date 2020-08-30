@@ -6,7 +6,7 @@
 
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -86,6 +86,7 @@
                                     <include>no.kh498.util:BukkitUtil-wg-6</include>
                                     <include>no.kh498.util:BukkitUtil-wg-7</include>
                                     <include>no.kh498.util:BukkitUtil-jackson-module</include>
+                                    <include>no.kh498.util:BukkitUtil-mc-13</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -99,22 +100,27 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>4.1.0</version>
+            <version>4.1.1</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-6</artifactId>
-            <version>4.1.0</version>
+            <version>4.1.1</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-7</artifactId>
-            <version>4.1.0</version>
+            <version>4.1.1</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-jackson-module</artifactId>
-            <version>4.1.0</version>
+            <version>4.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>no.kh498.util</groupId>
+            <artifactId>BukkitUtil-mc-13</artifactId>
+            <version>4.1.1</version>
         </dependency>
     </dependencies>
 </project>

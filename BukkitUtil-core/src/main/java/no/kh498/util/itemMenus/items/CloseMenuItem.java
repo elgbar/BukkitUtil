@@ -19,17 +19,18 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A {@link StaticMenuItem} that closes the {@link
- * ItemMenu}.
+ * A {@link StaticMenuItem} that closes the {@link ItemMenu}.
+ * <p>
+ * Note that this version works on 1.13+
  */
 public class CloseMenuItem extends StaticMenuItem {
 
-    public CloseMenuItem() {
-        super(ChatColor.RED + "Close", new ItemStack(Material.BARRIER));
-    }
+  public CloseMenuItem() {
+    super(ChatColor.RED + "Close", new ItemStack(Material.BARRIER));
+  }
 
-    @Override
-    public void onItemClick(@NotNull final ItemClickEvent event) {
-        event.setWillClose(true);
-    }
+  @Override
+  public void onItemClick(@NotNull final ItemClickEvent event) {
+    event.setWillClose(true);
+  }
 }

@@ -3,16 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>no.kh498.util</groupId>
+        <artifactId>BukkitUtil-parent</artifactId>
+        <version>4.2.0</version>
+    </parent>
 
-    <groupId>no.kh498.util</groupId>
-    <artifactId>BukkitUtil</artifactId>
-    <version>4.2.0</version>
+    <artifactId>BukkitUtil-mc-13</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- github server corresponds to entry in ~/.m2/settings.xml -->
-        <github.global.server>github</github.global.server>
 
+        <github.global.server>github</github.global.server>
         <maven2.repo.dir>${project.build.directory}/mvn-repo</maven2.repo.dir>
     </properties>
 
@@ -65,36 +67,19 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <minimizeJar>false</minimizeJar>
-                            <createSourcesJar>true</createSourcesJar>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <artifactSet>
-                                <includes>
-                                    <include>no.kh498.util:BukkitUtil-core</include>
-                                    <include>no.kh498.util:BukkitUtil-wg-6</include>
-                                    <include>no.kh498.util:BukkitUtil-wg-7</include>
-                                    <include>no.kh498.util:BukkitUtil-jackson-module</include>
-                                    <include>no.kh498.util:BukkitUtil-mc-13</include>
-                                </includes>
-                            </artifactSet>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>paper</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -102,25 +87,11 @@
             <artifactId>BukkitUtil-core</artifactId>
             <version>4.2.0</version>
         </dependency>
+
         <dependency>
-            <groupId>no.kh498.util</groupId>
-            <artifactId>BukkitUtil-wg-6</artifactId>
-            <version>4.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>no.kh498.util</groupId>
-            <artifactId>BukkitUtil-wg-7</artifactId>
-            <version>4.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>no.kh498.util</groupId>
-            <artifactId>BukkitUtil-jackson-module</artifactId>
-            <version>4.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>no.kh498.util</groupId>
-            <artifactId>BukkitUtil-mc-13</artifactId>
-            <version>4.2.0</version>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

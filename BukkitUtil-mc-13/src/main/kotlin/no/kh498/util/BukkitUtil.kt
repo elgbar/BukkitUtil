@@ -14,7 +14,7 @@ object BukkitUtil {
    * Fix all known breaking changes for BukkitUtil when targeting version 1.13 or above
    */
   @JvmStatic
-  fun fixBukkitUtil() {
+  fun fixBukkitUtilMC13() {
     fixDefaultMenuItems()
   }
 

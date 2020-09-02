@@ -4,7 +4,7 @@ The utilities in this module are meant to supplement, or otherwise fix breaking 
 
 ## How to use this module
 
-1. Either fix all errors by calling `no.kh498.util.BukkitUtil.fixBukkitUtil()`
+1. Either fix all errors by calling `no.kh498.util.BukkitUtil.fixBukkitUtilMC13()`
 2. Call each wanted fix in `no.kh498.util.BukkitUtil` individually
 
 ## Known breaking changes

@@ -29,6 +29,7 @@
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/BukkitUtil-wg-6/pom.xml" goal="clean test deploy" />
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/BukkitUtil-wg-7/pom.xml" goal="clean test deploy" />
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/BukkitUtil-jackson-module/pom.xml" goal="clean test deploy" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/BukkitUtil-mc-13/pom.xml" goal="clean test deploy" />
     </method>
   </configuration>
 </component>

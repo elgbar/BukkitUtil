@@ -6,7 +6,7 @@
     <parent>
         <artifactId>BukkitUtil-parent</artifactId>
         <groupId>no.kh498.util</groupId>
-        <version>4.2.0</version>
+        <version>4.2.1</version>
     </parent>
 
     <artifactId>BukkitUtil-core</artifactId>

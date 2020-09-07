@@ -152,6 +152,48 @@ public class FileUtils {
         return writeFromInternal(getDatafolderFile(plugin, externalPath), resourceClass, internalPath);
     }
 
+
+    /**
+     * Write from an internal file found to a plugin's data folder
+     *
+     * @param plugin
+     *     The plugin's datafolder to be used
+     * @param resourceClass
+     *     A class from the jar the wanted internal file is
+     * @param path
+     *     The relative path within the plugin's datafolder and within the jar
+     *
+     * @return If file was written successfully
+     *
+     * @throws IOException
+     *     {@link FileUtils#write(String, Plugin, String...)} }
+     * @throws FileNotFoundException
+     *     If the internal file was not found
+     */
+    public static boolean writeFromInternal(Plugin plugin, Class<?> resourceClass, String... path) throws IOException {
+        return writeFromInternal(getDatafolderFile(plugin, path), resourceClass, path);
+    }
+
+    /**
+     * Write from an internal file found to a plugin's data folder
+     *
+     * @param plugin
+     *     The plugin's datafolder to be used
+     * @param path
+     *     The relative path within the plugin's datafolder and within the jar
+     *
+     * @return If file was written successfully
+     *
+     * @throws IOException
+     *     {@link FileUtils#write(String, Plugin, String...)} }
+     * @throws FileNotFoundException
+     *     If the internal file was not found
+     */
+    public static boolean writeFromInternal(Plugin plugin, String... path) throws IOException {
+        return writeFromInternal(getDatafolderFile(plugin, path), FileUtils.class, path);
+    }
+
+
     /**
      * Write from an internal file found to a plugin's data folder
      *

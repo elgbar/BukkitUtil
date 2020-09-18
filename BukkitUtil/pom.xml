@@ -6,7 +6,7 @@
 
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>4.2.1</version>
+    <version>4.3.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -100,27 +100,27 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>4.2.1</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-6</artifactId>
-            <version>4.2.1</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-7</artifactId>
-            <version>4.2.1</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-jackson-module</artifactId>
-            <version>4.2.1</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-mc-13</artifactId>
-            <version>4.2.1</version>
+            <version>4.3.0</version>
         </dependency>
     </dependencies>
 </project>

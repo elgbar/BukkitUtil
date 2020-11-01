@@ -6,7 +6,7 @@
     <parent>
         <groupId>no.kh498.util</groupId>
         <artifactId>BukkitUtil-parent</artifactId>
-        <version>4.3.0</version>
+        <version>4.3.1</version>
     </parent>
 
     <artifactId>BukkitUtil-jackson-module</artifactId>
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>4.3.0</version>
+            <version>4.3.1</version>
             <scope>compile</scope>
         </dependency>
 

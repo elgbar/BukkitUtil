@@ -66,8 +66,9 @@ public class ConfigUtil {
    * @throws IOException
    *   if {@link FileUtils#createDatafolderFile(Plugin, String...)} does
    */
-  public static void saveDefaultResources(@NotNull Plugin plugin, boolean create, @NotNull String... resources)
-  throws IOException {saveDefaultResources(plugin, plugin.getClass(), create, resources);}
+  public static void saveDefaultResources(@NotNull Plugin plugin, boolean create, @NotNull String... resources) throws IOException {
+    saveDefaultResources(plugin, plugin.getClass(), create, resources);
+  }
 
   /**
    * Load all default files from the plugin's jar and place them in the datafolder.
@@ -87,8 +88,8 @@ public class ConfigUtil {
    * @throws IOException
    *   if {@link FileUtils#createDatafolderFile(Plugin, String...)} does
    */
-  public static void saveDefaultResources(@NotNull Plugin plugin, @NotNull Class<?> resourceJar, boolean create,
-                                          @NotNull String... resources) throws IOException {
+  public static void saveDefaultResources(@NotNull Plugin plugin, @NotNull Class<?> resourceJar, boolean create, @NotNull String... resources)
+  throws IOException {
     for (String resource : resources) {
       if (resource == null) {
         logger.error("One of the resource given was null!");
@@ -158,8 +159,7 @@ public class ConfigUtil {
    * {@link IOException} occurred
    */
   @NotNull
-  public static FileConfiguration getYamlOrDefault(@NotNull Plugin plugin, @NotNull FileConfiguration def,
-                                                   String... filename) {
+  public static FileConfiguration getYamlOrDefault(@NotNull Plugin plugin, @NotNull FileConfiguration def, String... filename) {
     return getYamlOrDefault(FileUtils.getDatafolderFile(plugin, filename), def);
   }
 
@@ -328,8 +328,9 @@ public class ConfigUtil {
     try {
       return loadFromString(yaml);
     } catch (InvalidConfigurationException e) {
-      return null;
+      logger.warn("Given YAML is invalid.\n{}", e.getMessage());
     }
+    return null;
   }
 
   /**
@@ -416,11 +417,81 @@ public class ConfigUtil {
    *   Type of value to get
    *
    * @return The value stored at {@code path} in {@code conf}, or {@code null} if not found or wrong type
+   *
+   * @deprecated Throws ClassCastException when wrong type. Use {@link #get(ConfigurationSection, String, Class)} instead
    */
   @Nullable
+  @Deprecated
   public static <T> T get(@NotNull ConfigurationSection conf, @NotNull String path) {
-    return get(conf, path, null);
+    return get(conf, path, (T) null);
   }
+
+
+  /**
+   * An improved {@link ConfigurationSection#get(String, Object)} that includes support for generic types and list
+   * indices. Note that any maps will be returned as {@link ConfigurationSection}.
+   *
+   * @param conf
+   *   The config to get the value from
+   * @param path
+   *   The path to the value
+   * @param <T>
+   *   Type of value to get
+   *
+   * @return The value stored at {@code path} in {@code conf}, or {@code fallback} if not found or wrong type
+   */
+  @Nullable
+  public static <T> T get(@NotNull ConfigurationSection conf, @NotNull String path, @NotNull Class<T> tClass) {
+    return get(conf, path, (T) null, tClass);
+  }
+
+
+  /**
+   * An improved {@link ConfigurationSection#get(String, Object)} that includes support for generic types and list
+   * indices. Note that any maps will be returned as {@link ConfigurationSection}.
+   *
+   * @param conf
+   *   The config to get the value from
+   * @param path
+   *   The path to the value
+   * @param fallback
+   *   The fallback value if either a value is not found or it is of the wrong type
+   * @param <T>
+   *   Type of value to get
+   *
+   * @return The value stored at {@code path} in {@code conf}, or {@code fallback} if not found or wrong type
+   *
+   * @deprecated Throws ClassCastException when wrong type. Use {@link #getWithFallback(ConfigurationSection, String, Object)} or {@link
+   * #get(ConfigurationSection, String, Object, Class)} instead
+   */
+  @Nullable
+  @Contract("_,_,!null->!null")
+  @Deprecated
+  public static <T> T get(@NotNull ConfigurationSection conf, @NotNull String path, @Nullable T fallback) {
+    return get0(conf, path, fallback, conf.getRoot().options().pathSeparator(), null);
+  }
+
+
+  /**
+   * An improved {@link ConfigurationSection#get(String, Object)} that includes support for generic types and list
+   * indices. Note that any maps will be returned as {@link ConfigurationSection}.
+   *
+   * @param conf
+   *   The config to get the value from
+   * @param path
+   *   The path to the value
+   * @param fallback
+   *   The fallback value if either a value is not found or it is of the wrong type
+   * @param <T>
+   *   Type of value to get
+   *
+   * @return The value stored at {@code path} in {@code conf}, or {@code fallback} if not found or wrong type
+   */
+  @NotNull
+  public static <T> T getWithFallback(@NotNull ConfigurationSection conf, @NotNull String path, @NotNull T fallback) {
+    return get0(conf, path, fallback, conf.getRoot().options().pathSeparator(), null);
+  }
+
 
   /**
    * An improved {@link ConfigurationSection#get(String, Object)} that includes support for generic types and list
@@ -438,43 +509,39 @@ public class ConfigUtil {
    * @return The value stored at {@code path} in {@code conf}, or {@code fallback} if not found or wrong type
    */
   @Nullable
-  @Contract("_,_,!null->!null")
-  public static <T> T get(@NotNull ConfigurationSection conf, @NotNull String path, @Nullable T fallback) {
-    return get0(conf, path, fallback, conf.getRoot().options().pathSeparator());
+  @Contract("_,_,!null,_->!null")
+  public static <T> T get(@NotNull ConfigurationSection conf, @NotNull String path, @Nullable T fallback, @NotNull Class<T> tClass) {
+    return get0(conf, path, fallback, conf.getRoot().options().pathSeparator(), tClass);
   }
 
-  private static <T> T get0(@NotNull Object object, @NotNull String path, @Nullable T fallback, char separator) {
+
+  @Nullable
+  @Contract("_,_,!null,_,_->!null")
+  private static <T> T get0(@NotNull Object object, @NotNull String path, @Nullable T fallback, char separator, @Nullable Class<T> tClass) {
     if (path.isEmpty()) {
-      try {
-        if (object instanceof Map) {
-          //noinspection unchecked
-          return (T) getSection(object);
-        }
+
+      //We want a config section, but the returned object might be a map
+      if ((tClass != null && ConfigurationSection.class.isAssignableFrom(tClass) || fallback instanceof ConfigurationSection) && object instanceof Map) {
         //noinspection unchecked
-        return (T) object;
-      } catch (ClassCastException e) {
-        return fallback;
+        return (T) getSection(object);
       }
+      return checkedCorrectClass(object, fallback, tClass);
     }
     if (object instanceof ConfigurationSection) {
       ConfigurationSection conf = ((ConfigurationSection) object);
       int dotIndex = path.indexOf(separator);
       if (dotIndex == -1) {
-        try {
-          //ok to use normal get as we are in a config section
-          //noinspection unchecked
-          return (T) conf.get(path, fallback);
-        } catch (ClassCastException e) {
-          return fallback;
-        }
+        //ok to use normal get as we are in a config section
+        Object newObject = conf.get(path, fallback);
+        return checkedCorrectClass(newObject, fallback, tClass);
       }
       String key = path.substring(0, dotIndex);
       String restKey = path.substring(dotIndex + 1);
       Object any = conf.get(key);
-      return get0(any, restKey, fallback, separator);
+      return get0(any, restKey, fallback, separator, tClass);
     }
     else if (object instanceof Map) {
-      return get0(getSection(object), path, fallback, separator);
+      return get0(getSection(object), path, fallback, separator, tClass);
     }
     else if (object instanceof List) {
       int dotIndex = path.indexOf(separator);
@@ -489,11 +556,27 @@ public class ConfigUtil {
       }
       Object any = ((List<?>) object).get(index);
       String restKey = path.substring(dotIndex + 1);
-      return get0(any, (dotIndex == -1) ? "" : restKey, fallback, separator);
+      return get0(any, (dotIndex == -1) ? "" : restKey, fallback, separator, tClass);
     }
     else {
-      return get0(object, "", fallback, separator);
+      return get0(object, "", fallback, separator, tClass);
     }
+  }
+
+  private static <T> T checkedCorrectClass(@Nullable Object object, @Nullable T fallback, @Nullable Class<T> tClass) {
+    if (object == null) return null;
+    if (tClass == null) {
+      if (fallback != null && !fallback.getClass().isInstance(object) && !object.getClass().isInstance(fallback)) {
+        return fallback;
+      }
+    }
+    else if (!tClass.isAssignableFrom(object.getClass())) {
+      //given object is not an instance of T class
+      return fallback;
+    }
+
+    //noinspection unchecked We cannot check if this value is correct
+    return (T) object;
   }
 
   /**

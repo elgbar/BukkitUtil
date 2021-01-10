@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,6 +17,7 @@ import org.bukkit.plugin.Plugin;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -177,17 +179,16 @@ public class ConfigUtilTest {
 
     ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
     assertNotNull(conf);
-    Set<String> expected = new HashSet<>(Arrays.asList("parent.key", "parent.child.value", "parent.child.sibling",
-                                                       "parent.list.0", "parent.list.1",
+    Set<String> expected = new HashSet<>(Arrays.asList("parent.key", "parent.child.value", "parent.child.sibling", "parent.list.0", "parent.list.1",
                                                        "parent.list.2.another_list.0.wow", "parent.empty_list"));
     assertEquals(expected.size(), ConfigUtil.flatKeys(conf).size());
     assertEquals(expected, ConfigUtil.flatKeys(conf));
   }
 
 
-  /////////////////
-  // getImproved //
-  /////////////////
+  ///////////////
+  //    get    //
+  ///////////////
 
 
   @Test
@@ -240,7 +241,7 @@ public class ConfigUtilTest {
 
 
   @Test
-  public void get__can_get_config_sections_from_lists() throws InvalidConfigurationException {
+  public void get__can_get_config_sections_from_lists() {
     String yaml = //
       "parent:\n" + //
       "   list:\n" + //
@@ -256,8 +257,7 @@ public class ConfigUtilTest {
     YamlConfiguration listConf = ConfigUtil.loadFromStringOrNull(listYaml);
     assertFalse(ConfigUtil.isEmpty(listConf));
 
-    assertEquals(listConf.saveToString(),
-                 ConfigUtil.get(conf, "parent.list.0", new YamlConfiguration()).saveToString());
+    assertEquals(listConf.saveToString(), ConfigUtil.get(conf, "parent.list.0", new YamlConfiguration()).saveToString());
 
     List<?> list = listConf.getList("another_list");
     assertNotNull(list);
@@ -267,6 +267,115 @@ public class ConfigUtilTest {
     assertEquals(true, ConfigUtil.get(conf, "parent.list.0.another_list.0.wow"));
   }
 
+
+  @Test
+  public void get__wrong_returned_type_fallback_is_null_fallback() {
+    String yaml = "parent: true";
+
+    ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
+    assertNotNull(conf);
+
+    String var = ConfigUtil.get(conf, "parent", null, String.class);
+    assertNull(var);
+  }
+
+  @Test
+  public void get__wrong_returned_type_fallback_is_not_null__returns_fallback() {
+    String yaml = "parent: true";
+
+    ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
+    assertNotNull(conf);
+
+    assertEquals("", ConfigUtil.getWithFallback(conf, "parent", ""));
+  }
+
+  @Test
+  public void get__wrong_returned_type__list__returns_fallback() {
+    String yaml = "parent: [true]";
+
+    ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
+    assertNotNull(conf);
+
+    LinkedList<Object> fallback = new LinkedList<>();
+    List<Object> var = ConfigUtil.getWithFallback(conf, "parent", fallback);
+    assertEquals(fallback, var);
+  }
+
+  @Test
+  public void get__within_list_wrong_returned_type__returns_fallback() {
+    String yaml = "parent: \n" +//
+                  " - key2: true";
+
+    ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
+    assertNotNull(conf);
+
+    String path = "parent.0.key2";
+    assertEquals(true, ConfigUtil.get(conf, path));
+
+    String fallback = "";
+    assertEquals(fallback, ConfigUtil.get(conf, path, fallback));
+  }
+
+  @Test
+  public void get__config_section_when_fallback_is_given() {
+    String yaml = //
+      "parent:\n" + //
+      "   list:\n" + //
+      "     - true";
+
+    ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
+    assertNotNull(conf);
+
+
+    String path = "parent.list.0";
+    assertEquals(true, ConfigUtil.getWithFallback(conf, path, false));
+
+    YamlConfiguration conf2 = ConfigUtil.getWithFallback(conf, path, new YamlConfiguration());
+    assertNotNull(conf2.saveToString());
+  }
+
+  @Test
+  public void get__config_section_when_tClass_is_given() {
+    String yaml = //
+      "parent:\n" + //
+      "   list:\n" + //
+      "     - another_list:\n" + //
+      "       - wow: true";
+
+    ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
+    assertNotNull(conf);
+
+    assertNotNull(ConfigUtil.getWithFallback(conf, "parent.list.0", ConfigurationSection.class));
+  }
+
+  @Test
+  public void get__wrong_type_within_list() {
+    String yaml = //
+      "parent:\n" + //
+      "   list:\n" + //
+      "     - another_list:\n" + //
+      "       - wow: true";
+
+    ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
+    assertNotNull(conf);
+
+    assertEquals("", ConfigUtil.getWithFallback(conf, "parent.list.0", ""));
+  }
+
+  @Test
+  public void get__null_object_with_tClass() {
+    assertNull(ConfigUtil.get(new YamlConfiguration(), "anything", null, String.class));
+  }
+
+  @Test
+  public void get__null_object_with_fallback_cnd_class() {
+    assertEquals("fallback", ConfigUtil.get(new YamlConfiguration(), "anything", "fallback", String.class));
+  }
+
+  @Test
+  public void get__null_object_with_fallback() {
+    assertEquals("fallback", ConfigUtil.getWithFallback(new YamlConfiguration(), "anything", "fallback"));
+  }
 
   //////////
   // diff //

@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -375,6 +376,15 @@ public class ConfigUtilTest {
   @Test
   public void get__null_object_with_fallback() {
     assertEquals("fallback", ConfigUtil.getWithFallback(new YamlConfiguration(), "anything", "fallback"));
+  }
+
+  @Test
+  public void get__frgerg_object_with_fallback() {
+    String yaml = "anchors:\n" + "- aliases-16775681890529044261.yml\n" + "- aliases-15583022485804329176.yml\n";
+    ConfigurationSection conf = ConfigUtil.loadFromStringOrNull(yaml);
+    assertNotNull(conf);
+
+    assertNotEquals(Collections.emptyList(), ConfigUtil.get(conf, "anchors", Collections.emptyList(), List.class));
   }
 
   //////////

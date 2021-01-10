@@ -461,8 +461,7 @@ public class ConfigUtil {
    *
    * @return The value stored at {@code path} in {@code conf}, or {@code fallback} if not found or wrong type
    *
-   * @deprecated Throws ClassCastException when wrong type. Use {@link #getWithFallback(ConfigurationSection, String, Object)} or {@link
-   * #get(ConfigurationSection, String, Object, Class)} instead
+   * @deprecated Throws ClassCastException when wrong type. Use {@link #get(ConfigurationSection, String, Object, Class)} instead
    */
   @Nullable
   @Contract("_,_,!null->!null")
@@ -486,8 +485,11 @@ public class ConfigUtil {
    *   Type of value to get
    *
    * @return The value stored at {@code path} in {@code conf}, or {@code fallback} if not found or wrong type
+   *
+   * @deprecated The fallback class is not enough in formation to make a safe cast. Use {@link #get(ConfigurationSection, String, Object, Class)} instead
    */
   @NotNull
+  @Deprecated
   public static <T> T getWithFallback(@NotNull ConfigurationSection conf, @NotNull String path, @NotNull T fallback) {
     return get0(conf, path, fallback, conf.getRoot().options().pathSeparator(), null);
   }
@@ -565,14 +567,17 @@ public class ConfigUtil {
 
   private static <T> T checkedCorrectClass(@Nullable Object object, @Nullable T fallback, @Nullable Class<T> tClass) {
     if (object == null) return null;
-    if (tClass == null) {
-      if (fallback != null && !fallback.getClass().isInstance(object) && !object.getClass().isInstance(fallback)) {
+    if (tClass != null) {
+      if (!tClass.isAssignableFrom(object.getClass())) {
+        //given object is not an instance of T class
         return fallback;
       }
     }
-    else if (!tClass.isAssignableFrom(object.getClass())) {
-      //given object is not an instance of T class
-      return fallback;
+    else {
+      //TODO remove when fallback alone is completely removed
+      if (fallback != null && !fallback.getClass().isInstance(object) && !object.getClass().isInstance(fallback)) {
+        return fallback;
+      }
     }
 
     //noinspection unchecked We cannot check if this value is correct

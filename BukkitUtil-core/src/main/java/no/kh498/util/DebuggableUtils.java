@@ -10,9 +10,14 @@ public final class DebuggableUtils {
 
   private DebuggableUtils() {}
 
-  public static ColorString appendSinglePrefix(@NotNull ColorString sb, @NotNull String prefix,
-                                               @NotNull String objectName) {
-    return sb.none(prefix).yellow(objectName + " = ");
+  @NotNull
+  public static ColorString appendSinglePrefix(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName) {
+    return appendSinglePrefix(sb, prefix, objectName, '=');
+  }
+
+  @NotNull
+  public static ColorString appendSinglePrefix(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName, char suffix) {
+    return sb.none(prefix).yellow(objectName).yellow(" " + suffix + " ");
   }
 
 }

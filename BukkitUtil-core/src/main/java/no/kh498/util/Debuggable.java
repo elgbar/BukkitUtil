@@ -38,10 +38,10 @@ public interface Debuggable {
   @NotNull ColorString appendDebugInfo(@NotNull ColorString sb, @NotNull String prefix);
 
   default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName, boolean bool) {
-    sb.none(prefix).yellow(getClass().getSimpleName() + ": " + objectName + " ? ");
+    appendSinglePrefix(sb, prefix, objectName, '?');
 
-    if (bool) { sb.green("true"); }
-    else { sb.red("false"); }
+    if (bool) { sb.darkGreen("true"); }
+    else { sb.darkRed("false"); }
 
     sb.none("\n");
   }

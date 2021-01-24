@@ -5,6 +5,7 @@ import java.util.Collections;
 import kotlin.Deprecated;
 import kotlin.ReplaceWith;
 import static no.kh498.util.DebuggableUtils.appendSinglePrefix;
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,7 +65,7 @@ public interface Debuggable {
       appendDebuggableList(sb, prefix, objectName, Collections.singleton((Debuggable) object));
     }
     else if (object instanceof CharSequence) {
-      appendSinglePrefix(sb, prefix, objectName).green("\"" + object + "\"\n");
+      appendSinglePrefix(sb, prefix, objectName).green("\"" + object).green(ChatColor.GREEN + "\"\n");
     }
     else if (object instanceof Number) {
       appendSinglePrefix(sb, prefix, objectName).purple(object + "\n");

@@ -73,13 +73,14 @@ Then add this as a dependency under the `dependencies` tag
 <dependency>
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>4.3.3</version>
+    <version>4.3.4</version>
 </dependency>
 ```
 
 You might also need to shade (read copy) the used classes into your jar. Add the following into your `pom.xml`
 
 ```xml
+
 <build>
     <plugins>
         <plugin>
@@ -116,35 +117,35 @@ The following is a skeleton gradle.build file. **NOTE** the order of the methods
 
 //setup shade (ie include the whole of this lib in your jar)
 configurations {
-    shade
-    implementation.extendsFrom shade
+  shade
+  implementation.extendsFrom shade
 }
 
 repositories {
-    mavenCentral()
-    
-    //your other repositories goes here
-    
-    //my repo
-    maven { url "https://raw.githubusercontent.com/elgbar/maven2/repo" }
-    //these might be required
-    maven { url "https://raw.githubusercontent.com/rjenkinsjr/maven2/repo" } // needed by slf4bukkit (a logger)
-    maven { url "http://maven.sk89q.com/repo/" } //needed by WorldGuard
+  mavenCentral()
+
+  //your other repositories goes here
+
+  //my repo
+  maven { url "https://raw.githubusercontent.com/elgbar/maven2/repo" }
+  //these might be required
+  maven { url "https://raw.githubusercontent.com/rjenkinsjr/maven2/repo" } // needed by slf4bukkit (a logger)
+  maven { url "http://maven.sk89q.com/repo/" } //needed by WorldGuard
 }
 
 
 dependencies {
-    //your other decencies goes here
-    
-    //use implementation if you do not want to include it in your jar
-    shade "no.kh498.util:BukkitUtil:4.3.3"
+  //your other decencies goes here
+
+  //use implementation if you do not want to include it in your jar
+  shade "no.kh498.util:BukkitUtil:4.3.4"
 }
 
 jar {
-    configurations.shade.each { dep ->
-        from(project.zipTree(dep)) {
-            exclude 'META-INF', 'META-INF/**', 'plugin.yml' //delete unwanted/duplicate stuff
-        }
+  configurations.shade.each { dep ->
+    from(project.zipTree(dep)) {
+      exclude 'META-INF', 'META-INF/**', 'plugin.yml' //delete unwanted/duplicate stuff
     }
+  }
 }
 ```

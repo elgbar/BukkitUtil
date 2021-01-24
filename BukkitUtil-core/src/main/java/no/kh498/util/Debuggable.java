@@ -49,15 +49,12 @@ public interface Debuggable {
   /**
    * @deprecated Too specific
    */
-  @Deprecated(message = "Too specific",
-              replaceWith = @ReplaceWith(expression = "appendSingle(sb, prefix, objectName, object)", imports = {}))
-  default void appendDebuggable(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
-                                @Nullable Object object) {
+  @Deprecated(message = "Too specific", replaceWith = @ReplaceWith(expression = "appendSingle(sb, prefix, objectName, object)", imports = {}))
+  default void appendDebuggable(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName, @Nullable Object object) {
     appendSingle(sb, prefix, objectName, object);
   }
 
-  default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
-                            @Nullable Object object) {
+  default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName, @Nullable Object object) {
     if (object == null) {
       appendSinglePrefix(sb, prefix, objectName).none("null\n");
     }
@@ -79,8 +76,7 @@ public interface Debuggable {
     appendSinglePrefix(sb, prefix, objectName).purple(object + "\n");
   }
 
-  default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName,
-                            double object) {
+  default void appendSingle(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName, double object) {
     appendSinglePrefix(sb, prefix, objectName).purple(object + "\n");
   }
 

@@ -105,12 +105,11 @@
             <version>${jackson.version}</version>
         </dependency>
 
+        <!-- Use BuildTools to add this to your local .m2 repository-->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../libs/spigot-1.12.2.jar</systemPath>
         </dependency>
 
         <!-- Testing -->

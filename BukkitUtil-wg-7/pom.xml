@@ -6,7 +6,7 @@
     <parent>
         <groupId>no.kh498.util</groupId>
         <artifactId>BukkitUtil-parent</artifactId>
-        <version>4.3.5</version>
+        <version>4.4.0</version>
     </parent>
 
     <artifactId>BukkitUtil-wg-7</artifactId>
@@ -75,30 +75,36 @@
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>paper</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>4.3.5</version>
+            <version>4.4.0</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-core</artifactId>
-            <version>7.0.1</version>
+            <version>7.0.4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.1</version>
+            <version>7.0.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

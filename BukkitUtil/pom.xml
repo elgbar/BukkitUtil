@@ -6,7 +6,7 @@
 
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil</artifactId>
-    <version>4.3.5</version>
+    <version>4.4.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -79,13 +79,12 @@
                         <configuration>
                             <minimizeJar>false</minimizeJar>
                             <createSourcesJar>true</createSourcesJar>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
                                     <include>no.kh498.util:BukkitUtil-core</include>
                                     <include>no.kh498.util:BukkitUtil-wg-6</include>
                                     <include>no.kh498.util:BukkitUtil-wg-7</include>
-                                    <include>no.kh498.util:BukkitUtil-jackson-module</include>
                                     <include>no.kh498.util:BukkitUtil-mc-13</include>
                                 </includes>
                             </artifactSet>
@@ -100,27 +99,22 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>4.3.5</version>
+            <version>4.4.0</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-6</artifactId>
-            <version>4.3.5</version>
+            <version>4.4.0</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-wg-7</artifactId>
-            <version>4.3.5</version>
-        </dependency>
-        <dependency>
-            <groupId>no.kh498.util</groupId>
-            <artifactId>BukkitUtil-jackson-module</artifactId>
-            <version>4.3.5</version>
+            <version>4.4.0</version>
         </dependency>
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-mc-13</artifactId>
-            <version>4.3.5</version>
+            <version>4.4.0</version>
         </dependency>
     </dependencies>
 </project>

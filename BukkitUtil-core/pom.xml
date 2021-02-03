@@ -86,10 +86,6 @@
             <url>https://raw.githubusercontent.com/kh498/maven2/repo/</url>
         </repository>
         <repository>
-            <id>github-rjenkinsjr</id>
-            <url>https://raw.githubusercontent.com/rjenkinsjr/maven2/repo</url>
-        </repository>
-        <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
         </repository>

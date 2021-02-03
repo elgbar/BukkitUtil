@@ -1,6 +1,6 @@
 package no.kh498.util;
 
-import info.ronjenkins.slf4bukkit.ColorString;
+import no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit.ColorString;
 import org.jetbrains.annotations.NotNull;
 
 /**

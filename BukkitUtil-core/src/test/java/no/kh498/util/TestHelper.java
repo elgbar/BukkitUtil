@@ -26,7 +26,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.helpers.MessageFormatter;
-import org.slf4j.impl.BukkitLoggerAdapter;
+import no.kh498.bukkitutils.shaded.org.slf4j.impl.BukkitLoggerAdapter;
 
 /**
  * @author Elg
@@ -137,12 +137,10 @@ public abstract class TestHelper {
       String msg;
       switch (invocation.getArguments().length) {
         case 2:
-          msg = MessageFormatter.format(invocation.getArgument(0, String.class), invocation.getArguments()[1])
-                                .getMessage();
+          msg = MessageFormatter.format(invocation.getArgument(0, String.class), invocation.getArguments()[1]).getMessage();
           break;
         case 3:
-          msg = MessageFormatter.format(invocation.getArgument(0, String.class), invocation.getArguments()[1],
-                                        invocation.getArguments()[2]).getMessage();
+          msg = MessageFormatter.format(invocation.getArgument(0, String.class), invocation.getArguments()[1], invocation.getArguments()[2]).getMessage();
           break;
         default:
           Object[] args = Arrays.copyOfRange(invocation.getArguments(), 1, invocation.getArguments().length);

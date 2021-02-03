@@ -7,23 +7,11 @@
     <groupId>no.kh498.util</groupId>
     <artifactId>BukkitUtil-parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.4.0</version>
+    <version>4.4.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.21</kotlin.version>
-
-        <github.global.server>github</github.global.server>
-        <maven2.repo.dir>${project.build.directory}/mvn-repo</maven2.repo.dir>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>internal.repo</id>
-            <name>Temporary Staging Repository</name>
-            <url>file://${project.build.directory}/mvn-repo</url>
-        </repository>
-    </distributionManagement>
 
     <build>
         <plugins>
@@ -36,32 +24,6 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
-                <executions>
-                    <!-- Replacing default-compile as it is treated specially by maven -->
-                    <execution>
-                        <id>default-compile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <!-- Replacing default-testCompile as it is treated specially by maven -->
-                    <execution>
-                        <id>default-testCompile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>java-compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>java-test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <!-- Do clean source:jar install/deploy -->
@@ -78,81 +40,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirs>
-                                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
-                                <sourceDir>${project.basedir}/src/main/java</sourceDir>
-                            </sourceDirs>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirs>
-                                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
-                                <sourceDir>${project.basedir}/src/test/java</sourceDir>
-                            </sourceDirs>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <jvmTarget>1.8</jvmTarget>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
-                <configuration>
-                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo
-                    </altDeploymentRepository>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version>0.12</version>
-                <executions>
-                    <!-- Push Maven artifacts to GitHub. -->
-                    <execution>
-                        <id>push-artifacts-to-github</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                        <configuration>
-                            <server>github</server><!-- settings.xml -->
-                            <repositoryName>maven2</repositoryName>
-                            <repositoryOwner>elgbar</repositoryOwner>
-                            <branch>refs/heads/repo</branch>
-                            <message>${project.groupId}:${project.artifactId}:${project.version}</message>
-                            <outputDirectory>${maven2.repo.dir}</outputDirectory>
-                            <includes>
-                                <include>**/*</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/maven-metadata.xml*</exclude>
-                            </excludes>
-                            <merge>true</merge>
-                            <noJekyll>true</noJekyll>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
         </plugins>
         <testResources>
             <testResource>
@@ -171,20 +59,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
-            <version>${kotlin.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <modules>
         <module>BukkitUtil-core</module>

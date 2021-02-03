@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.ronjenkins.slf4bukkit;
+package no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit;
 
 import org.bukkit.ChatColor;
 
@@ -30,7 +30,8 @@ public interface ColorMapper {
    * Translates {@link ChatColor} directives to their string equivalents.
    *
    * @param input
-   *          null is coerced to the empty string.
+   *   null is coerced to the empty string.
+   *
    * @return never null.
    */
   String map(String input);

@@ -1,9 +1,7 @@
 package no.kh498.util;
 
-import info.ronjenkins.slf4bukkit.ColorString;
 import java.util.Collections;
-import kotlin.Deprecated;
-import kotlin.ReplaceWith;
+import no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit.ColorString;
 import static no.kh498.util.DebuggableUtils.appendSinglePrefix;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
@@ -47,9 +45,9 @@ public interface Debuggable {
   }
 
   /**
-   * @deprecated Too specific
+   * @deprecated Too specific, replace with {@code appendSingle(sb, prefix, objectName, object)}
    */
-  @Deprecated(message = "Too specific", replaceWith = @ReplaceWith(expression = "appendSingle(sb, prefix, objectName, object)", imports = {}))
+  @Deprecated
   default void appendDebuggable(@NotNull ColorString sb, @NotNull String prefix, @NotNull String objectName, @Nullable Object object) {
     appendSingle(sb, prefix, objectName, object);
   }

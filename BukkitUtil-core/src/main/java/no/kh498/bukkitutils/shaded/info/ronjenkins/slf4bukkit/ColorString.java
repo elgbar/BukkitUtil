@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.ronjenkins.slf4bukkit;
+package no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit;
 
 /**
  * A {@link StringBuilder}-like class with a fluent API for adding content
@@ -33,8 +33,8 @@ package info.ronjenkins.slf4bukkit;
  */
 public final class ColorString {
 
-  private ColorMarker         currentColor = ColorMarker.NONE;
-  private final StringBuilder value        = new StringBuilder();
+  private ColorMarker currentColor = ColorMarker.NONE;
+  private final StringBuilder value = new StringBuilder();
 
   /** Constructor. */
   public ColorString() {
@@ -45,7 +45,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString aqua(final String append) {
@@ -61,7 +62,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString black(final String append) {
@@ -77,7 +79,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString blue(final String append) {
@@ -93,7 +96,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString darkAqua(final String append) {
@@ -109,7 +113,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString darkBlue(final String append) {
@@ -125,7 +130,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString darkGray(final String append) {
@@ -141,7 +147,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString darkGreen(final String append) {
@@ -157,7 +164,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString darkRed(final String append) {
@@ -173,7 +181,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString gold(final String append) {
@@ -189,7 +198,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString gray(final String append) {
@@ -205,7 +215,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString green(final String append) {
@@ -221,7 +232,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString none(final String append) {
@@ -237,7 +249,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString pink(final String append) {
@@ -253,7 +266,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString purple(final String append) {
@@ -269,7 +283,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString red(final String append) {
@@ -299,9 +314,10 @@ public final class ColorString {
    * value.
    *
    * @param color
-   *          the desired color suffix. Null is coerced to
-   *          {@link ColorMarker#NONE}, which resets all formatting at the
-   *          current position.
+   *   the desired color suffix. Null is coerced to
+   *   {@link ColorMarker#NONE}, which resets all formatting at the
+   *   current position.
+   *
    * @return never null. Returns {@link #toString()} if the color is null.
    */
   public String toString(final ColorMarker color) {
@@ -317,7 +333,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString white(final String append) {
@@ -333,7 +350,8 @@ public final class ColorString {
    * {@link StringBuilder#append(String)}.
    *
    * @param append
-   *          the string to append.
+   *   the string to append.
+   *
    * @return this.
    */
   public ColorString yellow(final String append) {

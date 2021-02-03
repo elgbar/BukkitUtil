@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.ronjenkins.slf4bukkit;
+package no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -36,7 +36,8 @@ final class AnsiColorMapper implements ColorMapper {
    * scenario in which JAnsi is not available by substituting another
    * {@link ColorMapper} implementation.
    *
-   * @throws Throwable if JAnsi is not present at runtime.
+   * @throws Throwable
+   *   if JAnsi is not present at runtime.
    */
   AnsiColorMapper() throws Throwable {}
 

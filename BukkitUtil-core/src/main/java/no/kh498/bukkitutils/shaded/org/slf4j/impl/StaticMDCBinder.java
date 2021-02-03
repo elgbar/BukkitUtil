@@ -5,7 +5,7 @@
 /**
  * Copyright (c) 2004-2011 QOS.ch
  * All rights reserved.
- *
+ * <p>
  * Permission is hereby granted, free  of charge, to any person obtaining
  * a  copy  of this  software  and  associated  documentation files  (the
  * "Software"), to  deal in  the Software without  restriction, including
@@ -13,10 +13,10 @@
  * distribute,  sublicense, and/or sell  copies of  the Software,  and to
  * permit persons to whom the Software  is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The  above  copyright  notice  and  this permission  notice  shall  be
  * included in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE  SOFTWARE IS  PROVIDED  "AS  IS", WITHOUT  WARRANTY  OF ANY  KIND,
  * EXPRESS OR  IMPLIED, INCLUDING  BUT NOT LIMITED  TO THE  WARRANTIES OF
  * MERCHANTABILITY,    FITNESS    FOR    A   PARTICULAR    PURPOSE    AND
@@ -25,56 +25,50 @@
  * OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.slf4j.impl;
+package no.kh498.bukkitutils.shaded.org.slf4j.impl;
 
-import org.slf4j.IMarkerFactory;
-import org.slf4j.MarkerFactory;
-import org.slf4j.helpers.BasicMarkerFactory;
-import org.slf4j.spi.MarkerFactoryBinder;
+import org.slf4j.helpers.BasicMDCAdapter;
+import org.slf4j.spi.MDCAdapter;
 
 /**
- * The binding of {@link MarkerFactory} class with an actual instance of
- * {@link IMarkerFactory} is performed using information returned by this class.
+ * This implementation is bound to {@link BasicMDCAdapter}.
  *
  * @author Ceki G&uuml;lc&uuml;
  */
-public class StaticMarkerBinder implements MarkerFactoryBinder {
+public class StaticMDCBinder {
 
   /**
    * The unique instance of this class.
    */
-  public static final StaticMarkerBinder SINGLETON     = new StaticMarkerBinder();
-  final IMarkerFactory                   markerFactory = new BasicMarkerFactory();
+  public static final StaticMDCBinder SINGLETON = new StaticMDCBinder();
 
-  private StaticMarkerBinder() {
+  private StaticMDCBinder() {
   }
 
   /**
    * Return the singleton of this class.
    *
-   * @return the StaticMarkerBinder singleton
+   * @return the StaticMDCBinder singleton
    * @since 1.7.14
    */
-  public static StaticMarkerBinder getSingleton() {
-    return StaticMarkerBinder.SINGLETON;
+  public static final StaticMDCBinder getSingleton() {
+    return StaticMDCBinder.SINGLETON;
   }
 
   /**
-   * Currently this method always returns an instance of
-   * {@link BasicMarkerFactory}.
-   */
-  @Override
-  public IMarkerFactory getMarkerFactory() {
-    return this.markerFactory;
-  }
-
-  /**
-   * Currently, this method returns the class name of {@link BasicMarkerFactory}
+   * Currently this method always returns an instance of {@link BasicMDCAdapter}
    * .
+   *
+   * @return never null.
    */
-  @Override
-  public String getMarkerFactoryClassStr() {
-    return BasicMarkerFactory.class.getName();
+  public MDCAdapter getMDCA() {
+    // note that this method is invoked only from within the static initializer
+    // of the org.slf4j.MDC class.
+    return new BasicMDCAdapter();
+  }
+
+  public String getMDCAdapterClassStr() {
+    return BasicMDCAdapter.class.getName();
   }
 
 }

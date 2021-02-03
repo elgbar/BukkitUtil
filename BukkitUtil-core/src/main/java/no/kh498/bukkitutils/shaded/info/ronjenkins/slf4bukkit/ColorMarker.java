@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.ronjenkins.slf4bukkit;
+package no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -35,13 +35,23 @@ import org.slf4j.Marker;
  */
 public enum ColorMarker implements Marker {
 
-  AQUA(ChatColor.AQUA), BLACK(ChatColor.BLACK), BLUE(ChatColor.BLUE),
-  DARK_AQUA(ChatColor.DARK_AQUA), DARK_BLUE(ChatColor.DARK_BLUE),
-  DARK_GRAY(ChatColor.DARK_GRAY), DARK_GREEN(ChatColor.DARK_GREEN),
-  DARK_PURPLE(ChatColor.DARK_PURPLE), DARK_RED(ChatColor.DARK_RED),
-  GOLD(ChatColor.GOLD), GRAY(ChatColor.GRAY), GREEN(ChatColor.GREEN),
-  LIGHT_PURPLE(ChatColor.LIGHT_PURPLE), NONE(ChatColor.RESET),
-  RED(ChatColor.RED), WHITE(ChatColor.WHITE), YELLOW(ChatColor.YELLOW);
+  AQUA(ChatColor.AQUA),
+  BLACK(ChatColor.BLACK),
+  BLUE(ChatColor.BLUE),
+  DARK_AQUA(ChatColor.DARK_AQUA),
+  DARK_BLUE(ChatColor.DARK_BLUE),
+  DARK_GRAY(ChatColor.DARK_GRAY),
+  DARK_GREEN(ChatColor.DARK_GREEN),
+  DARK_PURPLE(ChatColor.DARK_PURPLE),
+  DARK_RED(ChatColor.DARK_RED),
+  GOLD(ChatColor.GOLD),
+  GRAY(ChatColor.GRAY),
+  GREEN(ChatColor.GREEN),
+  LIGHT_PURPLE(ChatColor.LIGHT_PURPLE),
+  NONE(ChatColor.RESET),
+  RED(ChatColor.RED),
+  WHITE(ChatColor.WHITE),
+  YELLOW(ChatColor.YELLOW);
 
   private final ChatColor value;
 
@@ -53,9 +63,10 @@ public enum ColorMarker implements Marker {
    * Not supported.
    *
    * @param reference
-   *          unused.
+   *   unused.
+   *
    * @throws UnsupportedOperationException
-   *           always.
+   *   always.
    */
   @Override
   public void add(final Marker reference) {
@@ -111,7 +122,7 @@ public enum ColorMarker implements Marker {
    * @return false.
    */
   @Override
-  @SuppressWarnings({ "all", "deprecation" })
+  @SuppressWarnings({"all", "deprecation"})
   public boolean hasChildren() {
     return false;
   }
@@ -140,9 +151,10 @@ public enum ColorMarker implements Marker {
    * Not supported.
    *
    * @param reference
-   *          unused.
+   *   unused.
+   *
    * @throws UnsupportedOperationException
-   *           always.
+   *   always.
    */
   @Override
   public boolean remove(final Marker reference) {

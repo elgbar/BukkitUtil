@@ -137,12 +137,6 @@
             <version>1.7.28</version>
         </dependency>
 
-        <dependency>
-            <groupId>info.ronjenkins</groupId>
-            <artifactId>slf4bukkit</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
         <!-- WorldGuard (we need at least one of them) -->
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
@@ -165,8 +159,13 @@
             <version>20.0.0</version>
         </dependency>
 
-        <!-- Testing -->
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>1.18</version>
+        </dependency>
 
+        <!-- Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

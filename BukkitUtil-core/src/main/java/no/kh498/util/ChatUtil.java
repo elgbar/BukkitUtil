@@ -1,6 +1,6 @@
 package no.kh498.util;
 
-import no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit.ColorString;
+import info.ronjenkins.slf4bukkit.ColorString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

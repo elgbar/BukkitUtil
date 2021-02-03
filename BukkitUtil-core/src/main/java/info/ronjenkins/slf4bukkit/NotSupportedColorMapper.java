@@ -14,29 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit;
+package info.ronjenkins.slf4bukkit;
+
+import org.bukkit.ChatColor;
 
 /**
- * Creates the {@link ColorMapper} instance that best suits the capabilities of
- * the current Bukkit environment.
+ * Strips all {@link ChatColor}s from the input string.
  *
  * @author TheE
  */
-public final class ColorMapperFactory {
+final class NotSupportedColorMapper implements ColorMapper {
 
-  private ColorMapperFactory() {}
-
-  /**
-   * Creates an new {@code ColorMapper} instance.
-   *
-   * @return never null.
-   */
-  public static ColorMapper create() {
-    try {
-      return new AnsiColorMapper();
-    } catch (Throwable throwable) {
-      return new NotSupportedColorMapper();
+  @Override
+  public String map(final String input) {
+    if (input == null) {
+      return "";
     }
+    String output = input;
+    for (final ChatColor chatColor : ChatColor.values()) {
+      output = output.replace(chatColor.toString(), "");
+    }
+    return output;
   }
 
 }

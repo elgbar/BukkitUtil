@@ -44,9 +44,9 @@
  */
 package no.kh498.bukkitutils.shaded.org.slf4j.impl;
 
-import no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit.ColorMapper;
-import no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit.ColorMapperFactory;
-import no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit.ColorMarker;
+import info.ronjenkins.slf4bukkit.ColorMapper;
+import info.ronjenkins.slf4bukkit.ColorMapperFactory;
+import info.ronjenkins.slf4bukkit.ColorMarker;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -203,7 +203,7 @@ public final class BukkitLoggerAdapter implements Logger {
   private static transient Plugin BUKKIT_PLUGIN;
   private static transient String BUKKIT_PLUGIN_NAME;
   // Configuration parameters.
-  private static final String CONFIG_FALLBACK_DEFAULT_LOG_LEVEL = "no/kh498/bukkitutils/shaded/info";
+  private static final String CONFIG_FALLBACK_DEFAULT_LOG_LEVEL = "info";
   private static final Map<Level, ColorMarker> CONFIG_FALLBACK_LEVEL_COLORS = BukkitLoggerAdapter.fallbackLevelColors();
   private static final boolean CONFIG_FALLBACK_SHOW_HEADER = false;
   private static final boolean CONFIG_FALLBACK_SHOW_LOG_NAME = false;
@@ -241,8 +241,8 @@ public final class BukkitLoggerAdapter implements Logger {
    * configuration of the plugin.
    *
    * @param reinitialize
-   *          set to {@code true} to reinitialize all loggers, e.g. after
-   *          reloading the plugin config.
+   *   set to {@code true} to reinitialize all loggers, e.g. after
+   *   reloading the plugin config.
    */
   public static void init(final boolean reinitialize) {
     synchronized (BukkitLoggerAdapter.INITIALIZATION_LOCK) {
@@ -315,13 +315,14 @@ public final class BukkitLoggerAdapter implements Logger {
    * Returns a boolean property from the Bukkit plugin config.
    *
    * @param name
-   *          the desired property.
+   *   the desired property.
    * @param defaultValue
-   *          the fallback value returned by this method.
+   *   the fallback value returned by this method.
+   *
    * @return {@code defaultValue} if the Bukkit plugin is not available, if the
-   *         desired property is not defined in the config, or if the desired
-   *         property's value is not either "true" or "false"
-   *         (case-insensitive).
+   * desired property is not defined in the config, or if the desired
+   * property's value is not either "true" or "false"
+   * (case-insensitive).
    */
   private static boolean getBooleanProperty(final String name, final boolean defaultValue) {
     synchronized (BukkitLoggerAdapter.INITIALIZATION_LOCK) {
@@ -337,7 +338,7 @@ public final class BukkitLoggerAdapter implements Logger {
    * Returns the most appropriate logger.
    *
    * @return the logger for the plugin if available; otherwise the server
-   *         logger. Never null.
+   * logger. Never null.
    */
   private static java.util.logging.Logger getBukkitLogger() {
     synchronized (BukkitLoggerAdapter.INITIALIZATION_LOCK) {
@@ -352,13 +353,14 @@ public final class BukkitLoggerAdapter implements Logger {
    * value is used instead.
    *
    * @param property
-   *          the config property where the map exists.
+   *   the config property where the map exists.
    * @param defaultValue
-   *          the fallback values returned by this method.
+   *   the fallback values returned by this method.
+   *
    * @return never null, always contains one mapping for each {@link Level}, and
-   *         contains no null keys/values. Equal to {@code defaultValue} if the
-   *         Bukkit plugin is not available, or if the desired property is not
-   *         defined in the config.
+   * contains no null keys/values. Equal to {@code defaultValue} if the
+   * Bukkit plugin is not available, or if the desired property is not
+   * defined in the config.
    */
   private static Map<Level, ColorMarker> getLevelColorsMap(final String property, final Map<Level, ColorMarker> defaultValues) {
     synchronized (BukkitLoggerAdapter.INITIALIZATION_LOCK) {
@@ -397,11 +399,12 @@ public final class BukkitLoggerAdapter implements Logger {
    * Returns a string property from the Bukkit plugin config.
    *
    * @param name
-   *          the desired property.
+   *   the desired property.
    * @param defaultValue
-   *          the fallback value returned by this method.
+   *   the fallback value returned by this method.
+   *
    * @return {@code defaultValue} if the Bukkit plugin is not available, or if
-   *         the desired property is not defined in the config.
+   * the desired property is not defined in the config.
    */
   private static String getStringProperty(final String name, final String defaultValue) {
     synchronized (BukkitLoggerAdapter.INITIALIZATION_LOCK) {
@@ -422,7 +425,8 @@ public final class BukkitLoggerAdapter implements Logger {
    * </ul>
    *
    * @param slf4jLevel
-   *          any SLF4J logging level.
+   *   any SLF4J logging level.
+   *
    * @return never null.
    */
   private static java.util.logging.Level slf4jLevelIntToBukkitJULLevel(final Level slf4jLevel) {
@@ -448,9 +452,10 @@ public final class BukkitLoggerAdapter implements Logger {
    * Convert YAML logging level properties to SLF4J level objects.
    *
    * @param levelStr
-   *          the level property value from the YAML config.
+   *   the level property value from the YAML config.
+   *
    * @return null iff the input does not map to a SLF4J logging level name in a
-   *         case-insensitive fashion.
+   * case-insensitive fashion.
    */
   private static Level stringToLevel(final String levelStr) {
     if ("trace".equalsIgnoreCase(levelStr)) {
@@ -459,7 +464,7 @@ public final class BukkitLoggerAdapter implements Logger {
     else if ("debug".equalsIgnoreCase(levelStr)) {
       return Level.DEBUG;
     }
-    else if ("no/kh498/bukkitutils/shaded/info".equalsIgnoreCase(levelStr)) {
+    else if ("info".equalsIgnoreCase(levelStr)) {
       return Level.INFO;
     }
     else if ("warn".equalsIgnoreCase(levelStr)) {
@@ -853,7 +858,7 @@ public final class BukkitLoggerAdapter implements Logger {
    * config.
    *
    * @return the value of "slf4j.defaultLogLevel" if neither this logger nor any
-   *         of its ancestors define a logging level.
+   * of its ancestors define a logging level.
    */
   private Level determineCurrentLevel() {
     // Compute the current level, which may be null.
@@ -873,13 +878,13 @@ public final class BukkitLoggerAdapter implements Logger {
    * For formatted messages, first substitute arguments and then log.
    *
    * @param level
-   *          the level of this message.
+   *   the level of this message.
    * @param marker
-   *          the marker to use for this message, may be null.
+   *   the marker to use for this message, may be null.
    * @param format
-   *          the message format string.
+   *   the message format string.
    * @param arguments
-   *          3 or more arguments.
+   *   3 or more arguments.
    */
   private void formatAndLog(final Level level, final Marker marker, final String format, final Object... arguments) {
     if (!this.isLevelEnabled(level)) { return; }
@@ -891,15 +896,15 @@ public final class BukkitLoggerAdapter implements Logger {
    * For formatted messages, first substitute arguments and then log.
    *
    * @param level
-   *          the level of this message.
+   *   the level of this message.
    * @param marker
-   *          the marker to use for this message, may be null.
+   *   the marker to use for this message, may be null.
    * @param format
-   *          the message format string.
+   *   the message format string.
    * @param arg1
-   *          format argument #1.
+   *   format argument #1.
    * @param arg2
-   *          format argument #2.
+   *   format argument #2.
    */
   private void formatAndLog(final Level level, final Marker marker, final String format, final Object arg1, final Object arg2) {
     if (!this.isLevelEnabled(level)) { return; }
@@ -911,7 +916,8 @@ public final class BukkitLoggerAdapter implements Logger {
    * Is the given log level currently enabled?
    *
    * @param logLevel
-   *          is this level enabled?
+   *   is this level enabled?
+   *
    * @return true if enabled, false if disabled.
    */
   private boolean isLevelEnabled(final Level logLevel) {
@@ -935,13 +941,13 @@ public final class BukkitLoggerAdapter implements Logger {
    * logger.
    *
    * @param level
-   *          the desired log level of the message.
+   *   the desired log level of the message.
    * @param marker
-   *          the marker to use for this message, may be null.
+   *   the marker to use for this message, may be null.
    * @param message
-   *          the message to be logged.
+   *   the message to be logged.
    * @param throwable
-   *          the exception to be logged, may be null.
+   *   the exception to be logged, may be null.
    */
   private void log(final Level level, final Marker marker, final String message, final Throwable throwable) {
     final java.util.logging.Logger logger;

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit;
+package info.ronjenkins.slf4bukkit;
 
 import com.google.common.collect.ImmutableMap;
 

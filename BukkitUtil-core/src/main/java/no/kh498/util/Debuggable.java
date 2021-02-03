@@ -1,7 +1,7 @@
 package no.kh498.util;
 
 import java.util.Collections;
-import no.kh498.bukkitutils.shaded.info.ronjenkins.slf4bukkit.ColorString;
+import info.ronjenkins.slf4bukkit.ColorString;
 import static no.kh498.util.DebuggableUtils.appendSinglePrefix;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;

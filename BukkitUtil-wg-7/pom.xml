@@ -6,7 +6,7 @@
     <parent>
         <groupId>no.kh498.util</groupId>
         <artifactId>BukkitUtil-parent</artifactId>
-        <version>4.4.2</version>
+        <version>4.4.3</version>
     </parent>
 
     <artifactId>BukkitUtil-wg-7</artifactId>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>no.kh498.util</groupId>
             <artifactId>BukkitUtil-core</artifactId>
-            <version>4.4.2</version>
+            <version>4.4.3</version>
             <scope>compile</scope>
         </dependency>
 

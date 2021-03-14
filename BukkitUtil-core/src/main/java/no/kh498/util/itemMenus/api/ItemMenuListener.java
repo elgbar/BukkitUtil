@@ -35,10 +35,9 @@ public class ItemMenuListener implements Listener {
         return INSTANCE;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public static void onInventoryClick(final InventoryClickEvent event) {
-        if (event.getWhoClicked() instanceof Player && event.getInventory().getHolder() != null &&
-            event.getInventory().getHolder() instanceof ItemMenuHolder) {
+        if (event.getWhoClicked() instanceof Player && event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof ItemMenuHolder) {
             event.setCancelled(true);
             ((ItemMenuHolder) event.getInventory().getHolder()).getMenu().onInventoryClick(event);
         }

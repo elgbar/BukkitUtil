@@ -15,17 +15,18 @@ public class ItemClickEvent {
     private final ItemStack stack;
     private final ItemMenu menu;
     private final int clickedSlot;
+    private final int numberKey;
     private boolean goBack;
     private boolean close;
     private boolean update;
 
-    public ItemClickEvent(final Player player, final ItemStack stack, final ClickType type, final ItemMenu menu,
-                          final int clickedSlot) {
+    public ItemClickEvent(final Player player, final ItemStack stack, final ClickType type, final ItemMenu menu, final int clickedSlot, int numberKey) {
         this.player = player;
         this.stack = stack;
         this.clicktype = type;
         this.menu = menu;
         this.clickedSlot = clickedSlot;
+        this.numberKey = numberKey;
     }
 
     /**
@@ -45,10 +46,24 @@ public class ItemClickEvent {
         return this.stack;
     }
 
-    public ItemMenu getMenu() { return this.menu; }
+    public ItemMenu getMenu() {
+        return this.menu;
+    }
 
+    public int getClickedSlot() {
+        return this.clickedSlot;
+    }
 
-    public int getClickedSlot() { return this.clickedSlot; }
+    /**
+     * If the ClickType is NUMBER_KEY, this method will return the index of
+     * the pressed key (0-8).
+     *
+     * @return the number on the key minus 1 (range 0-8); or -1 if not
+     * a NUMBER_KEY action
+     */
+    public int getNumberKey() {
+        return numberKey;
+    }
 
     /**
      * Checks if the {@link ItemMenu} will go back to the parent menu.

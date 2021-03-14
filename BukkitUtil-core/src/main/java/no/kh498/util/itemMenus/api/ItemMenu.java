@@ -321,19 +321,17 @@ public class ItemMenu {
    * Handles InventoryClickEvents for the {@link MenuItem}.
    */
   void onInventoryClick(@NotNull final InventoryClickEvent event) {
-    if (event.getClick() == ClickType.LEFT || event.getClick() == ClickType.RIGHT ||
-        event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
+    if (event.getClick() == ClickType.LEFT || event.getClick() == ClickType.RIGHT || event.getClick() == ClickType.SHIFT_LEFT ||
+            event.getClick() == ClickType.SHIFT_RIGHT || event.getClick() == ClickType.NUMBER_KEY || event.getClick() == ClickType.DROP ||
+            event.getClick() == ClickType.CONTROL_DROP || event.getClick() == ClickType.CREATIVE || event.getClick() == ClickType.MIDDLE) {
       final int slot = event.getRawSlot();
       if (slot >= 0 && slot < size.getSize() && items[slot] != null) {
         final Player player = (Player) event.getWhoClicked();
-        final ItemClickEvent itemClickEvent = new ItemClickEvent(player, event.getCurrentItem(), event.getClick(), this,
-                                                                 slot);
+        final ItemClickEvent itemClickEvent = new ItemClickEvent(player, event.getCurrentItem(), event.getClick(), this, slot, event.getHotbarButton());
         items[slot].onItemClick(itemClickEvent);
         if (itemClickEvent.willUpdate()) {
           update(player);
-        }
-        else {
-          //noinspection deprecation
+        } else {
           player.updateInventory();
           if (itemClickEvent.willClose()) {
             final UUID playerUUID = player.getUniqueId();

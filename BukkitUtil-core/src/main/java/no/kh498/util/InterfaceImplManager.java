@@ -52,7 +52,7 @@ public class InterfaceImplManager<I> {
     @NotNull
     private final Class<I> interfaceClass;
 
-    private Map<String, Class<? extends I>> parts;
+  protected Map<String, Class<? extends I>> parts;
 
 
     /**

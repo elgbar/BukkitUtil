@@ -41,10 +41,15 @@ public class FileUtils {
      * @return {@code true} if an error occurred when creating the folder
      */
     public static boolean createParentFolders(@NotNull File file) {
-        if (file.exists()) { return false; }
+        if (file.exists()) {
+            return false;
+        }
 
-        if (file.getParentFile().isDirectory() || file.getParentFile().mkdirs()) {return false;}
-        logger.error("Failed to create the parent folder '{}'", file.getParentFile().getPath());
+        final File parentFile = file.getParentFile();
+        if (parentFile == null || parentFile.isDirectory() || parentFile.mkdirs()) {
+            return false;
+        }
+        logger.error("Failed to create the parent folder '{}'", parentFile.getPath());
         return true;
     }
 

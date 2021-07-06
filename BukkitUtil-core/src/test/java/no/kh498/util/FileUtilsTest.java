@@ -95,6 +95,13 @@ public class FileUtilsTest {
         assertFalse(file.isFile());
     }
 
+    @Test
+    public void createParentFoldersWhenParentIsNull() {
+        File fileWithoutParent = new File((File) null, "test");
+
+        assertFalse(FileUtils.createParentFolders(fileWithoutParent));
+    }
+
     //////////////////////////
     // createDatafolderFile //
     //////////////////////////

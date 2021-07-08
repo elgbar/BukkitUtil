@@ -12,7 +12,7 @@ public interface ConfigurationSectionLoadable {
      * @param root
      *     The root configuration of {@code conf}
      * @param absolutePath
-     *     Path to {@code conf} from {@code root}, if at root the path should be displayed as {@link #ROOT_PATH}
+     *     Path to {@code conf} from {@code root}, if at root the path should be an empty string
      *
      * @return if the configuration was successfully loaded
      */

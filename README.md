@@ -73,8 +73,8 @@ Then add this as a dependency under the `dependencies` tag
 
 <dependency>
     <groupId>no.kh498.util</groupId>
-    <artifactId>BukkitUtil</artifactId>
-    <version>4.4.4</version>
+  <artifactId>BukkitUtil</artifactId>
+  <version>4.4.5</version>
 </dependency>
 ```
 
@@ -139,7 +139,7 @@ dependencies {
   //your other decencies goes here
 
   //use implementation if you do not want to include it in your jar
-  shade "no.kh498.util:BukkitUtil:4.4.4"
+  shade "no.kh498.util:BukkitUtil:4.4.5"
 }
 
 jar {

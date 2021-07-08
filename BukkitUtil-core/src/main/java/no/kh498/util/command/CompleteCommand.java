@@ -1,6 +1,9 @@
 package no.kh498.util.command;
 
 import com.google.common.base.Preconditions;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,10 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 public abstract class CompleteCommand extends HostCommand implements TabCompleter {
 
     protected static final Logger logger = LoggerFactory.getLogger(CompleteCommand.class);
@@ -23,17 +22,11 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
     /**
      * Register this command to the plugin, with a five ticks check delay.
      *
-     * @param plugin
-     *     The plugin to register this command to
-     *
-     * @throws NullPointerException
-     *     if given {@code plugin} is {@code null}
-     * @throws IllegalArgumentException
-     *     if {@code checkDelay} is less than {@code 1}
-     * @throws NullPointerException
-     *     if {@link #getAliases()} is {@code null}
-     * @throws IllegalArgumentException
-     *     if {@link #getAliases()} contains a {@code null} element
+     * @param plugin The plugin to register this command to
+     * @throws NullPointerException     if given {@code plugin} is {@code null}
+     * @throws IllegalArgumentException if {@code checkDelay} is less than {@code 1}
+     * @throws NullPointerException     if {@link #getAliases()} is {@code null}
+     * @throws IllegalArgumentException if {@link #getAliases()} contains a {@code null} element
      */
     public CompleteCommand(@NotNull JavaPlugin plugin) {
         this(plugin, 5L);
@@ -42,31 +35,21 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
     /**
      * Register this command to the plugin.
      * <p>
-     * This constructor is not recommended to be used unless you get a timing error when {@link #verifySubcommands}
+     * This constructor is not recommended to be used unless you get a timing error when {@link #verify}
      *
-     * @param checkDelay
-     *     How long to delay before verifying subcommands, must be greater than 0
-     * @param plugin
-     *     The plugin to register this command to
-     *
-     * @throws NullPointerException
-     *     if given {@code plugin} is {@code null}
-     * @throws IllegalArgumentException
-     *     if {@code checkDelay} is less than {@code 1}
-     * @throws NullPointerException
-     *     if {@link #getAliases()} is {@code null}
-     * @throws IllegalArgumentException
-     *     if {@link #getAliases()} contains a {@code null} element or is empty
-     * @throws IllegalStateException
-     *     if the first argument in {@link #getAliases()} is not registered in the plugins plugin.yml
+     * @param checkDelay How long to delay before verifying subcommands, must be greater than 0
+     * @param plugin     The plugin to register this command to
+     * @throws NullPointerException     if given {@code plugin} is {@code null}
+     * @throws IllegalArgumentException if {@code checkDelay} is less than {@code 1}
+     * @throws NullPointerException     if {@link #getAliases()} is {@code null}
+     * @throws IllegalArgumentException if {@link #getAliases()} contains a {@code null} element or is empty
+     * @throws IllegalStateException    if the first argument in {@link #getAliases()} is not registered in the plugins plugin.yml
      */
     public CompleteCommand(@NotNull JavaPlugin plugin, long checkDelay) {
         super(null);
         Preconditions.checkNotNull(plugin, "A valid java plugin instance is needed to register this command");
         Preconditions.checkNotNull(getAliases(), "getAliases() cannot be null");
         Preconditions.checkArgument(!getAliases().isEmpty(), "There must be at least one alias");
-        Preconditions
-            .checkArgument(getAliases().stream().noneMatch(Objects::isNull), "None of the aliases can be null");
 
         String command = getAliases().iterator().next();
 
@@ -74,19 +57,19 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
 
         if (pluginCommand == null) {
             throw new IllegalStateException(
-                "Failed to set executor and tab completer as '" + command + "' is not a recognized command in plugin " +
-                plugin.getName() + ". Please define it in plugin.yml");
+                    "Failed to set executor and tab completer as '" + command + "' is not a recognized command in plugin " + plugin.getName() +
+                            ". Please define it in plugin.yml");
         }
         pluginCommand.setExecutor(this);
         pluginCommand.setTabCompleter(this);
 
         //verify all subcommands when they are all registered
-        Bukkit.getScheduler().runTaskLater(plugin, this::verifySubcommands, checkDelay);
+        Bukkit.getScheduler().runTaskLater(plugin, this::verify, checkDelay);
     }
 
     @Nullable
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         logger.trace("tab complete event called");
 
         SubCommand currSubCommand = this;
@@ -94,63 +77,63 @@ public abstract class CompleteCommand extends HostCommand implements TabComplete
 
         //get the sub command to tab-complete
         for (String arg : args) {
+
+            List<SubCommand> subCommands = currSubCommand.getSubCommands();
             if (logger.isTraceEnabled()) {
-                logger.trace("---");
-                logger.trace("currSubCommand is " + currSubCommand.getClass().getSimpleName());
-                logger.trace("next arg is '" + arg + "'");
-                logger.trace("currSubCommand.getSubCommands(): " + currSubCommand.getSubCommands());
+                logger.trace("currSubCommand is {}, with subcommands {}. Arg to check is '{}'", currSubCommand.getClass().getSimpleName(), subCommands, arg);
             }
-            if (currSubCommand.getSubCommands() == null || currSubCommand.getSubCommands().size() == 0) {
+            if (subCommands == null || subCommands.isEmpty()) {
                 //there are no subcommands for this current subcommand
                 //the online players will be tabbed through
-                return null;
+                return currSubCommand.tabThroughPlayers() ? null : Collections.emptyList();
             }
-            else if (currSubCommand.getSubFromAlias(arg) == null) {
+            SubCommand nextSubCommand = currSubCommand.getSubFromAlias(arg);
+            if (nextSubCommand == null) {
                 //current arg is not in this subcommand, there will be no more final commands
                 break;
             }
             argsId++;
-            currSubCommand = currSubCommand.getSubFromAlias(arg);
+            currSubCommand = nextSubCommand;
         }
 
-        logger.trace("final sub command is " + currSubCommand.getClass().getSimpleName());
+        logger.trace("final sub command is {}", currSubCommand.getClass().getSimpleName());
 
         String toComplete;
 
         if (args.length == argsId) {
             if (args.length == 0) {
                 return getListOfSubcommandAliases(this);
-            }
-            else {
+            } else {
                 currSubCommand = currSubCommand.getParent();
             }
             toComplete = args[args.length - 1];
-        }
-        else {
+        } else {
             toComplete = args[argsId];
         }
 
         List<String> suggestions = new ArrayList<>();
-        if (currSubCommand.getSubCommands() != null) {
-            for (SubCommand subCommand : currSubCommand.getSubCommands()) {
-                for (String subAlias : subCommand.getAliases()) {
-                    if (subAlias.startsWith(toComplete)) {
-                        suggestions.add(subAlias);
-                    }
+        for (SubCommand subCommand : currSubCommand.getSubCommands()) {
+            for (String subAlias : subCommand.getAliases()) {
+                if (subAlias.startsWith(toComplete)) {
+                    suggestions.add(subAlias);
                 }
             }
         }
         return suggestions;
     }
 
-    @Nullable
-    private List<String> getListOfSubcommandAliases(@Nullable SubCommand subCommand) {
-        if (subCommand == null || subCommand.getSubCommands() == null) {
-            return null;
+    @NotNull
+    private List<@NotNull String> getListOfSubcommandAliases(@Nullable SubCommand subCommand) {
+        if (subCommand == null) {
+            return Collections.emptyList();
+        }
+        List<@NotNull SubCommand> subCommands = subCommand.getSubCommands();
+        if (subCommands == null || subCommands.isEmpty()) {
+            return subCommand.getArguments();
         }
 
         List<String> suggestions = new ArrayList<>();
-        for (SubCommand subCmd : subCommand.getSubCommands()) {
+        for (SubCommand subCmd : subCommands) {
             suggestions.addAll(subCmd.getAliases());
         }
         return suggestions;

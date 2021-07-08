@@ -1,6 +1,9 @@
 package no.kh498.util.command;
 
 import com.google.common.base.Preconditions;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import no.kh498.util.ChatUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,25 +14,14 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 public abstract class SubCommand implements CommandExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(SubCommand.class);
 
-    private SubCommand parent;
+    @Nullable
+    private final SubCommand parent;
 
-    public SubCommand(SubCommand parent) {
-
-        Preconditions.checkState(getAliases() != null && getAliases().size() > 0, "There must be at least one alias");
-        Preconditions
-            .checkState(getAliases().stream().noneMatch(Objects::isNull), "no elements in the aliases can be null");
-        Preconditions.checkState(
-            getAliases().stream().allMatch(alias -> getAliases().stream().filter(alias::equalsIgnoreCase).count() == 1),
-            "There cannot be any duplicate aliases within an alias");
-
+    public SubCommand(@Nullable SubCommand parent) {
         this.parent = parent;
     }
 
@@ -43,37 +35,35 @@ public abstract class SubCommand implements CommandExecutor {
      * @return A collection of strings this subcommand is known for
      */
     @NotNull
-    public abstract List<String> getAliases();
+    public abstract List<@NotNull String> getAliases();
 
-    void verifySubcommands() {
+    protected void verify() {
 
         logger.trace("Verifying subcommand '{}' (parent '{}')", getCommand(), parent);
-
+        Preconditions.checkState(!getAliases().isEmpty(), "There must be at least one alias given");
+        Preconditions.checkState(getAliases().stream().allMatch(alias -> getAliases().stream().filter(alias::equalsIgnoreCase).count() == 1),
+                "There cannot be any duplicate aliases within an alias");
         // the conditions below are only relevant if the command has subcommands
-        if (getSubCommands() == null) {
+        List<SubCommand> commands = getSubCommands();
+        if (commands == null) {
             logger.trace("There are no subcommands");
             return;
         }
 
-        if (getSubCommands().stream().anyMatch(Objects::isNull)) {
-            throw new IllegalStateException("The sub command list must either be null or not contain any nulls");
-        }
-
-        for (SubCommand subCommand1 : getSubCommands()) {
-            for (SubCommand subCommand2 : getSubCommands()) {
-                if (subCommand1 != subCommand2 &&
-                    subCommand1.getAliases().stream().anyMatch(s -> subCommand2.getAliases().contains(s))) {
-                    throw new IllegalStateException(String.format(
-                        "Subcommand '%s' and '%s' in command '%s' has the same alias", subCommand1.getCommand(),
-                        subCommand2.getCommand(), getCommand()));
+        for (SubCommand subCommand : commands) {
+            for (SubCommand otherSubCmd : commands) {
+                if (subCommand != otherSubCmd && subCommand.getAliases().stream().anyMatch(s -> otherSubCmd.getAliases().contains(s))) {
+                    throw new IllegalStateException(
+                            String.format("Subcommand '%s' and '%s' in command '%s' has the same alias", subCommand.getCommand(), otherSubCmd.getCommand(), getCommand()));
                 }
             }
 
             //verify recursively
-            subCommand1.verifySubcommands();
+            subCommand.verify();
         }
     }
 
+    @NotNull
     public String getCommand() {
         return getAliases().get(0);
     }
@@ -98,33 +88,47 @@ public abstract class SubCommand implements CommandExecutor {
     }
 
     /**
-     * None of the elements are {@code null}
-     *
      * @return Highest level sub commands (eg 'load' if the command is '/cmd load all') or null if there are no
      * sub commands
      */
-    public abstract List<SubCommand> getSubCommands();
+    @Nullable
+    public abstract List<@NotNull SubCommand> getSubCommands();
 
     /**
-     * @return The parent command
+     * If {@link #getSubCommands()} is not {@code null} or not empty this method will not be used, instead favouring  {@link #getSubCommands()} for tab
+     * completion
+     *
+     * @return List of arguments to tab-complete for this command.
      */
+    @NotNull
+    public List<@NotNull String> getArguments() {
+        return Collections.emptyList();
+    }
+
+    /**
+     * @return If this command should allow tabbing through the current online players if there are no arguments/subcommands
+     */
+    public boolean tabThroughPlayers() {
+        return true;
+    }
+
+    /**
+     * @return The parent command, if {@code null} this is the root command
+     */
+    @Nullable
     public SubCommand getParent() {
         return parent;
     }
 
+
     /**
-     * @param sender
-     *     the sender of the command
-     * @param command
-     *     base command
-     * @param label
-     *     alias of the command used
-     * @param args
-     *     args from the parent command
-     *
+     * @param sender  the sender of the command
+     * @param command base command
+     * @param label   alias of the command used
+     * @param args    args from the parent command
      * @return if the command was handled
      */
-    public boolean onSubCommand(@NotNull CommandSender sender, Command command, String label, @NotNull String[] args) {
+    public boolean onSubCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         if (getSubCommands() == null || getSubCommands().isEmpty()) {
             return false;
@@ -132,10 +136,8 @@ public abstract class SubCommand implements CommandExecutor {
 
         if (args.length == 0 || getSubCommands().stream().noneMatch(sub -> sub.getAliases().contains(args[0]))) {
 
-            sender.sendMessage(ChatUtil
-                                   .colorString(ChatColor.RED, ChatColor.DARK_RED, "Invalid sub-command, valid are ",
-                                                getSubCommands().stream().map(subCmd -> subCmd.getAliases().get(0))
-                                                                .distinct().collect(Collectors.toList())));
+            sender.sendMessage(ChatUtil.colorString(ChatColor.RED, ChatColor.DARK_RED, "Invalid sub-command, valid are ", getSubCommands().stream().map(
+                    subCmd -> subCmd.getAliases().get(0)).distinct().collect(Collectors.toList())));
             return true;
         }
 
@@ -155,16 +157,16 @@ public abstract class SubCommand implements CommandExecutor {
      * Executes the given command, returning its success
      *
      * @param sender
-     *     Source of the command
+     *   Source of the command
      * @param command
-     *     Command which was executed
+     *   Command which was executed
      * @param label
-     *     Alias of the command which was used (includes previous subcommands, if any separated by a space)
+     *   Alias of the command which was used (includes previous subcommands, if any separated by a space)
      * @param args
-     *     Passed command arguments
+     *   Passed command arguments
      *
      * @return true if a valid command, otherwise false
      */
     @Override
-    public abstract boolean onCommand(CommandSender sender, Command command, String label, String[] args);
+    public abstract boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args);
 }
